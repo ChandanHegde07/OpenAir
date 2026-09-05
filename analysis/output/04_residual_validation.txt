@@ -1,0 +1,213 @@
+loading
+AOBT residual (y - (MVT-AOBT)) = BLOCK-AOBT actually wait: y=MVT-BLOCK, proxy=MVT-AOBT, resid=AOBT-BLOCK
+resid n=2,062,577 mean=-17.03 med=-51.00 std=384.47 mae=238.06
+RMSE of proxy 384.85
+
+===== UNMATCHED NM FLIGHTS =====
+unmatched n=22,470 (1.08%)
+unmatched taxi mean=1384.4 med=950.5 std=3397.5 p95=3331.5 p99=10222.8 max=131167.0
+matched   taxi mean=986.9 med=911.0 std=417.5 p95=1682.0 p99=2303.0
+unmatched by airport shape: (10, 5)
+┌──────────┬──────┬─────────────┬────────┬─────────────┐
+│ ADEP_mvt ┆ n    ┆ mean        ┆ med    ┆ std         │
+│ ---      ┆ ---  ┆ ---         ┆ ---    ┆ ---         │
+│ str      ┆ u32  ┆ f64         ┆ f64    ┆ f64         │
+╞══════════╪══════╪═════════════╪════════╪═════════════╡
+│ EHAM     ┆ 4084 ┆ 600.173604  ┆ 538.5  ┆ 501.360524  │
+│ LFPG     ┆ 3773 ┆ 1183.778691 ┆ 1023.0 ┆ 1761.303345 │
+│ LTFM     ┆ 3645 ┆ 1301.510562 ┆ 1009.0 ┆ 1129.097591 │
+│ LSZH     ┆ 2291 ┆ 680.293322  ┆ 673.0  ┆ 1914.868177 │
+│ EDDF     ┆ 1956 ┆ 974.765849  ┆ 957.5  ┆ 399.23428   │
+│ LEBL     ┆ 1862 ┆ 1043.441461 ┆ 1038.5 ┆ 389.845431  │
+│ LIRF     ┆ 1488 ┆ 6530.590726 ┆ 3922.0 ┆ 11218.46464 │
+│ EGLL     ┆ 1414 ┆ 1568.171146 ┆ 1384.0 ┆ 958.17104   │
+│ EDDM     ┆ 1010 ┆ 1035.607921 ┆ 891.0  ┆ 661.162295  │
+│ LEMD     ┆ 947  ┆ 1116.095037 ┆ 1096.0 ┆ 342.866377  │
+└──────────┴──────┴─────────────┴────────┴─────────────┘
+global mean RMSE on unmatched 3420.7
+global mean RMSE on matched 417.5
+matched-only AOBT RMSE 384.85
+
+===== STAND-RUNWAY GEOMETRY =====
+stand-rwy pairs with n>=30: 6436
+stands with >=2 runways (n>=30 each): 1837
+mean taxi spread across runways for same stand: mean=301.9 med=268.5 p90=562.5 max=2230.0
+stand-rwy (n>=30 groups) eta^2 = SS_between/SS_tot = 0.2525  (in-sample R2 of group means on those rows)
+airport eta^2 = 0.1121
+
+===== RECENT TAXI-IN (available in ranking) =====
+
+correlations with y and resid_aobt:
+  aobt_proxy             corr_y=-0.0120 corr_resid=-0.0045
+  lag1_aobt              corr_y=-0.0122 corr_resid=-0.0049
+  roll5_aobt             corr_y=-0.0165 corr_resid=-0.0066
+  roll10_aobt            corr_y=-0.0180 corr_resid=-0.0074
+  roll20_aobt            corr_y=-0.0195 corr_resid=-0.0090
+  roll10med_aobt         corr_y=-0.0181 corr_resid=-0.0086
+  lag1_aobt_rwy          corr_y=-0.0123 corr_resid=-0.0048
+  roll10_aobt_rwy        corr_y=-0.0180 corr_resid=-0.0072
+  lag1_y                 corr_y=-0.0086 corr_resid=-0.0001
+  roll10_y               corr_y=-0.0144 corr_resid= 0.0004
+  lag1_taxiin            corr_y= 0.0008 corr_resid=-0.0049
+  roll10_taxiin          corr_y= 0.0015 corr_resid=-0.0099
+  last_taxiin            corr_y= 0.0008 corr_resid=-0.0044
+
+per-airport corr(roll10_aobt, y) and corr(roll10_taxiin, y):
+  EDDF roll10_aobt= 0.144 roll10_taxiin= 0.095 aobt_proxy= 0.659
+  EDDM roll10_aobt= 0.153 roll10_taxiin= 0.082 aobt_proxy= 0.123
+  EGLL roll10_aobt= 0.434 roll10_taxiin= 0.115 aobt_proxy= 0.513
+  EHAM roll10_aobt= 0.449 roll10_taxiin=-0.280 aobt_proxy= 0.663
+  LEBL roll10_aobt= 0.016 roll10_taxiin=-0.061 aobt_proxy= 0.536
+  LEMD roll10_aobt= 0.047 roll10_taxiin= 0.060 aobt_proxy= 0.521
+  LFPG roll10_aobt= 0.362 roll10_taxiin= 0.118 aobt_proxy= 0.502
+  LIRF roll10_aobt= 0.070 roll10_taxiin= 0.034 aobt_proxy= 0.487
+  LSZH roll10_aobt= 0.164 roll10_taxiin= 0.006 aobt_proxy= 0.478
+  LTFM roll10_aobt= 0.256 roll10_taxiin= 0.048 aobt_proxy= 0.176
+
+===== TIME-SPLIT VALIDATION =====
+
+--- val_Dec train=1,919,370 val=165,677 ---
+  global_mean          RMSE= 514.74 MAE= 301.16
+  airport_mean         RMSE= 488.42
+  stand_rwy_fb_ap      RMSE= 448.52 MAE= 215.78
+  aobt_proxy           RMSE= 374.60 MAE= 234.46
+  aobt_proxy_clip      RMSE= 363.50
+  airport_wtc          RMSE= 480.05
+  OLS aobt             RMSE= 339.64 coef=[391.25513476   0.59325767]
+  OLS aobt+roll10aobt  RMSE= 327.52 coef=[2.59508990e+02 4.97977999e-01 2.26000226e-01]
+  OLS aobt+roll10a+ti  RMSE= 326.47 coef=[ 2.75437268e+02  4.99395245e-01  2.38202220e-01 -5.43488766e-02]
+  aobt + standrwy resid RMSE= 342.24 MAE= 207.66
+  blend 0.7 aobt+0.3 sr RMSE= 449.84
+  aobt else standrwy    RMSE= 484.08
+
+--- val_JanJul train=1,740,628 val=344,419 ---
+  global_mean          RMSE= 686.62 MAE= 319.90
+  airport_mean         RMSE= 659.96
+  stand_rwy_fb_ap      RMSE= 628.40 MAE= 227.51
+  aobt_proxy           RMSE= 428.17 MAE= 251.49
+  aobt_proxy_clip      RMSE= 432.32
+  airport_wtc          RMSE= 654.11
+  OLS aobt             RMSE= 396.35 coef=[396.26159023   0.58592895]
+  OLS aobt+roll10aobt  RMSE= 378.85 coef=[2.62146454e+02 4.71672648e-01 2.48514182e-01]
+  OLS aobt+roll10a+ti  RMSE= 378.54 coef=[ 2.79716474e+02  4.73208449e-01  2.61478207e-01 -5.91914842e-02]
+  aobt + standrwy resid RMSE= 395.39 MAE= 223.47
+  blend 0.7 aobt+0.3 sr RMSE= 619.54
+  aobt else standrwy    RMSE= 649.51
+
+--- val_Jul train=1,894,334 val=190,713 ---
+  global_mean          RMSE= 745.98 MAE= 324.39
+  airport_mean         RMSE= 715.32
+  stand_rwy_fb_ap      RMSE= 683.62 MAE= 223.28
+  aobt_proxy           RMSE= 465.76 MAE= 262.70
+  aobt_proxy_clip      RMSE= 481.79
+  airport_wtc          RMSE= 710.21
+  OLS aobt             RMSE= 432.60 coef=[388.15975603   0.59301273]
+  OLS aobt+roll10aobt  RMSE= 411.88 coef=[2.61260645e+02 4.83943139e-01 2.35651099e-01]
+  OLS aobt+roll10a+ti  RMSE= 412.00 coef=[ 2.80447280e+02  4.85618271e-01  2.49920933e-01 -6.48130755e-02]
+  aobt + standrwy resid RMSE= 434.33 MAE= 234.68
+  blend 0.7 aobt+0.3 sr RMSE= 683.28
+  aobt else standrwy    RMSE= 715.24
+
+--- val_Jan train=1,931,341 val=153,706 ---
+  global_mean          RMSE= 604.85 MAE= 315.07
+  airport_mean         RMSE= 584.73
+  stand_rwy_fb_ap      RMSE= 553.97 MAE= 235.09
+  aobt_proxy           RMSE= 376.98 MAE= 237.74
+  aobt_proxy_clip      RMSE= 362.54
+  airport_wtc          RMSE= 577.51
+  OLS aobt             RMSE= 346.95 coef=[398.7361852    0.58702454]
+  OLS aobt+roll10aobt  RMSE= 336.76 coef=[2.60030423e+02 4.89525044e-01 2.35562904e-01]
+  OLS aobt+roll10a+ti  RMSE= 335.91 coef=[ 2.76766986e+02  4.90982679e-01  2.48008515e-01 -5.63625931e-02]
+  aobt + standrwy resid RMSE= 343.35 MAE= 211.02
+  blend 0.7 aobt+0.3 sr RMSE= 530.34
+  aobt else standrwy    RMSE= 557.44
+
+===== LIRF =====
+n=160,704 unmatched=1488
+mean=1194.6 med=1025.0 std=1332.0 p99=4019.0 >1h=1967
+by runway shape: (7, 6)
+┌────────────┬────────┬─────────────┬────────┬─────────────┬──────┐
+│ RUNWAY_mvt ┆ n      ┆ mean        ┆ med    ┆ std         ┆ gt1h │
+│ ---        ┆ ---    ┆ ---         ┆ ---    ┆ ---         ┆ ---  │
+│ str        ┆ u32    ┆ f64         ┆ f64    ┆ f64         ┆ u32  │
+╞════════════╪════════╪═════════════╪════════╪═════════════╪══════╡
+│ 25         ┆ 144747 ┆ 1159.216467 ┆ 1013.0 ┆ 1280.9761   ┆ 1740 │
+│ 16R        ┆ 11219  ┆ 1525.428202 ┆ 1332.0 ┆ 1496.325692 ┆ 132  │
+│ 34L        ┆ 4139   ┆ 1430.06475  ┆ 1211.0 ┆ 2080.369531 ┆ 66   │
+│ 16L        ┆ 408    ┆ 1994.830882 ┆ 1673.5 ┆ 2278.512664 ┆ 16   │
+│ 34R        ┆ 161    ┆ 1780.453416 ┆ 1379.0 ┆ 1595.410025 ┆ 10   │
+│ NA         ┆ 24     ┆ 1748.083333 ┆ 1081.5 ┆ 1806.369477 ┆ 3    │
+│ 01R        ┆ 6      ┆ 1631.166667 ┆ 1411.0 ┆ 1091.158727 ┆ 0    │
+└────────────┴────────┴─────────────┴────────┴─────────────┴──────┘
+by month shape: (12, 5)
+┌───────┬───────┬─────────────┬─────────────┬──────┐
+│ month ┆ n     ┆ mean        ┆ std         ┆ gt1h │
+│ ---   ┆ ---   ┆ ---         ┆ ---         ┆ ---  │
+│ i8    ┆ u32   ┆ f64         ┆ f64         ┆ u32  │
+╞═══════╪═══════╪═════════════╪═════════════╪══════╡
+│ 1     ┆ 11317 ┆ 1096.542812 ┆ 1238.325709 ┆ 70   │
+│ 2     ┆ 10703 ┆ 1078.766981 ┆ 1467.10659  ┆ 88   │
+│ 3     ┆ 12544 ┆ 1116.836097 ┆ 1013.287959 ┆ 98   │
+│ 4     ┆ 14028 ┆ 1179.958797 ┆ 952.128928  ┆ 107  │
+│ 5     ┆ 14541 ┆ 1183.462142 ┆ 775.214209  ┆ 129  │
+│ …     ┆ …     ┆ …           ┆ …           ┆ …    │
+│ 8     ┆ 15459 ┆ 1262.157319 ┆ 1343.483692 ┆ 250  │
+│ 9     ┆ 14667 ┆ 1224.018    ┆ 1466.418587 ┆ 209  │
+│ 10    ┆ 14142 ┆ 1203.342526 ┆ 797.196917  ┆ 194  │
+│ 11    ┆ 11328 ┆ 1081.103814 ┆ 1349.282015 ┆ 77   │
+│ 12    ┆ 12068 ┆ 1118.300464 ┆ 1221.892118 ┆ 105  │
+└───────┴───────┴─────────────┴─────────────┴──────┘
+LIRF AOBT RMSE 557.4
+LIRF unmatched taxi mean=6530.590725806452
+
+===== EGLL =====
+AOBT RMSE 418.5
+by runway shape: (5, 5)
+┌────────────┬───────┬─────────────┬────────┬────────────┐
+│ RUNWAY_mvt ┆ n     ┆ mean        ┆ med    ┆ std        │
+│ ---        ┆ ---   ┆ ---         ┆ ---    ┆ ---        │
+│ str        ┆ u32   ┆ f64         ┆ f64    ┆ f64        │
+╞════════════╪═══════╪═════════════╪════════╪════════════╡
+│ 09R        ┆ 87565 ┆ 1336.950722 ┆ 1310.0 ┆ 389.44996  │
+│ 27R        ┆ 77027 ┆ 1399.863983 ┆ 1368.0 ┆ 429.504501 │
+│ 27L        ┆ 74841 ┆ 1359.419302 ┆ 1317.0 ┆ 445.749668 │
+│ 09L        ┆ 110   ┆ 1453.336364 ┆ 1147.5 ┆ 883.492644 │
+│ NA         ┆ 3     ┆ 164.0       ┆ 12.0   ┆ 265.87403  │
+└────────────┴───────┴─────────────┴────────┴────────────┘
+
+===== RANKING UNMATCHED =====
+ranking DEP unmatched AOBT 5,290/344,841 (1.53%)
+shape: (10, 3)
+┌──────────┬───────┬───────────┐
+│ ADEP_mvt ┆ n     ┆ unmatched │
+│ ---      ┆ ---   ┆ ---       │
+│ str      ┆ u32   ┆ u32       │
+╞══════════╪═══════╪═══════════╡
+│ LEMD     ┆ 36954 ┆ 238       │
+│ EHAM     ┆ 38182 ┆ 1206      │
+│ LIRF     ┆ 26899 ┆ 383       │
+│ LEBL     ┆ 30080 ┆ 442       │
+│ EGLL     ┆ 39840 ┆ 248       │
+│ LSZH     ┆ 23150 ┆ 659       │
+│ LTFM     ┆ 47581 ┆ 721       │
+│ EDDM     ┆ 25966 ┆ 238       │
+│ EDDF     ┆ 36317 ┆ 421       │
+│ LFPG     ┆ 39872 ┆ 734       │
+└──────────┴───────┴───────────┘
+
+===== delay vs residual =====
+  aobt_minus_eobt        corr_y= 0.0005 corr_resid= 0.0003
+  aobt_minus_sched       corr_y=-0.0019 corr_resid=-0.0019
+  mvt_minus_sched        corr_y=-0.0040 corr_resid=-0.0024
+
+AOBT residual by airport (y - proxy):
+  EDDF mean=  -53.2 med=  -87.0 std=  249.5 mae=  178.0 rmse=  255.1
+  EDDM mean=   81.8 med=    2.0 std=  339.2 mae=  207.1 rmse=  348.9
+  EGLL mean=  -22.7 med=  -54.0 std=  417.9 mae=  250.3 rmse=  418.5
+  EHAM mean= -151.7 med= -107.0 std=  292.6 mae=  204.8 rmse=  329.6
+  LEBL mean=   67.5 med=   54.0 std=  304.0 mae=  193.5 rmse=  311.4
+  LEMD mean=   33.9 med=   -2.0 std=  274.3 mae=  173.1 rmse=  276.4
+  LFPG mean=   35.4 med=    4.0 std=  377.9 mae=  234.3 rmse=  379.5
+  LIRF mean=  214.2 med=  118.0 std=  514.6 mae=  325.0 rmse=  557.4
+  LSZH mean=   59.4 med=   33.0 std=  261.8 mae=  183.0 rmse=  268.4
+  LTFM mean= -236.4 med= -296.0 std=  475.0 mae=  386.8 rmse=  530.6

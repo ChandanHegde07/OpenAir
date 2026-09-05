@@ -1,0 +1,72 @@
+
+========== janjul ==========
+  BASE per-airport aobt+eobt+geo                   n=344,419  rmse=576.63  mae=191.04  rmse_matched=303.53  rmse_unmatched=3937.02  rmse_gt30m=2519.41  rmse_gt1h=9563.37  rmse_LIRF=1720.72  rmse_EGLL=359.74  rmse_LFPG=611.64  rmse_LTFM=318.96
+
+--- E4 ---
+  +dep_5m                                          n=344,419  rmse=586.80  mae=197.60  rmse_matched=322.73  rmse_unmatched=3937.02  rmse_gt30m=2566.40  rmse_gt1h=9707.34  rmse_LIRF=1752.47  rmse_EGLL=367.42  rmse_LFPG=617.20  rmse_LTFM=319.28
+  +dep_15m                                         n=344,419  rmse=586.77  mae=197.80  rmse_matched=322.67  rmse_unmatched=3937.02  rmse_gt30m=2565.73  rmse_gt1h=9705.85  rmse_LIRF=1752.21  rmse_EGLL=367.34  rmse_LFPG=617.15  rmse_LTFM=319.60
+  +dep_30m                                         n=344,419  rmse=586.67  mae=197.91  rmse_matched=322.49  rmse_unmatched=3937.02  rmse_gt30m=2564.79  rmse_gt1h=9703.80  rmse_LIRF=1751.88  rmse_EGLL=367.19  rmse_LFPG=616.98  rmse_LTFM=320.03
+  +dep_60m                                         n=344,419  rmse=586.55  mae=197.98  rmse_matched=322.26  rmse_unmatched=3937.02  rmse_gt30m=2563.80  rmse_gt1h=9701.65  rmse_LIRF=1751.51  rmse_EGLL=367.02  rmse_LFPG=616.75  rmse_LTFM=320.41
+  +dep_rwy_15m                                     n=344,419  rmse=586.70  mae=197.90  rmse_matched=322.55  rmse_unmatched=3937.02  rmse_gt30m=2564.99  rmse_gt1h=9704.17  rmse_LIRF=1751.94  rmse_EGLL=367.34  rmse_LFPG=616.97  rmse_LTFM=320.09
+  +dep_rwy_60m                                     n=344,419  rmse=586.66  mae=197.93  rmse_matched=322.46  rmse_unmatched=3937.02  rmse_gt30m=2564.63  rmse_gt1h=9703.46  rmse_LIRF=1751.82  rmse_EGLL=367.17  rmse_LFPG=616.95  rmse_LTFM=320.10
+  +arr_15m                                         n=344,419  rmse=586.55  mae=197.94  rmse_matched=322.26  rmse_unmatched=3937.02  rmse_gt30m=2563.96  rmse_gt1h=9702.11  rmse_LIRF=1751.58  rmse_EGLL=367.01  rmse_LFPG=616.84  rmse_LTFM=320.21
+  +arr_30m                                         n=344,419  rmse=586.47  mae=197.92  rmse_matched=322.11  rmse_unmatched=3937.02  rmse_gt30m=2563.52  rmse_gt1h=9701.24  rmse_LIRF=1751.41  rmse_EGLL=366.89  rmse_LFPG=616.75  rmse_LTFM=320.33
+  +arr_60m                                         n=344,419  rmse=586.31  mae=197.83  rmse_matched=321.82  rmse_unmatched=3937.02  rmse_gt30m=2562.78  rmse_gt1h=9699.88  rmse_LIRF=1751.10  rmse_EGLL=366.77  rmse_LFPG=616.54  rmse_LTFM=320.45
+  +mov_15m                                         n=344,419  rmse=586.65  mae=197.92  rmse_matched=322.45  rmse_unmatched=3937.02  rmse_gt30m=2564.60  rmse_gt1h=9703.39  rmse_LIRF=1751.81  rmse_EGLL=367.15  rmse_LFPG=616.94  rmse_LTFM=320.11
+  +dep_ratio_15_60                                 n=344,419  rmse=586.57  mae=197.80  rmse_matched=322.31  rmse_unmatched=3937.02  rmse_gt30m=2564.49  rmse_gt1h=9703.08  rmse_LIRF=1751.73  rmse_EGLL=367.27  rmse_LFPG=616.77  rmse_LTFM=319.99
+  +dep_accel                                       n=344,419  rmse=586.58  mae=197.76  rmse_matched=322.33  rmse_unmatched=3937.02  rmse_gt30m=2564.52  rmse_gt1h=9703.28  rmse_LIRF=1751.81  rmse_EGLL=367.10  rmse_LFPG=616.83  rmse_LTFM=320.11
+  +arr_dep_ratio_15                                n=344,419  rmse=586.66  mae=197.85  rmse_matched=322.47  rmse_unmatched=3937.02  rmse_gt30m=2564.95  rmse_gt1h=9704.21  rmse_LIRF=1751.90  rmse_EGLL=367.22  rmse_LFPG=617.03  rmse_LTFM=319.92
+  +dep15_vs_hour                                   n=344,419  rmse=586.66  mae=197.63  rmse_matched=322.47  rmse_unmatched=3937.02  rmse_gt30m=2565.43  rmse_gt1h=9704.81  rmse_LIRF=1751.76  rmse_EGLL=367.49  rmse_LFPG=617.02  rmse_LTFM=319.49
+  aobt+eobt+geo+traffic_combo                      n=344,419  rmse=586.46  mae=197.67  rmse_matched=322.10  rmse_unmatched=3937.02  rmse_gt30m=2564.05  rmse_gt1h=9701.82  rmse_LIRF=1751.22  rmse_EGLL=367.34  rmse_LFPG=616.71  rmse_LTFM=319.95
+    combo coef=[-176.53138611    0.38545803    0.22385644    0.68381485    0.59429599
+   -1.07668042   -0.99142766   27.92114831   29.10503708]
+  per-airport + traffic_combo                      n=344,419  rmse=576.68  mae=189.98  rmse_matched=303.64  rmse_unmatched=3937.02  rmse_gt30m=2522.73  rmse_gt1h=9573.75  rmse_LIRF=1722.23  rmse_EGLL=359.13  rmse_LFPG=611.64  rmse_LTFM=317.75
+
+--- E5 ---
+  +queue                                           n=344,419  rmse=587.02  mae=197.53  rmse_matched=323.14  rmse_unmatched=3937.02  rmse_gt30m=2568.52  rmse_gt1h=9715.41  rmse_LIRF=1753.97  rmse_EGLL=366.95  rmse_LFPG=616.99  rmse_LTFM=318.16
+  +queue_rwy                                       n=344,419  rmse=587.01  mae=197.18  rmse_matched=323.13  rmse_unmatched=3937.02  rmse_gt30m=2569.35  rmse_gt1h=9717.07  rmse_LIRF=1754.02  rmse_EGLL=367.98  rmse_LFPG=616.99  rmse_LTFM=318.33
+  +push_5m                                         n=344,419  rmse=586.66  mae=197.92  rmse_matched=322.46  rmse_unmatched=3937.02  rmse_gt30m=2564.66  rmse_gt1h=9703.51  rmse_LIRF=1751.83  rmse_EGLL=367.16  rmse_LFPG=616.95  rmse_LTFM=320.09
+  +push_15m                                        n=344,419  rmse=586.72  mae=197.76  rmse_matched=322.59  rmse_unmatched=3937.02  rmse_gt30m=2565.52  rmse_gt1h=9705.23  rmse_LIRF=1752.08  rmse_EGLL=367.31  rmse_LFPG=617.11  rmse_LTFM=319.74
+  +queue_growth_5fl                                n=344,419  rmse=587.56  mae=198.25  rmse_matched=324.12  rmse_unmatched=3937.02  rmse_gt30m=2569.69  rmse_gt1h=9712.12  rmse_LIRF=1752.53  rmse_EGLL=369.64  rmse_LFPG=618.35  rmse_LTFM=320.94
+  +queue_growth_10fl                               n=344,419  rmse=587.35  mae=198.23  rmse_matched=323.75  rmse_unmatched=3937.02  rmse_gt30m=2568.84  rmse_gt1h=9710.27  rmse_LIRF=1752.32  rmse_EGLL=368.30  rmse_LFPG=619.06  rmse_LTFM=320.80
+  +queue_per_dep15                                 n=344,419  rmse=586.66  mae=197.94  rmse_matched=322.47  rmse_unmatched=3937.02  rmse_gt30m=2564.96  rmse_gt1h=9706.68  rmse_LIRF=1752.45  rmse_EGLL=366.60  rmse_LFPG=616.53  rmse_LTFM=319.90
+  aobt+eobt+geo+queue_combo                        n=344,419  rmse=587.27  mae=197.40  rmse_matched=323.59  rmse_unmatched=3937.02  rmse_gt30m=2570.98  rmse_gt1h=9727.11  rmse_LIRF=1756.14  rmse_EGLL=367.37  rmse_LFPG=616.25  rmse_LTFM=316.77
+    queue coef=[-106.32693825    0.34038465    0.22180594    0.66138854    5.17202572
+    4.21003824   -6.42841185]
+  per-airport aobt+eobt+geo+rwy15+queue            n=344,419  rmse=576.64  mae=189.17  rmse_matched=303.56  rmse_unmatched=3937.02  rmse_gt30m=2525.28  rmse_gt1h=9584.56  rmse_LIRF=1723.61  rmse_EGLL=358.12  rmse_LFPG=610.99  rmse_LTFM=316.91
+
+========== dec ==========
+  BASE per-airport aobt+eobt+geo                   n=165,677  rmse=403.37  mae=174.06  rmse_matched=260.93  rmse_unmatched=3094.36  rmse_gt30m=1759.74  rmse_gt1h=8004.58  rmse_LIRF=1181.39  rmse_EGLL=277.69  rmse_LFPG=310.00  rmse_LTFM=291.13
+
+--- E4 ---
+  +dep_5m                                          n=165,677  rmse=407.17  mae=177.96  rmse_matched=266.83  rmse_unmatched=3094.36  rmse_gt30m=1774.83  rmse_gt1h=8024.77  rmse_LIRF=1182.93  rmse_EGLL=282.49  rmse_LFPG=316.39  rmse_LTFM=291.45
+  +dep_15m                                         n=165,677  rmse=407.15  mae=178.15  rmse_matched=266.79  rmse_unmatched=3094.36  rmse_gt30m=1774.08  rmse_gt1h=8023.98  rmse_LIRF=1182.93  rmse_EGLL=282.34  rmse_LFPG=316.25  rmse_LTFM=291.67
+  +dep_30m                                         n=165,677  rmse=407.08  mae=178.25  rmse_matched=266.68  rmse_unmatched=3094.36  rmse_gt30m=1773.20  rmse_gt1h=8023.08  rmse_LIRF=1182.96  rmse_EGLL=282.13  rmse_LFPG=315.97  rmse_LTFM=291.96
+  +dep_60m                                         n=165,677  rmse=406.98  mae=178.29  rmse_matched=266.53  rmse_unmatched=3094.36  rmse_gt30m=1772.32  rmse_gt1h=8022.17  rmse_LIRF=1182.97  rmse_EGLL=281.95  rmse_LFPG=315.53  rmse_LTFM=292.24
+  +dep_rwy_15m                                     n=165,677  rmse=407.14  mae=178.13  rmse_matched=266.78  rmse_unmatched=3094.36  rmse_gt30m=1773.98  rmse_gt1h=8023.82  rmse_LIRF=1182.95  rmse_EGLL=282.35  rmse_LFPG=316.13  rmse_LTFM=291.76
+  +dep_rwy_60m                                     n=165,677  rmse=407.10  mae=178.23  rmse_matched=266.72  rmse_unmatched=3094.36  rmse_gt30m=1773.45  rmse_gt1h=8023.34  rmse_LIRF=1182.96  rmse_EGLL=282.19  rmse_LFPG=316.07  rmse_LTFM=291.87
+  +arr_15m                                         n=165,677  rmse=407.05  mae=178.32  rmse_matched=266.63  rmse_unmatched=3094.36  rmse_gt30m=1772.81  rmse_gt1h=8022.77  rmse_LIRF=1183.03  rmse_EGLL=281.99  rmse_LFPG=316.09  rmse_LTFM=291.97
+  +arr_30m                                         n=165,677  rmse=407.00  mae=178.35  rmse_matched=266.56  rmse_unmatched=3094.36  rmse_gt30m=1772.37  rmse_gt1h=8022.40  rmse_LIRF=1183.08  rmse_EGLL=281.86  rmse_LFPG=316.02  rmse_LTFM=292.11
+  +arr_60m                                         n=165,677  rmse=406.88  mae=178.35  rmse_matched=266.38  rmse_unmatched=3094.36  rmse_gt30m=1771.56  rmse_gt1h=8021.79  rmse_LIRF=1183.11  rmse_EGLL=281.72  rmse_LFPG=315.80  rmse_LTFM=292.27
+  +mov_15m                                         n=165,677  rmse=407.07  mae=178.29  rmse_matched=266.67  rmse_unmatched=3094.36  rmse_gt30m=1773.03  rmse_gt1h=8022.92  rmse_LIRF=1182.98  rmse_EGLL=282.08  rmse_LFPG=315.99  rmse_LTFM=291.99
+  +dep_ratio_15_60                                 n=165,677  rmse=407.03  mae=178.05  rmse_matched=266.61  rmse_unmatched=3094.36  rmse_gt30m=1773.57  rmse_gt1h=8023.48  rmse_LIRF=1182.92  rmse_EGLL=282.43  rmse_LFPG=315.65  rmse_LTFM=291.90
+  +dep_accel                                       n=165,677  rmse=407.05  mae=178.05  rmse_matched=266.64  rmse_unmatched=3094.36  rmse_gt30m=1773.51  rmse_gt1h=8023.43  rmse_LIRF=1182.98  rmse_EGLL=282.18  rmse_LFPG=315.93  rmse_LTFM=291.89
+  +arr_dep_ratio_15                                n=165,677  rmse=407.10  mae=178.16  rmse_matched=266.71  rmse_unmatched=3094.36  rmse_gt30m=1773.76  rmse_gt1h=8023.74  rmse_LIRF=1182.98  rmse_EGLL=282.23  rmse_LFPG=316.28  rmse_LTFM=291.59
+  +dep15_vs_hour                                   n=165,677  rmse=407.07  mae=177.85  rmse_matched=266.67  rmse_unmatched=3094.36  rmse_gt30m=1774.41  rmse_gt1h=8024.21  rmse_LIRF=1182.86  rmse_EGLL=282.23  rmse_LFPG=316.30  rmse_LTFM=290.79
+  aobt+eobt+geo+traffic_combo                      n=165,677  rmse=406.87  mae=177.86  rmse_matched=266.37  rmse_unmatched=3094.36  rmse_gt30m=1772.83  rmse_gt1h=8022.63  rmse_LIRF=1182.93  rmse_EGLL=281.86  rmse_LFPG=315.78  rmse_LTFM=291.04
+    combo coef=[-184.89673845    0.41528188    0.22942806    0.6606212     0.50568298
+   -1.75491183   -1.2456834    32.43714404   32.57605188]
+  per-airport + traffic_combo                      n=165,677  rmse=402.85  mae=172.83  rmse_matched=260.12  rmse_unmatched=3094.36  rmse_gt30m=1761.42  rmse_gt1h=8006.91  rmse_LIRF=1181.06  rmse_EGLL=278.77  rmse_LFPG=309.52  rmse_LTFM=289.38
+
+--- E5 ---
+  +queue                                           n=165,677  rmse=407.23  mae=178.12  rmse_matched=266.91  rmse_unmatched=3094.36  rmse_gt30m=1775.41  rmse_gt1h=8025.54  rmse_LIRF=1182.79  rmse_EGLL=282.34  rmse_LFPG=316.66  rmse_LTFM=291.10
+  +queue_rwy                                       n=165,677  rmse=406.97  mae=177.46  rmse_matched=266.52  rmse_unmatched=3094.36  rmse_gt30m=1775.95  rmse_gt1h=8026.40  rmse_LIRF=1182.57  rmse_EGLL=283.61  rmse_LFPG=316.65  rmse_LTFM=289.48
+  +push_5m                                         n=165,677  rmse=407.11  mae=178.22  rmse_matched=266.73  rmse_unmatched=3094.36  rmse_gt30m=1773.51  rmse_gt1h=8023.39  rmse_LIRF=1182.95  rmse_EGLL=282.20  rmse_LFPG=316.08  rmse_LTFM=291.86
+  +push_15m                                        n=165,677  rmse=407.18  mae=178.13  rmse_matched=266.84  rmse_unmatched=3094.36  rmse_gt30m=1774.33  rmse_gt1h=8024.15  rmse_LIRF=1182.89  rmse_EGLL=282.45  rmse_LFPG=316.33  rmse_LTFM=291.78
+  +queue_growth_5fl                                n=165,677  rmse=408.30  mae=178.69  rmse_matched=268.56  rmse_unmatched=3094.36  rmse_gt30m=1780.41  rmse_gt1h=8037.01  rmse_LIRF=1183.72  rmse_EGLL=283.73  rmse_LFPG=319.62  rmse_LTFM=293.57
+  +queue_growth_10fl                               n=165,677  rmse=407.97  mae=178.69  rmse_matched=268.06  rmse_unmatched=3094.36  rmse_gt30m=1778.39  rmse_gt1h=8032.39  rmse_LIRF=1183.02  rmse_EGLL=283.78  rmse_LFPG=318.62  rmse_LTFM=293.74
+  +queue_per_dep15                                 n=165,677  rmse=407.10  mae=178.41  rmse_matched=266.71  rmse_unmatched=3094.36  rmse_gt30m=1773.27  rmse_gt1h=8023.14  rmse_LIRF=1182.90  rmse_EGLL=281.93  rmse_LFPG=315.96  rmse_LTFM=291.94
+  aobt+eobt+geo+queue_combo                        n=165,677  rmse=406.83  mae=177.74  rmse_matched=266.30  rmse_unmatched=3094.36  rmse_gt30m=1775.02  rmse_gt1h=8026.00  rmse_LIRF=1182.58  rmse_EGLL=283.27  rmse_LFPG=316.34  rmse_LTFM=288.57
+    queue coef=[-126.74588093    0.37808122    0.22759596    0.64071894    3.76518707
+    4.13802327   -5.07172323]
+  per-airport aobt+eobt+geo+rwy15+queue            n=165,677  rmse=402.48  mae=172.15  rmse_matched=259.53  rmse_unmatched=3094.36  rmse_gt30m=1762.55  rmse_gt1h=8010.10  rmse_LIRF=1181.21  rmse_EGLL=276.39  rmse_LFPG=310.36  rmse_LTFM=288.19

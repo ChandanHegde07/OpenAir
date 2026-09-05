@@ -1,0 +1,315 @@
+========== E13 LIRF UNMATCHED REGIMES ==========
+Training files only. No ranking/submitting.
+
+Training LIRF unmatched n=1,488 type_null=1487
+corr(y, mvt_sched) full-year LIRF unmatched=0.8964
+
+--- y bins vs mvt_sched (full-year LIRF unmatched) ---
+  <15m     n= 278 mean_y=    703 med_y=    728 mean_ms=   5844 med_ms=   5702 RMSE(ms)=   5930 MAE(ms)=  5250
+  15-30m   n= 418 mean_y=   1201 med_y=   1146 mean_ms=   6677 med_ms=   6090 RMSE(ms)=   6848 MAE(ms)=  5881
+  30-60m   n=  47 mean_y=   2300 med_y=   2151 mean_ms=   6132 med_ms=   5881 RMSE(ms)=   5272 MAE(ms)=  3878
+  1-2h     n= 306 mean_y=   5832 med_y=   5890 mean_ms=   5729 med_ms=   5938 RMSE(ms)=    949 MAE(ms)=   242
+  >2h      n= 439 mean_y=  16236 med_y=  10196 mean_ms=  15121 med_ms=  10083 RMSE(ms)=   5645 MAE(ms)=  1162
+
+--- prediction-time features vs oracle y>1800 (full-year LIRF unmatched) ---
+hour P(y>1800) shape: (24, 4)
+┌──────┬─────┬──────────┬─────────┐
+│ hour ┆ n   ┆ p30      ┆ med     │
+│ ---  ┆ --- ┆ ---      ┆ ---     │
+│ i8   ┆ u32 ┆ f64      ┆ f64     │
+╞══════╪═════╪══════════╪═════════╡
+│ 0    ┆ 22  ┆ 0.772727 ┆ 9059.5  │
+│ 1    ┆ 14  ┆ 1.0      ┆ 10446.0 │
+│ 2    ┆ 4   ┆ 1.0      ┆ 7351.5  │
+│ 3    ┆ 10  ┆ 0.8      ┆ 16683.5 │
+│ 4    ┆ 10  ┆ 0.9      ┆ 5703.0  │
+│ …    ┆ …   ┆ …        ┆ …       │
+│ 19   ┆ 85  ┆ 0.494118 ┆ 1372.0  │
+│ 20   ┆ 79  ┆ 0.620253 ┆ 6732.0  │
+│ 21   ┆ 100 ┆ 0.61     ┆ 6037.0  │
+│ 22   ┆ 93  ┆ 0.677419 ┆ 6672.0  │
+│ 23   ┆ 48  ┆ 0.833333 ┆ 7739.5  │
+└──────┴─────┴──────────┴─────────┘
+stand_prefix shape: (12, 4)
+┌──────────────┬─────┬──────────┬─────────┐
+│ stand_prefix ┆ n   ┆ p30      ┆ med     │
+│ ---          ┆ --- ┆ ---      ┆ ---     │
+│ str          ┆ u32 ┆ f64      ┆ f64     │
+╞══════════════╪═════╪══════════╪═════════╡
+│ 3            ┆ 475 ┆ 0.442105 ┆ 1318.0  │
+│ 8            ┆ 281 ┆ 0.622776 ┆ 5812.0  │
+│ 7            ┆ 179 ┆ 0.698324 ┆ 6002.0  │
+│ 6            ┆ 148 ┆ 0.662162 ┆ 5860.0  │
+│ 2            ┆ 144 ┆ 0.638889 ┆ 5258.0  │
+│ …            ┆ …   ┆ …        ┆ …       │
+│ 9            ┆ 58  ┆ 0.655172 ┆ 5065.0  │
+│ null         ┆ 8   ┆ 0.125    ┆ 1255.5  │
+│ 1            ┆ 7   ┆ 1.0      ┆ 7738.0  │
+│ H            ┆ 5   ┆ 1.0      ┆ 9723.0  │
+│ P            ┆ 2   ┆ 1.0      ┆ 26035.5 │
+└──────────────┴─────┴──────────┴─────────┘
+runway shape: (6, 4)
+┌────────────┬──────┬──────────┬────────┐
+│ RUNWAY_mvt ┆ n    ┆ p30      ┆ med    │
+│ ---        ┆ ---  ┆ ---      ┆ ---    │
+│ str        ┆ u32  ┆ f64      ┆ f64    │
+╞════════════╪══════╪══════════╪════════╡
+│ 25         ┆ 1314 ┆ 0.531202 ┆ 4449.5 │
+│ 16R        ┆ 92   ┆ 0.532609 ┆ 1924.0 │
+│ 34L        ┆ 36   ┆ 0.638889 ┆ 4779.5 │
+│ 16L        ┆ 21   ┆ 0.380952 ┆ 890.0  │
+│ 34R        ┆ 14   ┆ 0.5      ┆ 1886.0 │
+│ NA         ┆ 11   ┆ 0.545455 ┆ 1801.0 │
+└────────────┴──────┴──────────┴────────┘
+top ADES shape: (12, 4)
+┌──────────┬─────┬──────────┬────────┐
+│ ADES_mvt ┆ n   ┆ p30      ┆ med    │
+│ ---      ┆ --- ┆ ---      ┆ ---    │
+│ str      ┆ u32 ┆ f64      ┆ f64    │
+╞══════════╪═════╪══════════╪════════╡
+│ LLBG     ┆ 95  ┆ 0.684211 ┆ 5764.0 │
+│ LEBL     ┆ 46  ┆ 0.217391 ┆ 1017.5 │
+│ EIDW     ┆ 45  ┆ 0.222222 ┆ 1375.0 │
+│ EGKK     ┆ 38  ┆ 0.184211 ┆ 1262.0 │
+│ EBBR     ┆ 34  ┆ 0.558824 ┆ 4380.0 │
+│ …        ┆ …   ┆ …        ┆ …      │
+│ LIRF     ┆ 31  ┆ 0.096774 ┆ 602.0  │
+│ EHAM     ┆ 30  ┆ 0.033333 ┆ 752.5  │
+│ LIMC     ┆ 28  ┆ 0.964286 ┆ 8907.5 │
+│ LGAV     ┆ 28  ┆ 0.214286 ┆ 1013.0 │
+│ LEMD     ┆ 26  ┆ 0.269231 ┆ 992.5  │
+└──────────┴─────┴──────────┴────────┘
+top p3 shape: (12, 4)
+┌──────┬─────┬──────────┬────────┐
+│ p3   ┆ n   ┆ p30      ┆ med    │
+│ ---  ┆ --- ┆ ---      ┆ ---    │
+│ str  ┆ u32 ┆ f64      ┆ f64    │
+╞══════╪═════╪══════════╪════════╡
+│ RYR  ┆ 239 ┆ 0.355649 ┆ 1206.0 │
+│ WMT  ┆ 183 ┆ 0.480874 ┆ 1619.0 │
+│ ITY  ┆ 94  ┆ 0.223404 ┆ 1083.0 │
+│ null ┆ 65  ┆ 0.538462 ┆ 1915.0 │
+│ ISR  ┆ 59  ┆ 0.983051 ┆ 6956.0 │
+│ …    ┆ …   ┆ …        ┆ …      │
+│ EJU  ┆ 40  ┆ 0.1      ┆ 838.0  │
+│ NOS  ┆ 31  ┆ 0.774194 ┆ 7848.0 │
+│ EZY  ┆ 25  ┆ 0.12     ┆ 1145.0 │
+│ ETH  ┆ 24  ┆ 0.958333 ┆ 6602.0 │
+│ EXS  ┆ 24  ┆ 0.833333 ┆ 7314.5 │
+└──────┴─────┴──────────┴────────┘
+dow shape: (7, 4)
+┌─────┬─────┬───────────┬────────┐
+│ dow ┆ n   ┆ p30       ┆ med    │
+│ --- ┆ --- ┆ ---       ┆ ---    │
+│ i8  ┆ u32 ┆ f64       ┆ f64    │
+╞═════╪═════╪═══════════╪════════╡
+│ 1   ┆ 249 ┆ 0.590361  ┆ 5226.0 │
+│ 2   ┆ 128 ┆ 0.5703125 ┆ 4224.0 │
+│ 3   ┆ 188 ┆ 0.489362  ┆ 1701.5 │
+│ 4   ┆ 249 ┆ 0.497992  ┆ 1737.0 │
+│ 5   ┆ 232 ┆ 0.547414  ┆ 4862.5 │
+│ 6   ┆ 185 ┆ 0.491892  ┆ 1678.0 │
+│ 7   ┆ 257 ┆ 0.533074  ┆ 4683.0 │
+└─────┴─────┴───────────┴────────┘
+month shape: (12, 4)
+┌───────┬─────┬──────────┬────────┐
+│ month ┆ n   ┆ p30      ┆ med    │
+│ ---   ┆ --- ┆ ---      ┆ ---    │
+│ i8    ┆ u32 ┆ f64      ┆ f64    │
+╞═══════╪═════╪══════════╪════════╡
+│ 1     ┆ 60  ┆ 0.483333 ┆ 1316.0 │
+│ 2     ┆ 58  ┆ 0.758621 ┆ 6175.0 │
+│ 3     ┆ 59  ┆ 0.847458 ┆ 7130.0 │
+│ 4     ┆ 70  ┆ 0.614286 ┆ 5094.5 │
+│ 5     ┆ 99  ┆ 0.535354 ┆ 4974.0 │
+│ …     ┆ …   ┆ …        ┆ …      │
+│ 8     ┆ 197 ┆ 0.532995 ┆ 3127.0 │
+│ 9     ┆ 168 ┆ 0.452381 ┆ 1445.0 │
+│ 10    ┆ 115 ┆ 0.521739 ┆ 2397.0 │
+│ 11    ┆ 52  ┆ 0.692308 ┆ 5733.0 │
+│ 12    ┆ 88  ┆ 0.681818 ┆ 6034.5 │
+└───────┴─────┴──────────┴────────┘
+
+========== janjul ==========
+val n=344,419 LIRF unmatched=397 LIRF type_null=397 overlap=397
+oracle LIRF unmatched y<=30m n=228 y>30m n=169 y>1h n=148
+
+--- overall vs current E3+always MVT-SCHED ---
+E3 no LIRF override              n=344,419 overall=576.63 MAE=191.04 matched=303.53 unmatched=3937.02 LIRF=1720.72
+  E3 no LIRF override | LIRF unmatched       n=   397 RMSE=13379.36 MAE=5268.43 mean_y= 6272.5 med_y= 1447.0
+  E3 no LIRF override | oracle normal <=30m  n=   228 RMSE=  378.85 MAE= 293.64 mean_y= 1054.0 med_y= 1029.5
+  E3 no LIRF override | oracle extreme >30m  n=   169 RMSE=20501.58 MAE=11979.97 mean_y=13312.9 med_y= 7747.0
+  E3 no LIRF override | oracle >1h           n=   148 RMSE=21902.82 MAE=13527.31 mean_y=14860.4 med_y= 8389.5
+CURRENT always MVT-SCHED         n=344,419 overall=410.02 MAE=189.85 matched=303.53 unmatched=2227.72 LIRF=909.18
+  CURRENT always MVT-SCHED | LIRF unmatched  n=   397 RMSE= 6032.70 MAE=4228.75 mean_y= 6272.5 med_y= 1447.0
+  CURRENT always MVT-SCHED | oracle normal <=30m n=   228 RMSE= 7081.35 MAE=6236.08 mean_y= 1054.0 med_y= 1029.5
+  CURRENT always MVT-SCHED | oracle extreme >30m n=   169 RMSE= 4223.77 MAE=1520.64 mean_y=13312.9 med_y= 7747.0
+  CURRENT always MVT-SCHED | oracle >1h      n=   148 RMSE= 3799.46 MAE= 957.49 mean_y=14860.4 med_y= 8389.5
+
+--- oracle-normal LIRF unmatched: MVT-SCHED vs P_cal vs geo ---
+  MVT-SCHED on oracle-normal                 n=   228 RMSE= 7081.35 MAE=6236.08 mean_y= 1054.0 med_y= 1029.5
+  P_cal on oracle-normal                     n=   228 RMSE=  378.85 MAE= 293.64 mean_y= 1054.0 med_y= 1029.5
+  geo_mean on oracle-normal                  n=   228 RMSE=  378.85 MAE= 293.64 mean_y= 1054.0 med_y= 1029.5
+  MVT-SCHED on oracle-extreme>30m            n=   169 RMSE= 4223.77 MAE=1520.64 mean_y=13312.9 med_y= 7747.0
+  P_cal on oracle-extreme>30m                n=   169 RMSE=20501.58 MAE=11979.97 mean_y=13312.9 med_y= 7747.0
+
+--- train-only threshold search on MVT-SCHED (LIRF unmatched RMSE) ---
+  T>  900s  pred_extreme=1053/1091  LIRF_u_RMSE=  5194.2  oracle-normal RMSE= 6010.8  oracle-ext RMSE=  4481.1
+  T> 1200s  pred_extreme=1042/1091  LIRF_u_RMSE=  5194.3  oracle-normal RMSE= 6010.9  oracle-ext RMSE=  4481.2
+  T> 1500s  pred_extreme=1037/1091  LIRF_u_RMSE=  5193.6  oracle-normal RMSE= 6010.9  oracle-ext RMSE=  4479.8
+  T> 1800s  pred_extreme=1028/1091  LIRF_u_RMSE=  5201.2  oracle-normal RMSE= 6011.0  oracle-ext RMSE=  4495.2
+  T> 2400s  pred_extreme=1013/1091  LIRF_u_RMSE=  5205.0  oracle-normal RMSE= 6010.3  oracle-ext RMSE=  4503.7
+  T> 2700s  pred_extreme=1007/1091  LIRF_u_RMSE=  5208.7  oracle-normal RMSE= 6010.3  oracle-ext RMSE=  4511.1
+  T> 3600s  pred_extreme=1000/1091  LIRF_u_RMSE=  5212.2  oracle-normal RMSE= 6007.4  oracle-ext RMSE=  4521.1
+  T> 5400s  pred_extreme= 784/1091  LIRF_u_RMSE=  5101.4  oracle-normal RMSE= 5589.1  oracle-ext RMSE=  4700.4
+  T> 7200s  pred_extreme= 446/1091  LIRF_u_RMSE=  5080.0  oracle-normal RMSE= 4685.0  oracle-ext RMSE=  5358.6
+best train LIRF unmatched RMSE threshold T=7200s (5080.0)
+train always MVT-SCHED LIRF_u_RMSE=5287.3
+
+--- val: conditional MVT-SCHED if mvt_sched > T else P_cal ---
+T>900 pred_ext=387/397 overall=405.27 MAE=189.70 matched=303.53 unmatched=2171.31 LIRF=881.10
+  T>900 LIRF unmatched                       n=   397 RMSE= 5747.62 MAE=4102.11 mean_y= 6272.5 med_y= 1447.0
+  T>900 oracle-normal                        n=   228 RMSE= 6659.57 MAE=6021.69 mean_y= 1054.0 med_y= 1029.5
+  T>900 oracle-extreme>30m                   n=   169 RMSE= 4215.50 MAE=1512.37 mean_y=13312.9 med_y= 7747.0
+  T>900 PRED extreme (ms>T)                  n=   387 RMSE= 5804.67 MAE=4159.05 mean_y= 6376.8 med_y= 1447.0
+  T>900 PRED normal (ms<=T)                  n=    10 RMSE= 2743.90 MAE=1898.52 mean_y= 2236.2 med_y= 1051.5
+T>1800 pred_ext=383/397 overall=405.28 MAE=189.70 matched=303.53 unmatched=2171.49 LIRF=881.19
+  T>1800 LIRF unmatched                      n=   397 RMSE= 5748.55 MAE=4104.11 mean_y= 6272.5 med_y= 1447.0
+  T>1800 oracle-normal                       n=   228 RMSE= 6659.64 MAE=6023.78 mean_y= 1054.0 med_y= 1029.5
+  T>1800 oracle-extreme>30m                  n=   169 RMSE= 4218.30 MAE=1514.25 mean_y=13312.9 med_y= 7747.0
+  T>1800 PRED extreme (ms>T)                 n=   383 RMSE= 5803.50 MAE=4149.05 mean_y= 6376.7 med_y= 1444.0
+  T>1800 PRED normal (ms<=T)                 n=    14 RMSE= 3959.50 MAE=2874.50 mean_y= 3422.4 med_y= 1707.0
+T>2700 pred_ext=381/397 overall=405.36 MAE=189.71 matched=303.53 unmatched=2172.39 LIRF=881.65
+  T>2700 LIRF unmatched                      n=   397 RMSE= 5753.18 MAE=4109.74 mean_y= 6272.5 med_y= 1447.0
+  T>2700 oracle-normal                       n=   228 RMSE= 6659.64 MAE=6023.78 mean_y= 1054.0 med_y= 1029.5
+  T>2700 oracle-extreme>30m                  n=   169 RMSE= 4233.10 MAE=1527.47 mean_y=13312.9 med_y= 7747.0
+  T>2700 PRED extreme (ms>T)                 n=   381 RMSE= 5809.82 MAE=4149.89 mean_y= 6376.3 med_y= 1444.0
+  T>2700 PRED normal (ms<=T)                 n=    16 RMSE= 4183.71 MAE=3153.62 mean_y= 3800.9 med_y= 2966.0
+T>3600 pred_ext=375/397 overall=405.61 MAE=189.75 matched=303.53 unmatched=2175.40 LIRF=883.15
+  T>3600 LIRF unmatched                      n=   397 RMSE= 5768.52 MAE=4141.54 mean_y= 6272.5 med_y= 1447.0
+  T>3600 oracle-normal                       n=   228 RMSE= 6659.64 MAE=6023.78 mean_y= 1054.0 med_y= 1029.5
+  T>3600 oracle-extreme>30m                  n=   169 RMSE= 4281.87 MAE=1602.18 mean_y=13312.9 med_y= 7747.0
+  T>3600 PRED extreme (ms>T)                 n=   375 RMSE= 5845.98 MAE=4191.14 mean_y= 6400.2 med_y= 1433.0
+  T>3600 PRED normal (ms<=T)                 n=    22 RMSE= 4235.67 MAE=3296.15 mean_y= 4096.0 med_y= 3509.0
+T>7200 pred_ext=181/397 overall=397.69 MAE=188.50 matched=303.53 unmatched=2079.51 LIRF=835.05
+  T>7200 LIRF unmatched                      n=   397 RMSE= 5268.22 MAE=3058.96 mean_y= 6272.5 med_y= 1447.0
+  T>7200 oracle-normal                       n=   228 RMSE= 5560.78 MAE=3326.55 mean_y= 1054.0 med_y= 1029.5
+  T>7200 oracle-extreme>30m                  n=   169 RMSE= 4845.61 MAE=2697.96 mean_y=13312.9 med_y= 7747.0
+  T>7200 PRED extreme (ms>T)                 n=   181 RMSE= 7291.44 MAE=4930.78 mean_y=10862.5 med_y= 4497.0
+  T>7200 PRED normal (ms<=T)                 n=   216 RMSE= 2541.78 MAE=1490.44 mean_y= 2426.2 med_y= 1259.5
+
+--- other prediction-time flags (val) ---
+stand8xx                     pred_ext=  70 overall=553.38 unmatched=3717.05 LIRF=1618.59
+  stand8xx oracle-normal                     n=   228 RMSE= 2788.90 MAE=1150.41 mean_y= 1054.0 med_y= 1029.5
+  stand8xx oracle-extreme                    n=   169 RMSE=18880.82 MAE=9494.83 mean_y=13312.9 med_y= 7747.0
+ADES=LLBG                    pred_ext=  11 overall=573.70 unmatched=3909.48 LIRF=1707.95
+  ADES=LLBG oracle-normal                    n=   228 RMSE=  985.32 MAE= 380.70 mean_y= 1054.0 med_y= 1029.5
+  ADES=LLBG oracle-extreme                   n=   169 RMSE=20305.81 MAE=11466.54 mean_y=13312.9 med_y= 7747.0
+hour<=4 or >=20              pred_ext=  95 overall=530.00 unmatched=3491.74 LIRF=1513.57
+  hour<=4 or >=20 oracle-normal              n=   228 RMSE= 3164.80 MAE=1352.12 mean_y= 1054.0 med_y= 1029.5
+  hour<=4 or >=20 oracle-extreme             n=   169 RMSE=17373.21 MAE=7776.05 mean_y=13312.9 med_y= 7747.0
+weird prefix NOS/ISR/...     pred_ext=  33 overall=529.36 unmatched=3485.59 LIRF=1510.69
+  weird prefix NOS/ISR/... oracle-normal     n=   228 RMSE= 2257.96 MAE= 643.89 mean_y= 1054.0 med_y= 1029.5
+  weird prefix NOS/ISR/... oracle-extreme    n=   169 RMSE=17524.21 MAE=9852.97 mean_y=13312.9 med_y= 7747.0
+ms>1800 OR stand8            pred_ext= 384 overall=405.28 unmatched=2171.48 LIRF=881.19
+  ms>1800 OR stand8 oracle-normal            n=   228 RMSE= 6659.55 MAE=6023.23 mean_y= 1054.0 med_y= 1029.5
+  ms>1800 OR stand8 oracle-extreme           n=   169 RMSE= 4218.30 MAE=1514.25 mean_y=13312.9 med_y= 7747.0
+ms>1800 OR LLBG              pred_ext= 383 overall=405.28 unmatched=2171.49 LIRF=881.19
+  ms>1800 OR LLBG oracle-normal              n=   228 RMSE= 6659.64 MAE=6023.78 mean_y= 1054.0 med_y= 1029.5
+  ms>1800 OR LLBG oracle-extreme             n=   169 RMSE= 4218.30 MAE=1514.25 mean_y=13312.9 med_y= 7747.0
+
+Confusion mvt_sched>1800 vs oracle y>1800 on LIRF unmatched: TP=163 FP=220 FN=6 TN=8
+  precision=0.426 recall=0.964
+Confusion mvt_sched>3600 vs oracle y>1h: TP=138 FP=237 FN=10
+
+========== dec ==========
+val n=165,677 LIRF unmatched=88 LIRF type_null=88 overlap=88
+oracle LIRF unmatched y<=30m n=28 y>30m n=60 y>1h n=57
+
+--- overall vs current E3+always MVT-SCHED ---
+E3 no LIRF override              n=165,677 overall=403.37 MAE=174.06 matched=260.93 unmatched=3094.36 LIRF=1181.39
+  E3 no LIRF override | LIRF unmatched       n=    88 RMSE=13126.95 MAE=6569.99 mean_y= 7705.6 med_y= 6034.5
+  E3 no LIRF override | oracle normal <=30m  n=    28 RMSE=  614.85 MAE= 414.12 mean_y=  858.0 med_y=  902.5
+  E3 no LIRF override | oracle extreme >30m  n=    60 RMSE=15891.98 MAE=9442.74 mean_y=10901.2 med_y= 7348.0
+  E3 no LIRF override | oracle >1h           n=    57 RMSE=16304.39 MAE=9916.33 mean_y=11361.2 med_y= 7620.0
+CURRENT always MVT-SCHED         n=165,677 overall=274.41 MAE=171.23 matched=260.93 unmatched=890.80 LIRF=442.43
+  CURRENT always MVT-SCHED | LIRF unmatched  n=    88 RMSE= 2786.14 MAE=1229.64 mean_y= 7705.6 med_y= 6034.5
+  CURRENT always MVT-SCHED | oracle normal <=30m n=    28 RMSE= 4931.13 MAE=3804.46 mean_y=  858.0 med_y=  902.5
+  CURRENT always MVT-SCHED | oracle extreme >30m n=    60 RMSE=  194.07 MAE=  28.05 mean_y=10901.2 med_y= 7348.0
+  CURRENT always MVT-SCHED | oracle >1h      n=    57 RMSE=  199.11 MAE=  29.37 mean_y=11361.2 med_y= 7620.0
+
+--- oracle-normal LIRF unmatched: MVT-SCHED vs P_cal vs geo ---
+  MVT-SCHED on oracle-normal                 n=    28 RMSE= 4931.13 MAE=3804.46 mean_y=  858.0 med_y=  902.5
+  P_cal on oracle-normal                     n=    28 RMSE=  614.85 MAE= 414.12 mean_y=  858.0 med_y=  902.5
+  geo_mean on oracle-normal                  n=    28 RMSE=  614.85 MAE= 414.12 mean_y=  858.0 med_y=  902.5
+  MVT-SCHED on oracle-extreme>30m            n=    60 RMSE=  194.07 MAE=  28.05 mean_y=10901.2 med_y= 7348.0
+  P_cal on oracle-extreme>30m                n=    60 RMSE=15891.98 MAE=9442.74 mean_y=10901.2 med_y= 7348.0
+
+--- train-only threshold search on MVT-SCHED (LIRF unmatched RMSE) ---
+  T>  900s  pred_extreme=1359/1400  LIRF_u_RMSE=  5468.2  oracle-normal RMSE= 6278.7  oracle-ext RMSE=  4602.9
+  T> 1200s  pred_extreme=1347/1400  LIRF_u_RMSE=  5468.0  oracle-normal RMSE= 6278.8  oracle-ext RMSE=  4602.4
+  T> 1500s  pred_extreme=1342/1400  LIRF_u_RMSE=  5467.8  oracle-normal RMSE= 6278.8  oracle-ext RMSE=  4602.0
+  T> 1800s  pred_extreme=1334/1400  LIRF_u_RMSE=  5473.3  oracle-normal RMSE= 6278.9  oracle-ext RMSE=  4614.4
+  T> 2400s  pred_extreme=1319/1400  LIRF_u_RMSE=  5476.4  oracle-normal RMSE= 6278.4  oracle-ext RMSE=  4622.0
+  T> 2700s  pred_extreme=1313/1400  LIRF_u_RMSE=  5480.1  oracle-normal RMSE= 6278.4  oracle-ext RMSE=  4630.5
+  T> 3600s  pred_extreme=1300/1400  LIRF_u_RMSE=  5487.2  oracle-normal RMSE= 6276.5  oracle-ext RMSE=  4649.0
+  T> 5400s  pred_extreme=1017/1400  LIRF_u_RMSE=  5354.0  oracle-normal RMSE= 5887.7  oracle-ext RMSE=  4813.9
+  T> 7200s  pred_extreme= 590/1400  LIRF_u_RMSE=  5216.1  oracle-normal RMSE= 5032.1  oracle-ext RMSE=  5378.9
+best train LIRF unmatched RMSE threshold T=7200s (5216.1)
+train always MVT-SCHED LIRF_u_RMSE=5623.0
+
+--- val: conditional MVT-SCHED if mvt_sched > T else P_cal ---
+T>900 pred_ext=81/88 overall=274.48 MAE=171.25 matched=260.93 unmatched=892.83 LIRF=442.99
+  T>900 LIRF unmatched                       n=    88 RMSE= 2798.32 MAE=1278.18 mean_y= 7705.6 med_y= 6034.5
+  T>900 oracle-normal                        n=    28 RMSE= 4952.75 MAE=3957.03 mean_y=  858.0 med_y=  902.5
+  T>900 oracle-extreme>30m                   n=    60 RMSE=  194.07 MAE=  28.05 mean_y=10901.2 med_y= 7348.0
+  T>900 PRED extreme (ms>T)                  n=    81 RMSE= 2899.29 MAE=1309.88 mean_y= 8322.9 med_y= 6480.0
+  T>900 PRED normal (ms<=T)                  n=     7 RMSE= 1083.52 MAE= 911.40 mean_y=  562.7 med_y=  413.0
+T>1800 pred_ext=77/88 overall=274.49 MAE=171.26 matched=260.93 unmatched=893.08 LIRF=443.06
+  T>1800 LIRF unmatched                      n=    88 RMSE= 2799.79 MAE=1293.94 mean_y= 7705.6 med_y= 6034.5
+  T>1800 oracle-normal                       n=    28 RMSE= 4953.62 MAE=3981.73 mean_y=  858.0 med_y=  902.5
+  T>1800 oracle-extreme>30m                  n=    60 RMSE=  213.88 MAE=  39.64 mean_y=10901.2 med_y= 7348.0
+  T>1800 PRED extreme (ms>T)                 n=    77 RMSE= 2973.64 MAE=1377.81 mean_y= 8684.2 med_y= 6727.0
+  T>1800 PRED normal (ms<=T)                 n=    11 RMSE=  901.63 MAE= 706.88 mean_y=  855.8 med_y=  898.0
+T>2700 pred_ext=75/88 overall=274.49 MAE=171.26 matched=260.93 unmatched=893.19 LIRF=443.09
+  T>2700 LIRF unmatched                      n=    88 RMSE= 2800.45 MAE=1301.09 mean_y= 7705.6 med_y= 6034.5
+  T>2700 oracle-normal                       n=    28 RMSE= 4953.62 MAE=3981.73 mean_y=  858.0 med_y=  902.5
+  T>2700 oracle-extreme>30m                  n=    60 RMSE=  226.24 MAE=  50.13 mean_y=10901.2 med_y= 7348.0
+  T>2700 PRED extreme (ms>T)                 n=    75 RMSE= 3013.03 MAE=1414.44 mean_y= 8853.3 med_y= 6890.0
+  T>2700 PRED normal (ms<=T)                 n=    13 RMSE=  844.39 MAE= 647.15 mean_y= 1084.4 med_y=  907.0
+T>3600 pred_ext=75/88 overall=274.49 MAE=171.26 matched=260.93 unmatched=893.19 LIRF=443.09
+  T>3600 LIRF unmatched                      n=    88 RMSE= 2800.45 MAE=1301.09 mean_y= 7705.6 med_y= 6034.5
+  T>3600 oracle-normal                       n=    28 RMSE= 4953.62 MAE=3981.73 mean_y=  858.0 med_y=  902.5
+  T>3600 oracle-extreme>30m                  n=    60 RMSE=  226.24 MAE=  50.13 mean_y=10901.2 med_y= 7348.0
+  T>3600 PRED extreme (ms>T)                 n=    75 RMSE= 3013.03 MAE=1414.44 mean_y= 8853.3 med_y= 6890.0
+  T>3600 PRED normal (ms<=T)                 n=    13 RMSE=  844.39 MAE= 647.15 mean_y= 1084.4 med_y=  907.0
+T>7200 pred_ext=37/88 overall=277.86 MAE=171.66 matched=260.93 unmatched=992.36 LIRF=471.04
+  T>7200 LIRF unmatched                      n=    88 RMSE= 3368.46 MAE=2056.69 mean_y= 7705.6 med_y= 6034.5
+  T>7200 oracle-normal                       n=    28 RMSE= 3842.59 MAE=2040.69 mean_y=  858.0 med_y=  902.5
+  T>7200 oracle-extreme>30m                  n=    60 RMSE= 3122.66 MAE=2064.15 mean_y=10901.2 med_y= 7348.0
+  T>7200 PRED extreme (ms>T)                 n=    37 RMSE= 3311.47 MAE=1322.81 mean_y=13372.3 med_y= 9848.0
+  T>7200 PRED normal (ms<=T)                 n=    51 RMSE= 3409.20 MAE=2589.11 mean_y= 3594.5 med_y= 4312.0
+
+--- other prediction-time flags (val) ---
+stand8xx                     pred_ext=  19 overall=382.08 unmatched=2809.79 LIRF=1079.86
+  stand8xx oracle-normal                     n=    28 RMSE=  477.46 MAE= 301.03 mean_y=  858.0 med_y=  902.5
+  stand8xx oracle-extreme                    n=    60 RMSE=14368.35 MAE=7199.03 mean_y=10901.2 med_y= 7348.0
+ADES=LLBG                    pred_ext=   7 overall=400.92 unmatched=3062.18 LIRF=1169.87
+  ADES=LLBG oracle-normal                    n=    28 RMSE=  614.85 MAE= 414.12 mean_y=  858.0 med_y=  902.5
+  ADES=LLBG oracle-extreme                   n=    60 RMSE=15719.71 MAE=8726.73 mean_y=10901.2 med_y= 7348.0
+hour<=4 or >=20              pred_ext=  32 overall=373.99 unmatched=2698.19 LIRF=1040.24
+  hour<=4 or >=20 oracle-normal              n=    28 RMSE= 2792.29 MAE=1090.45 mean_y=  858.0 med_y=  902.5
+  hour<=4 or >=20 oracle-extreme             n=    60 RMSE=13639.03 MAE=5791.44 mean_y=10901.2 med_y= 7348.0
+weird prefix NOS/ISR/...     pred_ext=  15 overall=336.63 unmatched=2147.87 LIRF=847.17
+  weird prefix NOS/ISR/... oracle-normal     n=    28 RMSE= 1136.63 MAE= 572.85 mean_y=  858.0 med_y=  902.5
+  weird prefix NOS/ISR/... oracle-extreme    n=    60 RMSE=10759.33 MAE=6449.64 mean_y=10901.2 med_y= 7348.0
+ms>1800 OR stand8            pred_ext=  81 overall=274.44 unmatched=891.65 LIRF=442.66
+  ms>1800 OR stand8 oracle-normal            n=    28 RMSE= 4938.45 MAE=3868.64 mean_y=  858.0 med_y=  902.5
+  ms>1800 OR stand8 oracle-extreme           n=    60 RMSE=  213.88 MAE=  39.64 mean_y=10901.2 med_y= 7348.0
+ms>1800 OR LLBG              pred_ext=  77 overall=274.49 unmatched=893.08 LIRF=443.06
+  ms>1800 OR LLBG oracle-normal              n=    28 RMSE= 4953.62 MAE=3981.73 mean_y=  858.0 med_y=  902.5
+  ms>1800 OR LLBG oracle-extreme             n=    60 RMSE=  213.88 MAE=  39.64 mean_y=10901.2 med_y= 7348.0
+
+Confusion mvt_sched>1800 vs oracle y>1800 on LIRF unmatched: TP=59 FP=18 FN=1 TN=10
+  precision=0.766 recall=0.983
+Confusion mvt_sched>3600 vs oracle y>1h: TP=57 FP=18 FN=0

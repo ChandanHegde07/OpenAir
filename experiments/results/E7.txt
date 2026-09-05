@@ -1,0 +1,69 @@
+========== E7 FLIGHT_ID / TURNAROUND ==========
+all movements 4,167,797
+FLIGHT_ID multiplicity
+shape: (2, 2)
+┌─────┬─────────┐
+│ n   ┆ n_ids   │
+│ --- ┆ ---     │
+│ u32 ┆ u32     │
+╞═════╪═════════╡
+│ 1   ┆ 3506323 │
+│ 2   ┆ 315272  │
+└─────┴─────────┘
+n==2 distinct phases 315269
+n==2 same phase 3
+n==2 n_airport shape: (2, 2)
+┌───────────┬────────┐
+│ n_airport ┆ len    │
+│ ---       ┆ ---    │
+│ u32       ┆ u32    │
+╞═══════════╪════════╡
+│ 2         ┆ 314678 │
+│ 1         ┆ 594    │
+└───────────┴────────┘
+n==2 n_type>1 1690
+n==2 n_flightno>1 156605
+phase order among n==2 (time-sorted)
+shape: (3, 3)
+┌─────┬─────┬────────┐
+│ ph1 ┆ ph2 ┆ n      │
+│ --- ┆ --- ┆ ---    │
+│ str ┆ str ┆ u32    │
+╞═════╪═════╪════════╡
+│ DEP ┆ ARR ┆ 315262 │
+│ ARR ┆ DEP ┆ 7      │
+│ DEP ┆ DEP ┆ 3      │
+└─────┴─────┴────────┘
+same airport both rows 594
+DEP then ARR and ADEP1==ADES2 and ADES1==ADEP2 (city-pair outbound+inbound SAME airports)? wait
+DEP then ARR, identical ADEP/ADES (same city-pair flight at two challenge airports) 312568
+dt seconds for those shape: (1, 4)
+┌─────────────┬────────┬─────┬───────┐
+│ mean        ┆ med    ┆ min ┆ max   │
+│ ---         ┆ ---    ┆ --- ┆ ---   │
+│ f64         ┆ f64    ┆ i64 ┆ i64   │
+╞═════════════╪════════╪═════╪═══════╡
+│ 5442.180687 ┆ 5065.0 ┆ 1   ┆ 27470 │
+└─────────────┴────────┴─────┴───────┘
+ARR then DEP 7
+
+--- stand-based previous ARR (turnaround candidate) ---
+DEP with a previous ARR at same stand (asof): 2,083,213/2,085,047 (99.9%)
+same aircraft type among those 0.9404424541113952
+same callsign among those 0.020480327669624526
+same FLIGHT_ID among those (should be ~0 if FLIGHT_ID is city-pair) 4.864821212955603e-07
+turnaround seconds n=2,083,213 mean=17628 med=5699 p10=3044 p90=33961
+plausible same-type turnaround 20min-8h: 1,735,831 (83.3% of DEP)
+corr(this taxi-out, prev taxi-in) same stand plausible: 0.1202
+corr(this taxi-out, turnaround_s): 0.0925
+
+--- callsign: previous DEP with same CALLSIGN at same airport ---
+DEP with previous same callsign at airport: 2,008,381
+frac different FLIGHT_ID 0.9999985062595195
+corr(taxi, prev same-callsign taxi at airport): 0.4139
+dt same cs hours: med=24.10 p10=23.50 p90=71.79
+
+--- leak check: previous taxi-in uses ARR TAXITIME which IS in ranking ---
+ARR taxi-in is ranking-safe. Turnaround time uses ARR BLOCK (in-block) which is ranking-safe.
+DEP BLOCK is NOT available at test. We used BLOCK as asof key — THAT IS LEAKAGE for ranking DEP.
+Safe asof key alternatives: SCHED_TIME or AOBT_3 (matched only).

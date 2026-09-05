@@ -1,0 +1,1025 @@
+================================================================================
+FILE OVERVIEW
+================================================================================
+training_2025-01-01_2025-02-01.parquet             rows=   307,257 cols=30 bytes=  21,218,481
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-02-01_2025-03-01.parquet             rows=   287,411 cols=30 bytes=  19,824,510
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-03-01_2025-04-01.parquet             rows=   328,622 cols=30 bytes=  22,606,072
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-04-01_2025-05-01.parquet             rows=   350,288 cols=30 bytes=  23,840,340
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-05-01_2025-06-01.parquet             rows=   370,105 cols=30 bytes=  25,187,756
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-06-01_2025-07-01.parquet             rows=   365,986 cols=30 bytes=  24,991,697
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-07-01_2025-08-01.parquet             rows=   381,161 cols=30 bytes=  26,014,977
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-08-01_2025-09-01.parquet             rows=   382,047 cols=30 bytes=  25,969,246
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-09-01_2025-10-01.parquet             rows=   367,679 cols=30 bytes=  25,102,673
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-10-01_2025-11-01.parquet             rows=   371,163 cols=30 bytes=  25,392,098
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-11-01_2025-12-01.parquet             rows=   324,530 cols=30 bytes=  22,173,840
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+training_2025-12-01_2026-01-01.parquet             rows=   331,548 cols=30 bytes=  22,653,598
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+ranking.parquet                                    rows=   689,534 cols=30 bytes=  43,564,605
+  columns: MVT_ID_mvt, FLIGHT_ID_mvt, FLIGHT_mvt, FLIGHT_RULE_mvt, ADEP_mvt, ADES_mvt, PHASE_mvt, MVT_TIME_UTC_mvt, BLOCK_TIME_UTC_mvt, SCHED_TIME_UTC_mvt, AIRCRAFT_TYPE_mvt, RUNWAY_mvt, STAND_mvt, TAXITIME_SEC_mvt, LOBT_flt, CALLSIGN_flt, ADEP_flt, ADES_flt, ADES_FILED_flt, MARKET_SEGMENT_flt, IOBT_flt, FLIGHT_RULE_flt, FLIGHT_TYPE_flt, AIRCRAFT_TYPE_flt, WK_TBL_CAT_flt, AIRCRAFT_OPERATOR_flt, EOBT_1_flt, ARVT_1_flt, AOBT_3_flt, ARVT_3_flt
+submitting.parquet                                 rows=   344,841 cols= 2 bytes=   1,677,097
+  columns: MVT_ID_mvt, TAXITIME_SEC_mvt
+
+================================================================================
+SCHEMA COMPARISON
+================================================================================
+Training month schemas identical: True
+Ranking schema identical to training: True
+Submitting schema: [('MVT_ID_mvt', Float64), ('TAXITIME_SEC_mvt', Int32)]
+
+Training/ranking dtypes:
+  MVT_ID_mvt                   Float64
+  FLIGHT_ID_mvt                Float64
+  FLIGHT_mvt                   String
+  FLIGHT_RULE_mvt              String
+  ADEP_mvt                     String
+  ADES_mvt                     String
+  PHASE_mvt                    String
+  MVT_TIME_UTC_mvt             Datetime(time_unit='us', time_zone='UTC')
+  BLOCK_TIME_UTC_mvt           Datetime(time_unit='us', time_zone='UTC')
+  SCHED_TIME_UTC_mvt           Datetime(time_unit='us', time_zone='UTC')
+  AIRCRAFT_TYPE_mvt            String
+  RUNWAY_mvt                   String
+  STAND_mvt                    String
+  TAXITIME_SEC_mvt             Int32
+  LOBT_flt                     Datetime(time_unit='us', time_zone='UTC')
+  CALLSIGN_flt                 String
+  ADEP_flt                     String
+  ADES_flt                     String
+  ADES_FILED_flt               String
+  MARKET_SEGMENT_flt           String
+  IOBT_flt                     Datetime(time_unit='us', time_zone='UTC')
+  FLIGHT_RULE_flt              String
+  FLIGHT_TYPE_flt              String
+  AIRCRAFT_TYPE_flt            String
+  WK_TBL_CAT_flt               String
+  AIRCRAFT_OPERATOR_flt        String
+  EOBT_1_flt                   Datetime(time_unit='us', time_zone='UTC')
+  ARVT_1_flt                   Datetime(time_unit='us', time_zone='UTC')
+  AOBT_3_flt                   Datetime(time_unit='us', time_zone='UTC')
+  ARVT_3_flt                   Datetime(time_unit='us', time_zone='UTC')
+
+================================================================================
+RANKING vs TRAINING: blanked columns, phases, dates
+================================================================================
+ranking rows 689534
+
+ranking PHASE counts:
+shape: (2, 2)
+┌───────────┬────────┐
+│ PHASE_mvt ┆ n      │
+│ ---       ┆ ---    │
+│ str       ┆ u32    │
+╞═══════════╪════════╡
+│ ARR       ┆ 344693 │
+│ DEP       ┆ 344841 │
+└───────────┴────────┘
+
+ranking overall missing counts:
+  MVT_ID_mvt                   missing=         0 (  0.00%)
+  FLIGHT_ID_mvt                missing=     6,692 (  0.97%)
+  FLIGHT_mvt                   missing=        97 (  0.01%)
+  FLIGHT_RULE_mvt              missing=        84 (  0.01%)
+  ADEP_mvt                     missing=        13 (  0.00%)
+  ADES_mvt                     missing=        13 (  0.00%)
+  PHASE_mvt                    missing=         0 (  0.00%)
+  MVT_TIME_UTC_mvt             missing=         0 (  0.00%)
+  BLOCK_TIME_UTC_mvt           missing=   344,841 ( 50.01%)
+  SCHED_TIME_UTC_mvt           missing=         0 (  0.00%)
+  AIRCRAFT_TYPE_mvt            missing=       409 (  0.06%)
+  RUNWAY_mvt                   missing=         0 (  0.00%)
+  STAND_mvt                    missing=         9 (  0.00%)
+  TAXITIME_SEC_mvt             missing=   344,841 ( 50.01%)
+  LOBT_flt                     missing=     7,842 (  1.14%)
+  CALLSIGN_flt                 missing=     7,842 (  1.14%)
+  ADEP_flt                     missing=     7,842 (  1.14%)
+  ADES_flt                     missing=     7,842 (  1.14%)
+  ADES_FILED_flt               missing=     7,842 (  1.14%)
+  MARKET_SEGMENT_flt           missing=     7,842 (  1.14%)
+  IOBT_flt                     missing=     7,842 (  1.14%)
+  FLIGHT_RULE_flt              missing=     7,868 (  1.14%)
+  FLIGHT_TYPE_flt              missing=     7,842 (  1.14%)
+  AIRCRAFT_TYPE_flt            missing=     7,842 (  1.14%)
+  WK_TBL_CAT_flt               missing=     7,868 (  1.14%)
+  AIRCRAFT_OPERATOR_flt        missing=     7,842 (  1.14%)
+  EOBT_1_flt                   missing=     7,842 (  1.14%)
+  ARVT_1_flt                   missing=     7,842 (  1.14%)
+  AOBT_3_flt                   missing=     7,842 (  1.14%)
+  ARVT_3_flt                   missing=     7,842 (  1.14%)
+
+ranking missing by PHASE:
+shape: (2, 31)
+┌───────────┬────────┬────────────┬────────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ PHASE_mvt ┆ n      ┆ MVT_ID_mvt ┆ FLIGHT_ID_ ┆ … ┆ EOBT_1_fl ┆ ARVT_1_fl ┆ AOBT_3_fl ┆ ARVT_3_fl │
+│ ---       ┆ ---    ┆ ---        ┆ mvt        ┆   ┆ t         ┆ t         ┆ t         ┆ t         │
+│ str       ┆ u32    ┆ u32        ┆ ---        ┆   ┆ ---       ┆ ---       ┆ ---       ┆ ---       │
+│           ┆        ┆            ┆ u32        ┆   ┆ u32       ┆ u32       ┆ u32       ┆ u32       │
+╞═══════════╪════════╪════════════╪════════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ DEP       ┆ 344841 ┆ 0          ┆ 5283       ┆ … ┆ 5290      ┆ 5290      ┆ 5290      ┆ 5290      │
+│ ARR       ┆ 344693 ┆ 0          ┆ 1409       ┆ … ┆ 2552      ┆ 2552      ┆ 2552      ┆ 2552      │
+└───────────┴────────┴────────────┴────────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+ranking date ranges:
+  MVT_TIME_UTC_mvt             min=2026-01-01 00:01:55+00:00 max=2026-07-31 23:56:19+00:00 nulls=0
+  BLOCK_TIME_UTC_mvt           min=2026-01-01 00:14:57+00:00 max=2026-07-31 23:53:00+00:00 nulls=344841
+  SCHED_TIME_UTC_mvt           min=2025-12-31 04:25:00+00:00 max=2026-07-31 23:50:00+00:00 nulls=0
+  LOBT_flt                     min=2026-01-01 00:00:00+00:00 max=2026-07-31 23:30:00+00:00 nulls=7842
+  IOBT_flt                     min=2026-01-01 00:00:00+00:00 max=2026-07-31 23:30:00+00:00 nulls=7842
+  EOBT_1_flt                   min=2026-01-01 00:00:00+00:00 max=2026-07-31 23:30:00+00:00 nulls=7842
+  ARVT_1_flt                   min=2026-01-01 01:50:38+00:00 max=2026-08-01 12:33:03+00:00 nulls=7842
+  AOBT_3_flt                   min=2025-12-31 23:46:00+00:00 max=2026-07-31 23:42:00+00:00 nulls=7842
+  ARVT_3_flt                   min=2026-01-01 01:49:00+00:00 max=2026-08-01 12:54:00+00:00 nulls=7842
+
+ranking MVT_TIME months:
+shape: (2, 2)
+┌─────────────────────────┬────────┐
+│ month                   ┆ n      │
+│ ---                     ┆ ---    │
+│ datetime[μs, UTC]       ┆ u32    │
+╞═════════════════════════╪════════╡
+│ 2026-01-01 00:00:00 UTC ┆ 305590 │
+│ 2026-07-01 00:00:00 UTC ┆ 383944 │
+└─────────────────────────┴────────┘
+
+ranking airport x phase:
+shape: (20, 3)
+┌─────────┬───────────┬───────┐
+│ airport ┆ PHASE_mvt ┆ n     │
+│ ---     ┆ ---       ┆ ---   │
+│ str     ┆ str       ┆ u32   │
+╞═════════╪═══════════╪═══════╡
+│ EDDF    ┆ ARR       ┆ 36253 │
+│ EDDF    ┆ DEP       ┆ 36317 │
+│ EDDM    ┆ ARR       ┆ 25935 │
+│ EDDM    ┆ DEP       ┆ 25966 │
+│ EGLL    ┆ ARR       ┆ 39837 │
+│ …       ┆ …         ┆ …     │
+│ LIRF    ┆ DEP       ┆ 26899 │
+│ LSZH    ┆ ARR       ┆ 23123 │
+│ LSZH    ┆ DEP       ┆ 23150 │
+│ LTFM    ┆ ARR       ┆ 47764 │
+│ LTFM    ┆ DEP       ┆ 47581 │
+└─────────┴───────────┴───────┘
+
+submitting rows 344841
+submitting TAXITIME nulls 344841
+submitting TAXITIME unique 1
+submitting TAXITIME sample shape: (10, 1)
+┌──────────────────┐
+│ TAXITIME_SEC_mvt │
+│ ---              │
+│ i32              │
+╞══════════════════╡
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+│ null             │
+└──────────────────┘
+ranking DEP=344,841 submitting=344,841 inner=344,841 sub_only=0
+
+ranking DEP: AOBT_3 / LOBT / BLOCK / TAXITIME presence
+  BLOCK_TIME_UTC_mvt           non-null=         0 (  0.00%)
+  TAXITIME_SEC_mvt             non-null=         0 (  0.00%)
+  MVT_TIME_UTC_mvt             non-null=   344,841 (100.00%)
+  SCHED_TIME_UTC_mvt           non-null=   344,841 (100.00%)
+  LOBT_flt                     non-null=   339,551 ( 98.47%)
+  IOBT_flt                     non-null=   339,551 ( 98.47%)
+  EOBT_1_flt                   non-null=   339,551 ( 98.47%)
+  AOBT_3_flt                   non-null=   339,551 ( 98.47%)
+  ARVT_1_flt                   non-null=   339,551 ( 98.47%)
+  ARVT_3_flt                   non-null=   339,551 ( 98.47%)
+  RUNWAY_mvt                   non-null=   344,841 (100.00%)
+  STAND_mvt                    non-null=   344,837 (100.00%)
+
+================================================================================
+TRAINING PROFILE (all months)
+================================================================================
+total training rows 4167797
+
+missing overall:
+  MVT_ID_mvt                   missing=         0 (  0.00%)
+  FLIGHT_ID_mvt                missing=    30,930 (  0.74%)
+  FLIGHT_mvt                   missing=       410 (  0.01%)
+  FLIGHT_RULE_mvt              missing=       689 (  0.02%)
+  ADEP_mvt                     missing=        84 (  0.00%)
+  ADES_mvt                     missing=       122 (  0.00%)
+  PHASE_mvt                    missing=         0 (  0.00%)
+  MVT_TIME_UTC_mvt             missing=         0 (  0.00%)
+  BLOCK_TIME_UTC_mvt           missing=         1 (  0.00%)
+  SCHED_TIME_UTC_mvt           missing=         0 (  0.00%)
+  AIRCRAFT_TYPE_mvt            missing=     1,649 (  0.04%)
+  RUNWAY_mvt                   missing=         0 (  0.00%)
+  STAND_mvt                    missing=        64 (  0.00%)
+  TAXITIME_SEC_mvt             missing=         1 (  0.00%)
+  LOBT_flt                     missing=    37,919 (  0.91%)
+  CALLSIGN_flt                 missing=    37,919 (  0.91%)
+  ADEP_flt                     missing=    37,919 (  0.91%)
+  ADES_flt                     missing=    37,919 (  0.91%)
+  ADES_FILED_flt               missing=    37,919 (  0.91%)
+  MARKET_SEGMENT_flt           missing=    37,919 (  0.91%)
+  IOBT_flt                     missing=    37,919 (  0.91%)
+  FLIGHT_RULE_flt              missing=    38,060 (  0.91%)
+  FLIGHT_TYPE_flt              missing=    37,919 (  0.91%)
+  AIRCRAFT_TYPE_flt            missing=    37,919 (  0.91%)
+  WK_TBL_CAT_flt               missing=    38,060 (  0.91%)
+  AIRCRAFT_OPERATOR_flt        missing=    37,919 (  0.91%)
+  EOBT_1_flt                   missing=    37,919 (  0.91%)
+  ARVT_1_flt                   missing=    37,919 (  0.91%)
+  AOBT_3_flt                   missing=    37,919 (  0.91%)
+  ARVT_3_flt                   missing=    37,919 (  0.91%)
+
+missing by PHASE:
+shape: (2, 31)
+┌───────────┬─────────┬────────────┬───────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ PHASE_mvt ┆ n       ┆ MVT_ID_mvt ┆ FLIGHT_ID ┆ … ┆ EOBT_1_fl ┆ ARVT_1_fl ┆ AOBT_3_fl ┆ ARVT_3_fl │
+│ ---       ┆ ---     ┆ ---        ┆ _mvt      ┆   ┆ t         ┆ t         ┆ t         ┆ t         │
+│ str       ┆ u32     ┆ u32        ┆ ---       ┆   ┆ ---       ┆ ---       ┆ ---       ┆ ---       │
+│           ┆         ┆            ┆ u32       ┆   ┆ u32       ┆ u32       ┆ u32       ┆ u32       │
+╞═══════════╪═════════╪════════════╪═══════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ ARR       ┆ 2082750 ┆ 0          ┆ 8506      ┆ … ┆ 15449     ┆ 15449     ┆ 15449     ┆ 15449     │
+│ DEP       ┆ 2085047 ┆ 0          ┆ 22424     ┆ … ┆ 22470     ┆ 22470     ┆ 22470     ┆ 22470     │
+└───────────┴─────────┴────────────┴───────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+unique counts:
+  MVT_ID_mvt                   unique=4,167,797
+  FLIGHT_ID_mvt                unique=3,821,596
+  FLIGHT_mvt                   unique=74,533
+  FLIGHT_RULE_mvt              unique=3
+  ADEP_mvt                     unique=1,582
+  ADES_mvt                     unique=1,569
+  PHASE_mvt                    unique=2
+  MVT_TIME_UTC_mvt             unique=3,588,175
+  BLOCK_TIME_UTC_mvt           unique=3,337,095
+  SCHED_TIME_UTC_mvt           unique=108,149
+  AIRCRAFT_TYPE_mvt            unique=272
+  RUNWAY_mvt                   unique=58
+  STAND_mvt                    unique=1,924
+  TAXITIME_SEC_mvt             unique=5,346
+  LOBT_flt                     unique=315,483
+  CALLSIGN_flt                 unique=73,055
+  ADEP_flt                     unique=1,462
+  ADES_flt                     unique=1,439
+  ADES_FILED_flt               unique=1,437
+  MARKET_SEGMENT_flt           unique=9
+  IOBT_flt                     unique=239,576
+  FLIGHT_RULE_flt              unique=5
+  FLIGHT_TYPE_flt              unique=6
+  AIRCRAFT_TYPE_flt            unique=243
+  WK_TBL_CAT_flt               unique=5
+  AIRCRAFT_OPERATOR_flt        unique=683
+  EOBT_1_flt                   unique=417,744
+  ARVT_1_flt                   unique=3,551,227
+  AOBT_3_flt                   unique=753,327
+  ARVT_3_flt                   unique=2,708,729
+
+PHASE counts:
+shape: (2, 2)
+┌───────────┬─────────┐
+│ PHASE_mvt ┆ n       │
+│ ---       ┆ ---     │
+│ str       ┆ u32     │
+╞═══════════╪═════════╡
+│ DEP       ┆ 2085047 │
+│ ARR       ┆ 2082750 │
+└───────────┴─────────┘
+
+categorical value counts (top):
+
+--- FLIGHT_RULE_mvt ---
+shape: (3, 2)
+┌─────────────────┬─────────┐
+│ FLIGHT_RULE_mvt ┆ n       │
+│ ---             ┆ ---     │
+│ str             ┆ u32     │
+╞═════════════════╪═════════╡
+│ I               ┆ 4161029 │
+│ V               ┆ 6079    │
+│ null            ┆ 689     │
+└─────────────────┴─────────┘
+
+--- PHASE_mvt ---
+shape: (2, 2)
+┌───────────┬─────────┐
+│ PHASE_mvt ┆ n       │
+│ ---       ┆ ---     │
+│ str       ┆ u32     │
+╞═══════════╪═════════╡
+│ DEP       ┆ 2085047 │
+│ ARR       ┆ 2082750 │
+└───────────┴─────────┘
+
+--- MARKET_SEGMENT_flt ---
+shape: (9, 2)
+┌────────────────────┬─────────┐
+│ MARKET_SEGMENT_flt ┆ n       │
+│ ---                ┆ ---     │
+│ str                ┆ u32     │
+╞════════════════════╪═════════╡
+│ Mainline           ┆ 2651434 │
+│ Lowcost            ┆ 800577  │
+│ Regional           ┆ 423167  │
+│ Cargo              ┆ 120075  │
+│ Business           ┆ 88968   │
+│ null               ┆ 37919   │
+│ Non-Scheduled      ┆ 29287   │
+│ Other              ┆ 14974   │
+│ Military           ┆ 1396    │
+└────────────────────┴─────────┘
+
+--- FLIGHT_RULE_flt ---
+shape: (5, 2)
+┌─────────────────┬─────────┐
+│ FLIGHT_RULE_flt ┆ n       │
+│ ---             ┆ ---     │
+│ str             ┆ u32     │
+╞═════════════════╪═════════╡
+│ I               ┆ 4127260 │
+│ null            ┆ 38060   │
+│ Y               ┆ 1504    │
+│ Z               ┆ 969     │
+│ V               ┆ 4       │
+└─────────────────┴─────────┘
+
+--- FLIGHT_TYPE_flt ---
+shape: (6, 2)
+┌─────────────────┬─────────┐
+│ FLIGHT_TYPE_flt ┆ n       │
+│ ---             ┆ ---     │
+│ str             ┆ u32     │
+╞═════════════════╪═════════╡
+│ S               ┆ 3976983 │
+│ N               ┆ 108360  │
+│ null            ┆ 37919   │
+│ X               ┆ 23492   │
+│ G               ┆ 19878   │
+│ M               ┆ 1165    │
+└─────────────────┴─────────┘
+
+--- WK_TBL_CAT_flt ---
+shape: (5, 2)
+┌────────────────┬─────────┐
+│ WK_TBL_CAT_flt ┆ n       │
+│ ---            ┆ ---     │
+│ str            ┆ u32     │
+╞════════════════╪═════════╡
+│ M              ┆ 3242067 │
+│ H              ┆ 838013  │
+│ null           ┆ 38060   │
+│ J              ┆ 29394   │
+│ L              ┆ 20263   │
+└────────────────┴─────────┘
+
+--- ADEP_mvt ---
+shape: (20, 2)
+┌──────────┬────────┐
+│ ADEP_mvt ┆ n      │
+│ ---      ┆ ---    │
+│ str      ┆ u32    │
+╞══════════╪════════╡
+│ LTFM     ┆ 293455 │
+│ EHAM     ┆ 285428 │
+│ EGLL     ┆ 278954 │
+│ LFPG     ┆ 274015 │
+│ EDDF     ┆ 265075 │
+│ …        ┆ …      │
+│ LGAV     ┆ 23921  │
+│ EKCH     ┆ 23444  │
+│ LSGG     ┆ 23162  │
+│ EDDH     ┆ 22920  │
+│ EBBR     ┆ 22675  │
+└──────────┴────────┘
+
+--- ADES_mvt ---
+shape: (20, 2)
+┌──────────┬────────┐
+│ ADES_mvt ┆ n      │
+│ ---      ┆ ---    │
+│ str      ┆ u32    │
+╞══════════╪════════╡
+│ LTFM     ┆ 294316 │
+│ EHAM     ┆ 284979 │
+│ EGLL     ┆ 278780 │
+│ LFPG     ┆ 273420 │
+│ EDDF     ┆ 265361 │
+│ …        ┆ …      │
+│ LGAV     ┆ 23739  │
+│ EKCH     ┆ 23400  │
+│ LSGG     ┆ 23077  │
+│ EBBR     ┆ 23076  │
+│ EDDH     ┆ 22873  │
+└──────────┴────────┘
+
+airport x phase:
+shape: (20, 3)
+┌─────────┬───────────┬────────┐
+│ airport ┆ PHASE_mvt ┆ n      │
+│ ---     ┆ ---       ┆ ---    │
+│ str     ┆ str       ┆ u32    │
+╞═════════╪═══════════╪════════╡
+│ EDDF    ┆ ARR       ┆ 230122 │
+│ EDDF    ┆ DEP       ┆ 230141 │
+│ EDDM    ┆ ARR       ┆ 167323 │
+│ EDDM    ┆ DEP       ┆ 167334 │
+│ EGLL    ┆ ARR       ┆ 239511 │
+│ …       ┆ …         ┆ …      │
+│ LIRF    ┆ DEP       ┆ 160704 │
+│ LSZH    ┆ ARR       ┆ 134691 │
+│ LSZH    ┆ DEP       ┆ 134907 │
+│ LTFM    ┆ ARR       ┆ 273886 │
+│ LTFM    ┆ DEP       ┆ 272965 │
+└─────────┴───────────┴────────┘
+
+date ranges training:
+  MVT_TIME_UTC_mvt             min=2025-01-01 00:01:04+00:00 max=2025-12-31 23:57:36+00:00 nulls=0
+  BLOCK_TIME_UTC_mvt           min=2024-12-31 23:38:00+00:00 max=2025-12-31 23:41:59+00:00 nulls=1
+  SCHED_TIME_UTC_mvt           min=2024-12-28 10:05:00+00:00 max=2025-12-31 23:45:00+00:00 nulls=0
+  LOBT_flt                     min=2025-01-01 00:00:00+00:00 max=2025-12-31 23:40:00+00:00 nulls=37919
+  IOBT_flt                     min=2025-01-01 00:00:00+00:00 max=2025-12-31 23:40:00+00:00 nulls=37919
+  EOBT_1_flt                   min=2025-01-01 00:00:00+00:00 max=2025-12-31 23:45:00+00:00 nulls=37919
+  ARVT_1_flt                   min=2025-01-01 02:21:39+00:00 max=2026-01-01 12:53:09+00:00 nulls=37919
+  AOBT_3_flt                   min=2024-12-31 23:52:00+00:00 max=2025-12-31 23:39:00+00:00 nulls=37919
+  ARVT_3_flt                   min=2025-01-01 02:22:00+00:00 max=2026-01-01 13:18:09+00:00 nulls=37919
+
+training MVT_TIME months x phase:
+shape: (24, 3)
+┌─────────────────────────┬───────────┬────────┐
+│ month                   ┆ PHASE_mvt ┆ n      │
+│ ---                     ┆ ---       ┆ ---    │
+│ datetime[μs, UTC]       ┆ str       ┆ u32    │
+╞═════════════════════════╪═══════════╪════════╡
+│ 2025-01-01 00:00:00 UTC ┆ ARR       ┆ 153551 │
+│ 2025-01-01 00:00:00 UTC ┆ DEP       ┆ 153706 │
+│ 2025-02-01 00:00:00 UTC ┆ ARR       ┆ 143680 │
+│ 2025-02-01 00:00:00 UTC ┆ DEP       ┆ 143732 │
+│ 2025-03-01 00:00:00 UTC ┆ ARR       ┆ 164172 │
+│ …                       ┆ …         ┆ …      │
+│ 2025-10-01 00:00:00 UTC ┆ DEP       ┆ 185674 │
+│ 2025-11-01 00:00:00 UTC ┆ ARR       ┆ 162199 │
+│ 2025-11-01 00:00:00 UTC ┆ DEP       ┆ 162332 │
+│ 2025-12-01 00:00:00 UTC ┆ ARR       ┆ 165870 │
+│ 2025-12-01 00:00:00 UTC ┆ DEP       ┆ 165677 │
+└─────────────────────────┴───────────┴────────┘
+
+ID uniqueness:
+MVT_ID unique 4167797
+FLIGHT_ID unique 3821596
+duplicate MVT_IDs 0
+FLIGHT_IDs appearing >1 time 315272
+
+================================================================================
+TARGET IDENTITY: TAXITIME vs MVT-BLOCK
+================================================================================
+
+===== PHASE DEP n=2,085,047 =====
+rows with both TAXITIME and MVT-BLOCK: 2,085,047
+exact equality TAXITIME == MVT-BLOCK: 2,085,047 (100.0000%)
+abs(TAXITIME - (MVT-BLOCK)) stats: shape: (1, 8)
+┌──────┬────────┬─────┬─────┬─────┬───────┬──────────┬───────────┐
+│ mean ┆ median ┆ p90 ┆ p99 ┆ max ┆ frac0 ┆ frac_le1 ┆ frac_le60 │
+│ ---  ┆ ---    ┆ --- ┆ --- ┆ --- ┆ ---   ┆ ---      ┆ ---       │
+│ f64  ┆ f64    ┆ f64 ┆ f64 ┆ i64 ┆ f64   ┆ f64      ┆ f64       │
+╞══════╪════════╪═════╪═════╪═════╪═══════╪══════════╪═══════════╡
+│ 0.0  ┆ 0.0    ┆ 0.0 ┆ 0.0 ┆ 0   ┆ 1.0   ┆ 1.0      ┆ 1.0       │
+└──────┴────────┴─────┴─────┴─────┴───────┴──────────┴───────────┘
+MVT-BLOCK sign: shape: (1, 5)
+┌─────────┬──────┬─────┬─────┬────────┐
+│ pos     ┆ zero ┆ neg ┆ min ┆ max    │
+│ ---     ┆ ---  ┆ --- ┆ --- ┆ ---    │
+│ u32     ┆ u32  ┆ u32 ┆ i64 ┆ i64    │
+╞═════════╪══════╪═════╪═════╪════════╡
+│ 2084659 ┆ 19   ┆ 369 ┆ -12 ┆ 131167 │
+└─────────┴──────┴─────┴─────┴────────┘
+BLOCK - AOBT_3  n=2,062,577 shape: (1, 7)
+┌────────────┬─────────┬──────────┬───────────┬────────────┬────────┬──────┐
+│ mean_abs   ┆ med_abs ┆ frac0    ┆ frac_le60 ┆ frac_le300 ┆ min    ┆ max  │
+│ ---        ┆ ---     ┆ ---      ┆ ---       ┆ ---        ┆ ---    ┆ ---  │
+│ f64        ┆ f64     ┆ f64      ┆ f64       ┆ f64        ┆ i64    ┆ i64  │
+╞════════════╪═════════╪══════════╪═══════════╪════════════╪════════╪══════╡
+│ 238.061664 ┆ 175.0   ┆ 0.006529 ┆ 0.210211  ┆ 0.746465   ┆ -20657 ┆ 9069 │
+└────────────┴─────────┴──────────┴───────────┴────────────┴────────┴──────┘
+BLOCK - LOBT  n=2,062,577 shape: (1, 7)
+┌────────────┬─────────┬──────────┬───────────┬────────────┬───────┬──────┐
+│ mean_abs   ┆ med_abs ┆ frac0    ┆ frac_le60 ┆ frac_le300 ┆ min   ┆ max  │
+│ ---        ┆ ---     ┆ ---      ┆ ---       ┆ ---        ┆ ---   ┆ ---  │
+│ f64        ┆ f64     ┆ f64      ┆ f64       ┆ f64        ┆ i64   ┆ i64  │
+╞════════════╪═════════╪══════════╪═══════════╪════════════╪═══════╪══════╡
+│ 515.200951 ┆ 359.0   ┆ 0.004392 ┆ 0.112623  ┆ 0.441233   ┆ -3606 ┆ 3606 │
+└────────────┴─────────┴──────────┴───────────┴────────────┴───────┴──────┘
+TAXITIME vs MVT-AOBT n=2,062,577 shape: (1, 4)
+┌────────────┬─────────┬──────────┬───────────┐
+│ mean_abs   ┆ med_abs ┆ frac0    ┆ frac_le60 │
+│ ---        ┆ ---     ┆ ---      ┆ ---       │
+│ f64        ┆ f64     ┆ f64      ┆ f64       │
+╞════════════╪═════════╪══════════╪═══════════╡
+│ 238.061664 ┆ 175.0   ┆ 0.006529 ┆ 0.210211  │
+└────────────┴─────────┴──────────┴───────────┘
+TAXITIME stats n=2,085,047
+shape: (1, 18)
+┌─────────┬────────────┬────────┬────────────┬───┬─────┬──────┬───────┬───────┐
+│ n       ┆ mean       ┆ median ┆ std        ┆ … ┆ neg ┆ zero ┆ gt_1h ┆ gt_2h │
+│ ---     ┆ ---        ┆ ---    ┆ ---        ┆   ┆ --- ┆ ---  ┆ ---   ┆ ---   │
+│ u32     ┆ f64        ┆ f64    ┆ f64        ┆   ┆ u32 ┆ u32  ┆ u32   ┆ u32   │
+╞═════════╪════════════╪════════╪════════════╪═══╪═════╪══════╪═══════╪═══════╡
+│ 2085047 ┆ 991.200707 ┆ 912.0  ┆ 546.359769 ┆ … ┆ 369 ┆ 19   ┆ 4126  ┆ 584   │
+└─────────┴────────────┴────────┴────────────┴───┴─────┴──────┴───────┴───────┘
+
+===== PHASE ARR n=2,082,750 =====
+rows with both TAXITIME and MVT-BLOCK: 2,082,749
+exact equality TAXITIME == MVT-BLOCK: 16 (0.0008%)
+abs(TAXITIME - (MVT-BLOCK)) stats: shape: (1, 8)
+┌─────────────┬────────┬────────┬────────┬─────────┬──────────┬──────────┬───────────┐
+│ mean        ┆ median ┆ p90    ┆ p99    ┆ max     ┆ frac0    ┆ frac_le1 ┆ frac_le60 │
+│ ---         ┆ ---    ┆ ---    ┆ ---    ┆ ---     ┆ ---      ┆ ---      ┆ ---       │
+│ f64         ┆ f64    ┆ f64    ┆ f64    ┆ i64     ┆ f64      ┆ f64      ┆ f64       │
+╞═════════════╪════════╪════════╪════════╪═════════╪══════════╪══════════╪═══════════╡
+│ 1073.436413 ┆ 960.0  ┆ 1806.0 ┆ 3040.0 ┆ 1209594 ┆ 0.000008 ┆ 0.000008 ┆ 0.000267  │
+└─────────────┴────────┴────────┴────────┴─────────┴──────────┴──────────┴───────────┘
+MVT-BLOCK sign: shape: (1, 5)
+┌─────┬──────┬─────────┬─────────┬──────┐
+│ pos ┆ zero ┆ neg     ┆ min     ┆ max  │
+│ --- ┆ ---  ┆ ---     ┆ ---     ┆ ---  │
+│ u32 ┆ u32  ┆ u32     ┆ i64     ┆ i64  │
+╞═════╪══════╪═════════╪═════════╪══════╡
+│ 220 ┆ 16   ┆ 2082513 ┆ -604797 ┆ 2652 │
+└─────┴──────┴─────────┴─────────┴──────┘
+BLOCK - AOBT_3  n=2,067,300 shape: (1, 7)
+┌─────────────┬─────────┬───────┬───────────┬────────────┬───────┬────────┐
+│ mean_abs    ┆ med_abs ┆ frac0 ┆ frac_le60 ┆ frac_le300 ┆ min   ┆ max    │
+│ ---         ┆ ---     ┆ ---   ┆ ---       ┆ ---        ┆ ---   ┆ ---    │
+│ f64         ┆ f64     ┆ f64   ┆ f64       ┆ f64        ┆ i64   ┆ i64    │
+╞═════════════╪═════════╪═══════╪═══════════╪════════════╪═══════╪════════╡
+│ 12023.20828 ┆ 7545.0  ┆ 0.0   ┆ 0.0       ┆ 0.0        ┆ -1140 ┆ 109109 │
+└─────────────┴─────────┴───────┴───────────┴────────────┴───────┴────────┘
+BLOCK - LOBT  n=2,067,300 shape: (1, 7)
+┌─────────────┬─────────┬───────┬───────────┬────────────┬───────┬────────┐
+│ mean_abs    ┆ med_abs ┆ frac0 ┆ frac_le60 ┆ frac_le300 ┆ min   ┆ max    │
+│ ---         ┆ ---     ┆ ---   ┆ ---       ┆ ---        ┆ ---   ┆ ---    │
+│ f64         ┆ f64     ┆ f64   ┆ f64       ┆ f64        ┆ i64   ┆ i64    │
+╞═════════════╪═════════╪═══════╪═══════════╪════════════╪═══════╪════════╡
+│ 12440.28615 ┆ 7925.0  ┆ 0.0   ┆ 9.6745e-7 ┆ 0.000013   ┆ -3837 ┆ 109198 │
+└─────────────┴─────────┴───────┴───────────┴────────────┴───────┴────────┘
+TAXITIME vs MVT-AOBT n=2,067,300 shape: (1, 4)
+┌──────────────┬─────────┬───────┬───────────┐
+│ mean_abs     ┆ med_abs ┆ frac0 ┆ frac_le60 │
+│ ---          ┆ ---     ┆ ---   ┆ ---       │
+│ f64          ┆ f64     ┆ f64   ┆ f64       │
+╞══════════════╪═════════╪═══════╪═══════════╡
+│ 10951.507064 ┆ 6540.0  ┆ 0.0   ┆ 0.000005  │
+└──────────────┴─────────┴───────┴───────────┘
+TAXITIME stats n=2,082,749
+shape: (1, 18)
+┌─────────┬────────────┬────────┬────────────┬───┬─────┬──────┬───────┬───────┐
+│ n       ┆ mean       ┆ median ┆ std        ┆ … ┆ neg ┆ zero ┆ gt_1h ┆ gt_2h │
+│ ---     ┆ ---        ┆ ---    ┆ ---        ┆   ┆ --- ┆ ---  ┆ ---   ┆ ---   │
+│ u32     ┆ f64        ┆ f64    ┆ f64        ┆   ┆ u32 ┆ u32  ┆ u32   ┆ u32   │
+╞═════════╪════════════╪════════╪════════════╪═══╪═════╪══════╪═══════╪═══════╡
+│ 2082749 ┆ 536.707998 ┆ 480.0  ┆ 537.434556 ┆ … ┆ 220 ┆ 16   ┆ 440   ┆ 141   │
+└─────────┴────────────┴────────┴────────────┴───┴─────┴──────┴───────┴───────┘
+
+===== SAMPLE DEP ROWS =====
+shape: (8, 21)
+┌────────────┬───────────┬──────────┬──────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ MVT_ID_mvt ┆ FLIGHT_mv ┆ ADEP_mvt ┆ ADES_mvt ┆ … ┆ CALLSIGN_ ┆ MARKET_SE ┆ WK_TBL_CA ┆ AIRCRAFT_ │
+│ ---        ┆ t         ┆ ---      ┆ ---      ┆   ┆ flt       ┆ GMENT_flt ┆ T_flt     ┆ OPERATOR_ │
+│ f64        ┆ ---       ┆ str      ┆ str      ┆   ┆ ---       ┆ ---       ┆ ---       ┆ flt       │
+│            ┆ str       ┆          ┆          ┆   ┆ str       ┆ str       ┆ str       ┆ ---       │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ str       │
+╞════════════╪═══════════╪══════════╪══════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ 1.82234017 ┆ LH982     ┆ EDDF     ┆ EIDW     ┆ … ┆ DLH8UL    ┆ Mainline  ┆ M         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82234011 ┆ LH796     ┆ EDDF     ┆ VHHH     ┆ … ┆ DLH796    ┆ Mainline  ┆ H         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82234021 ┆ LH958     ┆ EDDF     ┆ EGBB     ┆ … ┆ DLH2HU    ┆ Mainline  ┆ M         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82234008 ┆ LH778     ┆ EDDF     ┆ WSSS     ┆ … ┆ DLH778    ┆ Mainline  ┆ H         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82234019 ┆ LH948     ┆ EDDF     ┆ EGCC     ┆ … ┆ DLH948    ┆ Mainline  ┆ M         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82233995 ┆ EN8756    ┆ EDDF     ┆ ELLX     ┆ … ┆ DLA7TA    ┆ Regional  ┆ M         ┆ af8b67cf6 │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 3bb6f7021 │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b7845e4f8 │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 207…      │
+│ 1.82234014 ┆ LH832     ┆ EDDF     ┆ EKCH     ┆ … ┆ DLH832    ┆ Mainline  ┆ M         ┆ 11dca3faf │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 5500fdddb │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ b17189b5d │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ 18b…      │
+│ 1.82234012 ┆ DE2290    ┆ EDDF     ┆ FACT     ┆ … ┆ CFG2290   ┆ Lowcost   ┆ H         ┆ 2cf658a7f │
+│ e8         ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ ffbe4bd9a │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ f09b8b0e3 │
+│            ┆           ┆          ┆          ┆   ┆           ┆           ┆           ┆ ded…      │
+└────────────┴───────────┴──────────┴──────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+===== SAMPLE ARR ROWS =====
+shape: (8, 14)
+┌────────────┬───────────┬──────────┬──────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ MVT_ID_mvt ┆ FLIGHT_mv ┆ ADEP_mvt ┆ ADES_mvt ┆ … ┆ AOBT_3_fl ┆ ARVT_3_fl ┆ LOBT_flt  ┆ EOBT_1_fl │
+│ ---        ┆ t         ┆ ---      ┆ ---      ┆   ┆ t         ┆ t         ┆ ---       ┆ t         │
+│ f64        ┆ ---       ┆ str      ┆ str      ┆   ┆ ---       ┆ ---       ┆ datetime[ ┆ ---       │
+│            ┆ str       ┆          ┆          ┆   ┆ datetime[ ┆ datetime[ ┆ μs, UTC]  ┆ datetime[ │
+│            ┆           ┆          ┆          ┆   ┆ μs, UTC]  ┆ μs, UTC]  ┆           ┆ μs, UTC]  │
+╞════════════╪═══════════╪══════════╪══════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ 1.82249437 ┆ LO383     ┆ EPWA     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 19:16:00  ┆ 21:10:28  ┆ 19:22:00  ┆ 19:22:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249434 ┆ LH121     ┆ EDDM     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 20:16:00  ┆ 21:13:45  ┆ 20:00:00  ┆ 20:00:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249433 ┆ BA916     ┆ EGLL     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 19:10:00  ┆ 21:16:13  ┆ 19:10:00  ┆ 19:10:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249414 ┆ LH947     ┆ EGCC     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 19:57:00  ┆ 21:25:58  ┆ 19:30:00  ┆ 19:30:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249443 ┆ TP574     ┆ LPPT     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 18:46:00  ┆ 21:28:33  ┆ 18:42:00  ┆ 18:30:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249442 ┆ KL1825    ┆ EHAM     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 7         ┆ 7         ┆ 7         ┆ 7         │
+│            ┆           ┆          ┆          ┆   ┆ 20:30:35  ┆ 21:30:36  ┆ 20:20:00  ┆ 20:20:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249614 ┆ TU744     ┆ DTTA     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 8         ┆ 8         ┆ 8         ┆ 8         │
+│            ┆           ┆          ┆          ┆   ┆ 07:02:00  ┆ 09:24:56  ┆ 06:55:00  ┆ 06:55:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 1.82249618 ┆ LH1007    ┆ EBBR     ┆ EDDF     ┆ … ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 ┆ 2025-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 8         ┆ 8         ┆ 8         ┆ 8         │
+│            ┆           ┆          ┆          ┆   ┆ 08:37:00  ┆ 09:26:26  ┆ 08:30:00  ┆ 08:42:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+└────────────┴───────────┴──────────┴──────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+================================================================================
+RANKING SAMPLE ROWS
+================================================================================
+
+===== RANKING DEP =====
+shape: (8, 17)
+┌────────────┬───────────┬──────────┬──────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ MVT_ID_mvt ┆ FLIGHT_mv ┆ ADEP_mvt ┆ ADES_mvt ┆ … ┆ EOBT_1_fl ┆ AOBT_3_fl ┆ ARVT_1_fl ┆ ARVT_3_fl │
+│ ---        ┆ t         ┆ ---      ┆ ---      ┆   ┆ t         ┆ t         ┆ t         ┆ t         │
+│ f64        ┆ ---       ┆ str      ┆ str      ┆   ┆ ---       ┆ ---       ┆ ---       ┆ ---       │
+│            ┆ str       ┆          ┆          ┆   ┆ datetime[ ┆ datetime[ ┆ datetime[ ┆ datetime[ │
+│            ┆           ┆          ┆          ┆   ┆ μs, UTC]  ┆ μs, UTC]  ┆ μs, UTC]  ┆ μs, UTC]  │
+╞════════════╪═══════════╪══════════╪══════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ 2.02501153 ┆ RJ126     ┆ EDDF     ┆ OJAI     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:28:00  ┆ 14:37:00  ┆ 18:36:25  ┆ 18:46:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501107 ┆ 4Y1408    ┆ EDDF     ┆ LBWN     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:40:00  ┆ 14:40:00  ┆ 17:08:19  ┆ 16:59:23  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501179 ┆ EN8806    ┆ EDDF     ┆ LIML     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:48:00  ┆ 14:48:00  ┆ 16:00:29  ┆ 15:55:25  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501178 ┆ LH584     ┆ EDDF     ┆ HECA     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:50:00  ┆ 14:51:00  ┆ 19:03:44  ┆ 19:02:45  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501174 ┆ LH864     ┆ EDDF     ┆ ENGM     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:52:00  ┆ 14:53:00  ┆ 16:52:46  ┆ 16:46:48  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501155 ┆ TK1592    ┆ EDDF     ┆ LTFM     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:32:00  ┆ 14:53:00  ┆ 17:13:53  ┆ 17:34:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02501176 ┆ LH806     ┆ EDDF     ┆ ESSA     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:45:00  ┆ 14:56:00  ┆ 16:41:17  ┆ 16:52:14  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.0250118e ┆ LH022     ┆ EDDF     ┆ EDDH     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ 8          ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 16:05:00  ┆ 16:05:00  ┆ 17:17:26  ┆ 17:07:48  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+└────────────┴───────────┴──────────┴──────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+===== RANKING ARR =====
+shape: (8, 14)
+┌────────────┬───────────┬──────────┬──────────┬───┬───────────┬───────────┬───────────┬───────────┐
+│ MVT_ID_mvt ┆ FLIGHT_mv ┆ ADEP_mvt ┆ ADES_mvt ┆ … ┆ AOBT_3_fl ┆ ARVT_3_fl ┆ LOBT_flt  ┆ EOBT_1_fl │
+│ ---        ┆ t         ┆ ---      ┆ ---      ┆   ┆ t         ┆ t         ┆ ---       ┆ t         │
+│ f64        ┆ ---       ┆ str      ┆ str      ┆   ┆ ---       ┆ ---       ┆ datetime[ ┆ ---       │
+│            ┆ str       ┆          ┆          ┆   ┆ datetime[ ┆ datetime[ ┆ μs, UTC]  ┆ datetime[ │
+│            ┆           ┆          ┆          ┆   ┆ μs, UTC]  ┆ μs, UTC]  ┆           ┆ μs, UTC]  │
+╞════════════╪═══════════╪══════════╪══════════╪═══╪═══════════╪═══════════╪═══════════╪═══════════╡
+│ 2.02517397 ┆ LH891     ┆ EVRA     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 12:46:00  ┆ 14:55:00  ┆ 12:35:00  ┆ 12:34:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.025174e8 ┆ LH1339    ┆ LHBP     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│            ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 13:21:16  ┆ 14:56:22  ┆ 13:20:00  ┆ 13:20:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517406 ┆ LH023     ┆ EDDH     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:02:00  ┆ 14:56:27  ┆ 14:00:00  ┆ 14:00:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517396 ┆ LH111     ┆ EDDM     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:08:00  ┆ 14:58:08  ┆ 14:00:00  ┆ 14:10:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517345 ┆ LH499     ┆ MMMX     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 04:47:42  ┆ 14:58:23  ┆ 04:00:00  ┆ 04:00:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517426 ┆ LH8401    ┆ ZSPD     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 01:37:05  ┆ 14:59:01  ┆ 01:35:00  ┆ 01:35:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517409 ┆ LH1405    ┆ LDZA     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 13:32:00  ┆ 15:01:02  ┆ 13:35:00  ┆ 13:35:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+│ 2.02517402 ┆ LH281     ┆ LIML     ┆ EDDF     ┆ … ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 ┆ 2026-01-0 │
+│ e8         ┆           ┆          ┆          ┆   ┆ 4         ┆ 4         ┆ 4         ┆ 4         │
+│            ┆           ┆          ┆          ┆   ┆ 14:00:00  ┆ 15:02:29  ┆ 13:50:00  ┆ 13:50:00  │
+│            ┆           ┆          ┆          ┆   ┆ UTC       ┆ UTC       ┆ UTC       ┆ UTC       │
+└────────────┴───────────┴──────────┴──────────┴───┴───────────┴───────────┴───────────┴───────────┘
+
+================================================================================
+PER-MONTH MISSING % (to detect schema drift in values)
+================================================================================
+
+training_2025-01-01_2025-02-01.parquet n=307,257
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.02%
+  LOBT_flt                     miss=  0.83%
+  IOBT_flt                     miss=  0.83%
+  EOBT_1_flt                   miss=  0.83%
+  AOBT_3_flt                   miss=  0.83%
+  ARVT_1_flt                   miss=  0.83%
+  ARVT_3_flt                   miss=  0.83%
+  FLIGHT_ID_mvt                miss=  0.67%
+  CALLSIGN_flt                 miss=  0.83%
+  MARKET_SEGMENT_flt           miss=  0.83%
+  WK_TBL_CAT_flt               miss=  0.83%
+  AIRCRAFT_OPERATOR_flt        miss=  0.83%
+  ADES_FILED_flt               miss=  0.83%
+
+training_2025-02-01_2025-03-01.parquet n=287,411
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.02%
+  LOBT_flt                     miss=  0.76%
+  IOBT_flt                     miss=  0.76%
+  EOBT_1_flt                   miss=  0.76%
+  AOBT_3_flt                   miss=  0.76%
+  ARVT_1_flt                   miss=  0.76%
+  ARVT_3_flt                   miss=  0.76%
+  FLIGHT_ID_mvt                miss=  0.59%
+  CALLSIGN_flt                 miss=  0.76%
+  MARKET_SEGMENT_flt           miss=  0.76%
+  WK_TBL_CAT_flt               miss=  0.76%
+  AIRCRAFT_OPERATOR_flt        miss=  0.76%
+  ADES_FILED_flt               miss=  0.76%
+
+training_2025-03-01_2025-04-01.parquet n=328,622
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.02%
+  LOBT_flt                     miss=  0.70%
+  IOBT_flt                     miss=  0.70%
+  EOBT_1_flt                   miss=  0.70%
+  AOBT_3_flt                   miss=  0.70%
+  ARVT_1_flt                   miss=  0.70%
+  ARVT_3_flt                   miss=  0.70%
+  FLIGHT_ID_mvt                miss=  0.54%
+  CALLSIGN_flt                 miss=  0.70%
+  MARKET_SEGMENT_flt           miss=  0.70%
+  WK_TBL_CAT_flt               miss=  0.70%
+  AIRCRAFT_OPERATOR_flt        miss=  0.70%
+  ADES_FILED_flt               miss=  0.70%
+
+training_2025-04-01_2025-05-01.parquet n=350,288
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.02%
+  LOBT_flt                     miss=  0.67%
+  IOBT_flt                     miss=  0.67%
+  EOBT_1_flt                   miss=  0.67%
+  AOBT_3_flt                   miss=  0.67%
+  ARVT_1_flt                   miss=  0.67%
+  ARVT_3_flt                   miss=  0.67%
+  FLIGHT_ID_mvt                miss=  0.50%
+  CALLSIGN_flt                 miss=  0.67%
+  MARKET_SEGMENT_flt           miss=  0.67%
+  WK_TBL_CAT_flt               miss=  0.67%
+  AIRCRAFT_OPERATOR_flt        miss=  0.67%
+  ADES_FILED_flt               miss=  0.67%
+
+training_2025-05-01_2025-06-01.parquet n=370,105
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.03%
+  LOBT_flt                     miss=  0.79%
+  IOBT_flt                     miss=  0.79%
+  EOBT_1_flt                   miss=  0.79%
+  AOBT_3_flt                   miss=  0.79%
+  ARVT_1_flt                   miss=  0.79%
+  ARVT_3_flt                   miss=  0.79%
+  FLIGHT_ID_mvt                miss=  0.63%
+  CALLSIGN_flt                 miss=  0.79%
+  MARKET_SEGMENT_flt           miss=  0.79%
+  WK_TBL_CAT_flt               miss=  0.79%
+  AIRCRAFT_OPERATOR_flt        miss=  0.79%
+  ADES_FILED_flt               miss=  0.79%
+
+training_2025-06-01_2025-07-01.parquet n=365,986
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.06%
+  LOBT_flt                     miss=  1.08%
+  IOBT_flt                     miss=  1.08%
+  EOBT_1_flt                   miss=  1.08%
+  AOBT_3_flt                   miss=  1.08%
+  ARVT_1_flt                   miss=  1.08%
+  ARVT_3_flt                   miss=  1.08%
+  FLIGHT_ID_mvt                miss=  0.91%
+  CALLSIGN_flt                 miss=  1.08%
+  MARKET_SEGMENT_flt           miss=  1.08%
+  WK_TBL_CAT_flt               miss=  1.09%
+  AIRCRAFT_OPERATOR_flt        miss=  1.08%
+  ADES_FILED_flt               miss=  1.08%
+
+training_2025-07-01_2025-08-01.parquet n=381,161
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.09%
+  LOBT_flt                     miss=  1.42%
+  IOBT_flt                     miss=  1.42%
+  EOBT_1_flt                   miss=  1.42%
+  AOBT_3_flt                   miss=  1.42%
+  ARVT_1_flt                   miss=  1.42%
+  ARVT_3_flt                   miss=  1.42%
+  FLIGHT_ID_mvt                miss=  1.25%
+  CALLSIGN_flt                 miss=  1.42%
+  MARKET_SEGMENT_flt           miss=  1.42%
+  WK_TBL_CAT_flt               miss=  1.43%
+  AIRCRAFT_OPERATOR_flt        miss=  1.42%
+  ADES_FILED_flt               miss=  1.42%
+
+training_2025-08-01_2025-09-01.parquet n=382,047
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.06%
+  LOBT_flt                     miss=  0.98%
+  IOBT_flt                     miss=  0.98%
+  EOBT_1_flt                   miss=  0.98%
+  AOBT_3_flt                   miss=  0.98%
+  ARVT_1_flt                   miss=  0.98%
+  ARVT_3_flt                   miss=  0.98%
+  FLIGHT_ID_mvt                miss=  0.82%
+  CALLSIGN_flt                 miss=  0.98%
+  MARKET_SEGMENT_flt           miss=  0.98%
+  WK_TBL_CAT_flt               miss=  0.99%
+  AIRCRAFT_OPERATOR_flt        miss=  0.98%
+  ADES_FILED_flt               miss=  0.98%
+
+training_2025-09-01_2025-10-01.parquet n=367,679
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.05%
+  LOBT_flt                     miss=  1.04%
+  IOBT_flt                     miss=  1.04%
+  EOBT_1_flt                   miss=  1.04%
+  AOBT_3_flt                   miss=  1.04%
+  ARVT_1_flt                   miss=  1.04%
+  ARVT_3_flt                   miss=  1.04%
+  FLIGHT_ID_mvt                miss=  0.85%
+  CALLSIGN_flt                 miss=  1.04%
+  MARKET_SEGMENT_flt           miss=  1.04%
+  WK_TBL_CAT_flt               miss=  1.04%
+  AIRCRAFT_OPERATOR_flt        miss=  1.04%
+  ADES_FILED_flt               miss=  1.04%
+
+training_2025-10-01_2025-11-01.parquet n=371,163
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.04%
+  LOBT_flt                     miss=  0.88%
+  IOBT_flt                     miss=  0.88%
+  EOBT_1_flt                   miss=  0.88%
+  AOBT_3_flt                   miss=  0.88%
+  ARVT_1_flt                   miss=  0.88%
+  ARVT_3_flt                   miss=  0.88%
+  FLIGHT_ID_mvt                miss=  0.71%
+  CALLSIGN_flt                 miss=  0.88%
+  MARKET_SEGMENT_flt           miss=  0.88%
+  WK_TBL_CAT_flt               miss=  0.89%
+  AIRCRAFT_OPERATOR_flt        miss=  0.88%
+  ADES_FILED_flt               miss=  0.88%
+
+training_2025-11-01_2025-12-01.parquet n=324,530
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.02%
+  LOBT_flt                     miss=  0.79%
+  IOBT_flt                     miss=  0.79%
+  EOBT_1_flt                   miss=  0.79%
+  AOBT_3_flt                   miss=  0.79%
+  ARVT_1_flt                   miss=  0.79%
+  ARVT_3_flt                   miss=  0.79%
+  FLIGHT_ID_mvt                miss=  0.62%
+  CALLSIGN_flt                 miss=  0.79%
+  MARKET_SEGMENT_flt           miss=  0.79%
+  WK_TBL_CAT_flt               miss=  0.79%
+  AIRCRAFT_OPERATOR_flt        miss=  0.79%
+  ADES_FILED_flt               miss=  0.79%
+
+training_2025-12-01_2026-01-01.parquet n=331,548
+  TAXITIME_SEC_mvt             miss=  0.00%
+  BLOCK_TIME_UTC_mvt           miss=  0.00%
+  MVT_TIME_UTC_mvt             miss=  0.00%
+  SCHED_TIME_UTC_mvt           miss=  0.00%
+  RUNWAY_mvt                   miss=  0.00%
+  STAND_mvt                    miss=  0.00%
+  AIRCRAFT_TYPE_mvt            miss=  0.03%
+  LOBT_flt                     miss=  0.86%
+  IOBT_flt                     miss=  0.86%
+  EOBT_1_flt                   miss=  0.86%
+  AOBT_3_flt                   miss=  0.86%
+  ARVT_1_flt                   miss=  0.86%
+  ARVT_3_flt                   miss=  0.86%
+  FLIGHT_ID_mvt                miss=  0.69%
+  CALLSIGN_flt                 miss=  0.86%
+  MARKET_SEGMENT_flt           miss=  0.86%
+  WK_TBL_CAT_flt               miss=  0.86%
+  AIRCRAFT_OPERATOR_flt        miss=  0.86%
+  ADES_FILED_flt               miss=  0.86%
