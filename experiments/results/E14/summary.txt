@@ -1,0 +1,67 @@
+
+========== janjul (Jan+Jul 2025) ==========
+val rows n=344,419  matched=339,046  unmatched=5,373  LIRF unmatched=397
+  E13: overall=378.28  matched=256.46  unmatched=2241.02  LIRF=869.38  LIRF-unmatched=6032.70  MAE=165.09
+  E14: overall=371.57  matched=248.05  unmatched=2228.82  LIRF=864.59  LIRF-unmatched=6032.70  MAE=159.06
+  --- improvement (positive = E14 better) ---
+  overall RMSE: +6.70 (+1.77%)
+  matched RMSE: +8.41   unmatched RMSE: +12.20
+  LIRF RMSE: +4.79   LIRF-unmatched RMSE: +0.00
+  MAE: +6.03
+  per-airport RMSE delta: EDDF=+6.3 EDDM=+6.5 EGLL=+4.2 EHAM=-1.6 LEBL=+16.9 LEMD=+6.5 LFPG=+1.8 LIRF=+4.8 LSZH=+17.9 LTFM=+27.6
+  regime RMSE delta: 0-60s=-0.0 60-120s=+0.0 120-180s=-0.1 180-300s=+0.5 300-600s=+1.0 >600s=-79.7
+  surface features in top-20 gain: ['s_taxi_mean_10m', 's_taxi_med_30m', 's_taxi_p90_30m', 's_taxi_std_30m', 's_taxi_mean_30m', 's_rwy_dep_30m']
+  trees: E13=400  E14=217
+
+========== dec (December 2025) ==========
+val rows n=165,677  matched=164,028  unmatched=1,649  LIRF unmatched=88
+  E13: overall=245.38  matched=230.04  unmatched=886.46  LIRF=404.75  LIRF-unmatched=2786.14  MAE=153.32
+  E14: overall=231.09  matched=218.40  unmatched=787.71  LIRF=401.37  LIRF-unmatched=2786.14  MAE=145.90
+  --- improvement (positive = E14 better) ---
+  overall RMSE: +14.30 (+5.83%)
+  matched RMSE: +11.64   unmatched RMSE: +98.75
+  LIRF RMSE: +3.37   LIRF-unmatched RMSE: +0.00
+  MAE: +7.42
+  per-airport RMSE delta: EDDF=+9.3 EDDM=+42.2 EGLL=+2.0 EHAM=+4.5 LEBL=+20.5 LEMD=+4.5 LFPG=+16.8 LIRF=+3.4 LSZH=+8.9 LTFM=+33.3
+  regime RMSE delta: 0-60s=+0.0 60-120s=+0.1 120-180s=+0.1 180-300s=+0.2 300-600s=+1.8 >600s=+13.7
+  surface features in top-20 gain: ['s_taxi_mean_10m', 's_taxi_med_30m', 's_rwy_dep_30m', 's_arr_60m', 's_taxi_p90_30m']
+  trees: E13=159  E14=151
+
+
+################ RESEARCH INTERPRETATION ################
+Positive delta = E14 improved (lower RMSE than E13).
+
+--- janjul (Jan+Jul 2025 (primary)) ---
+1. Overall RMSE: 378.28 -> 371.57 (delta +6.70, +1.77%) -> IMPROVED
+2. Matched RMSE: 256.46 -> 248.05 (delta +8.41) -> IMPROVED
+3. Unmatched RMSE: 2241.02 -> 2228.82 (delta +12.20) -> IMPROVED
+4. LIRF-unmatched RMSE: 6032.70 -> 6032.70 (delta +0.00)
+5. Surface features in top-20 gain (E14): ['s_taxi_mean_10m', 's_taxi_med_30m', 's_taxi_p90_30m', 's_taxi_std_30m', 's_taxi_mean_30m', 's_rwy_dep_30m']
+6. Airports improved by E14 (delta > +1s): ['EDDF', 'EDDM', 'EGLL', 'LEBL', 'LEMD', 'LFPG', 'LIRF', 'LSZH', 'LTFM']; hurt (delta < -1s): ['EHAM']
+7. Regime deltas: 0-60s=-0.0; 60-120s=+0.0; 120-180s=-0.1; 180-300s=+0.5; 300-600s=+1.0; >600s=-79.7
+   best regime: 300-600s (+1.0); worst regime: >600s (-79.7)
+8. Traffic-acceleration residual relationship: see plots/08 (binned mean/median E13 residual vs s_traffic_acceleration)
+9. Consistency across splits: see both split blocks above.
+
+--- dec (December 2025 (sanity)) ---
+1. Overall RMSE: 245.38 -> 231.09 (delta +14.30, +5.83%) -> IMPROVED
+2. Matched RMSE: 230.04 -> 218.40 (delta +11.64) -> IMPROVED
+3. Unmatched RMSE: 886.46 -> 787.71 (delta +98.75) -> IMPROVED
+4. LIRF-unmatched RMSE: 2786.14 -> 2786.14 (delta +0.00)
+5. Surface features in top-20 gain (E14): ['s_taxi_mean_10m', 's_taxi_med_30m', 's_rwy_dep_30m', 's_arr_60m', 's_taxi_p90_30m']
+6. Airports improved by E14 (delta > +1s): ['EDDF', 'EDDM', 'EGLL', 'EHAM', 'LEBL', 'LEMD', 'LFPG', 'LIRF', 'LSZH', 'LTFM']; hurt (delta < -1s): []
+7. Regime deltas: 0-60s=+0.0; 60-120s=+0.1; 120-180s=+0.1; 180-300s=+0.2; 300-600s=+1.8; >600s=+13.7
+   best regime: >600s (+13.7); worst regime: 0-60s (+0.0)
+8. Traffic-acceleration residual relationship: see plots/08 (binned mean/median E13 residual vs s_traffic_acceleration)
+9. Consistency across splits: see both split blocks above.
+
+################ DECISION ################
+E14 ACCEPTED (consistent, meaningful improvement on both splits)
+Jan+Jul overall delta=+6.70 (+1.77%), matched delta=+8.41; Dec overall delta=+14.30, matched delta=+11.64
+
+RANKING-SAFETY CAVEAT:
+  The signal concentrates in the recent-taxi-behaviour rolling stats (s_taxi_mean/med/p90/std).
+  Those features consume OTHER departures' TAXITIME, which ranking.parquet BLANKS for DEP.
+  They are therefore valid for research fits on training holdouts but CANNOT be computed
+  on the real submission input. A ranking-safe variant (rolling MVT-AOBT instead of taxi)
+  must be tested before any of this transfers to a submission pipeline.

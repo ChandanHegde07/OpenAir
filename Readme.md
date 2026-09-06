@@ -36,8 +36,11 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E3 + LIRF unmatched `MVT−SCHED` | 410 | 304 | unmatched rule, not matched |
 | E9 residual LGB + override | 378.28 | 256.46 | L2 residual; E15 did not beat this |
 | **E16-A + disruption state (current)** | **376.04** (Dec **241.27**) | **253.82** (Dec **226.95**) | `dis_state_30m`; >30 min −15 s; >60 min not fixed |
+| E14-surface-state (research) | 371.57 (Dec 231.09) | 248.05 (Dec 218.40) | 31 strictly-causal features in residual LGB; **not ranking-safe yet** (see caveat) |
 
 Remaining matched error is still **tail compression**: flights >30 min are ~4.5% of matched rows and ~45% of matched SSE. E16-A unbiases high-disruption residuals (Q8 mean residual +60 → −3.5 s) but does not fix 1–24 h bombs or LFPG.
+
+**E14-surface-state caveat:** the dynamic surface-state features that produce the gains (rolling taxi mean/med/p90/std over the previous 10–30 min, same-runway departures) are strictly-causal in the training stream but consume *other departures’* `TAXITIME`, which `ranking.parquet` blanks for DEP. They are valid for research fits only; a ranking-safe variant (rolling `MVT−AOBT` instead of taxi) must be tested before transfer.
 
 ## Data policy
 
@@ -53,7 +56,9 @@ data/                # training_*.parquet plus ranking/submitting (not used in r
 analysis/            # Discovery (01–05, DISCOVERY_REPORT.md) and experiment packs
   E14/ E15/ E16A/    # figures, tables, reports for those experiments
 experiments/         # Runners E0–E16A and shared common.py
+  e14_features.py    # strictly-causal surface-state features (E14-surface-state)
   results/           # JSON/txt per experiment
+  results/E14/       # E14-surface-state: metrics.json, summary.txt, feature_importance.csv, plots/
 status.md            # Research journal: conclusions, failed approaches, current best
 ```
 
