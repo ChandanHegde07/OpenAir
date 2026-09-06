@@ -1,0 +1,12 @@
+{
+  "reproduced_matched_rmse": 256.45928301184216,
+  "reproduced_overall_rmse": 378.27544289123625,
+  "dec_matched_rmse": 230.04111805948864,
+  "dec_overall_rmse": 245.3842740102065,
+  "n_matched": 339046,
+  "mean_resid": -0.26984850613634964,
+  "mae": 157.83337264126553,
+  "tail30_sse_share": 0.45804523145651355,
+  "airport_eta2": 0.0015510072012989348,
+  "sr_eta2": 0.03987615658107124
+}

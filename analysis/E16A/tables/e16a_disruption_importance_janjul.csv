@@ -1,0 +1,7 @@
+feature,gain,rank,n_features
+dis_state_30m,67382835442,7,30
+arr_delay_mean_30m,43697835958,11,30
+dis_frac20_30m,17506358342,15,30
+dis_state_vs_hour,11609846842,18,30
+dis_frac30_30m,4276546650,23,30
+dis_n_dly20_60m,3358200088,24,30

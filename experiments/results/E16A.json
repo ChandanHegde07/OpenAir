@@ -1,0 +1,157 @@
+{
+  "generated_utc": "2026-09-06T04:01:02.460404+00:00",
+  "decision": {
+    "run_phase3": true,
+    "reason": "High disruption concentrates the tail (Q8/Q1 >30m rate 5.22, resid RMSE gap 175.4s) and this remains in 4 AOBT\u2212EOBT bins.",
+    "n_within_ae_signal": 4,
+    "overall_tail": true
+  },
+  "janjul_scores": {
+    "baseline": {
+      "n": 344419,
+      "n_matched": 339046,
+      "n_unmatched": 5373,
+      "n_lt20_matched": 255874,
+      "n_gt30_matched": 15140,
+      "n_gt60_matched": 775,
+      "rmse_overall": 378.27544289123625,
+      "rmse_matched": 256.45928301184216,
+      "mae_matched": 157.83337264126553,
+      "rmse_lt20_matched": 174.50922947165887,
+      "rmse_gt30_matched": 821.3702748364738,
+      "rmse_gt60_matched": 2375.848859579158,
+      "sse_share_gt30_matched": 0.45804523145651355,
+      "resid_mean_matched": -0.26984850613634964,
+      "rmse_unmatched": 2241.022901781275
+    },
+    "e16a": {
+      "n": 344419,
+      "n_matched": 339046,
+      "n_unmatched": 5373,
+      "n_lt20_matched": 255874,
+      "n_gt30_matched": 15140,
+      "n_gt60_matched": 775,
+      "rmse_overall": 376.04404209215693,
+      "rmse_matched": 253.82334387909276,
+      "mae_matched": 157.45507909086658,
+      "rmse_lt20_matched": 175.997907631098,
+      "rmse_gt30_matched": 806.7900462449898,
+      "rmse_gt60_matched": 2382.433132716593,
+      "sse_share_gt30_matched": 0.4511543930928583,
+      "resid_mean_matched": -5.828545671353964,
+      "rmse_unmatched": 2235.881208924138
+    }
+  },
+  "dec_scores": {
+    "baseline": {
+      "n": 165677,
+      "n_matched": 164028,
+      "n_unmatched": 1649,
+      "n_lt20_matched": 125738,
+      "n_gt30_matched": 6345,
+      "n_gt60_matched": 190,
+      "rmse_overall": 245.3842740102065,
+      "rmse_matched": 230.04111805948864,
+      "mae_matched": 151.03844404213353,
+      "rmse_lt20_matched": 162.12912088231073,
+      "rmse_gt30_matched": 733.5932134725731,
+      "rmse_gt60_matched": 2153.906988179516,
+      "sse_share_gt30_matched": 0.3933809342591802,
+      "resid_mean_matched": 11.87144760341831,
+      "rmse_unmatched": 886.4584880499616
+    },
+    "e16a": {
+      "n": 165677,
+      "n_matched": 164028,
+      "n_unmatched": 1649,
+      "n_lt20_matched": 125738,
+      "n_gt30_matched": 6345,
+      "n_gt60_matched": 190,
+      "rmse_overall": 241.2704503177242,
+      "rmse_matched": 226.94752296694259,
+      "mae_matched": 148.10396341720497,
+      "rmse_lt20_matched": 156.13440328366838,
+      "rmse_gt30_matched": 726.6966155835021,
+      "rmse_gt60_matched": 2100.692579284102,
+      "sse_share_gt30_matched": 0.39661489302579356,
+      "resid_mean_matched": 21.108326095565978,
+      "rmse_unmatched": 851.6397888255942
+    }
+  },
+  "phase2_corrs_janjul": {
+    "corr_dis_aobt_eobt": 0.45318583544242785,
+    "corr_dis_y": 0.17781627226745275,
+    "corr_dis_resid": 0.11423633669617687,
+    "corr_frac20_resid": 0.11382108616160315,
+    "corr_frac30_resid": 0.09956200180485393,
+    "corr_ndly60_resid": 0.07930127775643797,
+    "corr_arr_resid": 0.006901610404963197,
+    "corr_med_resid": 0.11716386606323752,
+    "corr_aobt_eobt_resid": 0.021666359181670317,
+    "corr_dis_abs_resid": 0.15986178807905152
+  },
+  "phase2_high_low_janjul": {
+    "n_q1": 42353,
+    "n_q8": 42227,
+    "mean_y_q1": 982.763251717706,
+    "mean_y_q8": 1219.368247803538,
+    "frac_gt30_q1": 0.023658300474582675,
+    "frac_gt30_q8": 0.12342813839486584,
+    "frac_gt60_q1": 0.0009444431327178712,
+    "frac_gt60_q8": 0.008785847917209369,
+    "resid_mean_q1": -27.678324040802412,
+    "resid_mean_q8": 59.615440477531486,
+    "resid_rmse_q1": 213.17690749021338,
+    "resid_rmse_q8": 388.58398122156075,
+    "mean_ae_q1": -67.6237338559252,
+    "mean_ae_q8": 993.2356785942643,
+    "gt30_rate_ratio_q8q1": 5.2171177100177175,
+    "resid_rmse_gap_q8q1": 175.40707373134737
+  },
+  "importance": [
+    {
+      "feature": "dis_state_30m",
+      "gain": 67382835442,
+      "rank": 7,
+      "n_features": 30
+    },
+    {
+      "feature": "arr_delay_mean_30m",
+      "gain": 43697835958,
+      "rank": 11,
+      "n_features": 30
+    },
+    {
+      "feature": "dis_frac20_30m",
+      "gain": 17506358342,
+      "rank": 15,
+      "n_features": 30
+    },
+    {
+      "feature": "dis_state_vs_hour",
+      "gain": 11609846842,
+      "rank": 18,
+      "n_features": 30
+    },
+    {
+      "feature": "dis_frac30_30m",
+      "gain": 4276546650,
+      "rank": 23,
+      "n_features": 30
+    },
+    {
+      "feature": "dis_n_dly20_60m",
+      "gain": 3358200088,
+      "rank": 24,
+      "n_features": 30
+    }
+  ],
+  "answers": {
+    "beyond_ae": "**Does disruption contain information not already in AOBT\u2212EOBT?** corr(dis_state, AOBT\u2212EOBT) = 0.453; corr(dis_state, residual) = 0.114. Within-bin AOBT\u2212EOBT signal in 4 quartiles. Yes, some leftover association remains after controlling own lateness.",
+    "tail": "**Does it reduce matched tail error?** >30 min 821.37 \u2192 806.79 (-14.58 s); >60 min 2375.85 \u2192 2382.43 (+6.58 s). Yes, modestly.",
+    "overall": "**Does it improve overall RMSE?** 378.28 \u2192 376.04 (-2.23); matched 256.46 \u2192 253.82 (-2.64).",
+    "bulk": "**Does it damage the <20m bulk?** 174.51 \u2192 176.00 (+1.49 s). No material bulk damage.",
+    "which": "**Which disruption feature is useful?** dis_state_30m (rank 7, gain 67382835442), arr_delay_mean_30m (rank 11, gain 43697835958), dis_frac20_30m (rank 15, gain 17506358342), dis_state_vs_hour (rank 18, gain 11609846842).",
+    "keep": "**Keep the family?** **Yes, provisionally** \u2014 tail and/or matched RMSE improved without wrecking <20 min."
+  }
+}

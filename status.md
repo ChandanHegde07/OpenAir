@@ -203,6 +203,24 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE: 315,272 IDs appear twice; 315,262 are DEP then ARR of the **same city-pair** at two challenge airports (median 84 min later = airborne). Same-FLIGHT_ID ARR is after this DEP → leakage if used for taxi-out. Stand-previous-ARR same type is common (83%) but corr(taxi-out, prev taxi-in)=0.12. Same-callsign previous DEP is typically **yesterday’s rotation** (median 24.1 h), corr 0.41 with actual previous taxi — but previous DEP TAXITIME is blank for other ranking DEPs.
 - NEW: REJECT FLIGHT_ID as aircraft ID. Stand turnaround taxi-in is weak. Callsign lag of actual TAXITIME is not fully ranking-safe; lag of `MVT−AOBT` remains optional.
 
+**C10. Remaining matched error is tail compression, not leftover traffic/geometry (E14)**
+
+- OLD: leftover matched RMSE ~256 s might be congestion, finer geometry, airport regimes, or clocks the tree missed.
+- EVIDENCE: reproduced matched RMSE 256.46. Mean residual −0.3 s. Residual vs actual taxi: −113 s (<10 min) to +1631 s (>60 min). y>30 min = 45.8% of SSE. Traffic/queue corr(resid)≈0. Stand×runway η²=0.040. Airport η²=0.002. `AOBT−EOBT` top quantile = 36% of SSE (disruption tails).
+- NEW: E15 should change the **residual objective / tail handling**, not add linear traffic, queue, or geometry tables.
+
+**C11. Tail compression is not a residual-objective artifact (E15)**
+
+- OLD (E14): a Huber / tail-weighted / two-stage residual might uncompress y>30 min without hurting the 10–20 min bulk.
+- EVIDENCE (frozen P_cal, features, split, LIRF fallback): L2 reproduced matched 256.46. Huber δ=228 s improves <20 RMSE 174.5→162.9 but **worsens** >30 821→933 and matched 256→268. Tail-weighted L2 improves >30 821→654 and >60 2376→1946 but **destroys** the bulk (<20 175→269, mean residual −120 s, matched 300). Two-stage P(y>30)+tail expert is the same trade, worse (matched 318, <20 275, mean p_hat 0.136 vs true 0.045). December copies the pattern.
+- NEW: **KEEP L2 residual.** REJECT Huber, tail weights, and two-stage mixture as replacements. The loss reallocates bulk vs tail error; it cannot identify E14 disruption tails from the frozen features. Do **not** run another residual-objective experiment.
+
+**C12. Causal airport push-delay state is not just own AOBT−EOBT (E16-A)**
+
+- OLD: leftover tail after E15 is unidentified given frozen features; airport disruption might already be in `AOBT−EOBT`.
+- EVIDENCE: `dis_state_30m` = mean of *other* flights' AOBT−EOBT in the previous 30 min (self excluded, AOBT ≤ scored MVT). corr vs own AOBT−EOBT = 0.45, vs frozen residual = 0.11 (own AOBT−EOBT vs residual = 0.02). Inside every own-lateness quartile, high vs low disruption still raises >30 min rate (8.1× / 1.6× / 1.6× / 1.4×) and flips residual mean from over- to under-prediction. Adding it to the frozen L2 residual: Jan+Jul matched 256.46→253.82, >30 821→807, <20 +1.5 s; December matched 230.04→226.95. Q8 mean residual +60→−3.5. >60 min Jan+Jul not improved. LIRF matched −11 s; LFPG ~0.
+- NEW: **KEEP `dis_state_30m` (+ `dis_frac20_30m`)** in the residual LightGBM. It is a real but small (~1% matched RMSE) uncompression of the operational disruption tail, not a fix for 1–24 h bombs. Do not sweep extra windows.
+
 **C9. LIRF unmatched has two TARGET regimes, but they are not separable at prediction time (E13)**
 
 - OLD (E11 / queue item 1): LIRF unmatched is bimodal (~15 min vs multi-hour). Gate `MVT−SCHED` so it is not applied to the normal half.
@@ -235,6 +253,9 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 | `queue` / `queue_rwy` / `push_*` | AOBT/MVT overlap queue | Yes (batch) | REJECT linear; unused by LGB top-gain |
 | `type_null` | `AIRCRAFT_TYPE_mvt` is null | Yes | KEEP — nearly = LIRF unmatched |
 | `mvt_sched` as unmatched LIRF predictor | `MVT_TIME − SCHED` | Yes | KEEP for LIRF unmatched / type-null |
+| `dis_state_30m` | mean other-flight `AOBT−EOBT`, AOBT in previous 30 min, self excluded | Yes (AOBT ≤ scored MVT) | KEEP — airport push-delay state (E16-A) |
+| `dis_frac20_30m` | fraction of those others with delay >20 min | Yes | KEEP small companion (E16-A) |
+| `arr_delay_mean_30m` | mean landing−schedule of already-landed ARR, 30 min | Yes | optional; gain without residual corr |
 
 ---
 
@@ -273,6 +294,9 @@ Jan+Jul 2025 unless noted. “Matched RMSE” drops rows with NaN prediction; �
 | E12 | LightGBM frozen repr. | clocks, geo, cats, traffic, queue | LGB 400/ES | Jan+Jul | 468 direct | **288** | **165** | Trees help matched; not unmatched LIRF | KEEP trees for matched |
 | E9 | Residual vs direct | E3 P_cal + LGB residual | LGB | Jan+Jul | 448 / **378** w/ rule | **256** | 165 | Residual wins Jan+Jul matched | KEEP residual + LIRF override |
 | E13 | LIRF unmatched regimes | MVT−SCHED threshold, stand/hour/dest/prefix | E3 + gated rule | Jan+Jul | 398 (T>2h) / 410 (always) | 304 | 189 | Two y-regimes; not separable at prediction time | KEEP always-on `MVT−SCHED`; REJECT gating |
+| E14 | Matched residual diagnosis | current best, no new features | residual LGB reproduced | Jan+Jul | 378 | **256.46** | 158 matched | Tail compression + LIRF/LFPG disruption tails | KEEP diagnosis; E15 = tail-aware residual |
+| E15 | Tail-aware residual objective | frozen E14 features | Huber / tail-weight / two-stage | Jan+Jul | 378 / 384 / 412 / 426 | **256** / 268 / 300 / 318 | 158 / 157 / 202 / 196 matched | Huber helps bulk, hurts tail; B/C help tail, wreck bulk | KEEP L2; REJECT A/B/C; no more loss experiments |
+| E16-A | Airport disruption state | causal other-flight AOBT−EOBT 30m | E14 L2 + dis_state | Jan+Jul | **376.04** | **253.82** | 157.46 matched | Not just own AOBT−EOBT; Q8 resid +60→−3.5; >30 −15s; >60 no | KEEP `dis_state_30m`; small gain |
 
 December of current best (E9 residual LGB + LIRF unmatched `MVT−SCHED`): overall **245**, matched **230**, MAE **153**. Direct LGB + override: overall 241, matched 225.
 
@@ -610,7 +634,87 @@ EOBT/WTC/aircraft type cannot be used: they are null on this slice.
 **Oracle ceiling (not a deployable rule):** route normal→P_cal and extreme→`MVT−SCHED` would recover ~43 s overall vs always-on (≈367 vs 410) if we magically knew y. We do not.
 
 - **Interpretation:** The current rule trades a large error on ~half of LIRF unmatched (the 15 min flights) for a much larger save on the multi-hour half. RMSE prefers that trade. We cannot make the trade only on the extreme half with available prediction-time fields, because late-vs-schedule is common to both.
-- **Decision:** KEEP always-on `MVT−SCHED` for unmatched LIRF / type_null. REJECT MVT−SCHED thresholds, stand/hour/dest/prefix gates. Do not claim a regime classifier. **Next:** matched residual-error analysis (where LightGBM actually moves typical flights), not more LIRF gates.
+- **Decision:** KEEP always-on `MVT−SCHED` for unmatched LIRF / type_null. REJECT MVT−SCHED thresholds, stand/hour/dest/prefix gates. Do not claim a regime classifier. **Next:** E14 matched residual-error analysis.
+
+---
+
+### E14 — Matched residual diagnosis
+
+- **Question:** Where does the remaining ~256 s matched RMSE come from?
+- **Hypothesis:** leftover geometry, congestion, airport intercepts, clocks, or tail compression / irreducible noise.
+- **Features:** none new. Reproduce E9 residual LightGBM + E11 LIRF override.
+- **Validation:** train 2025 except Jan+Jul; val Jan+Jul 2025. December stress. `training_*.parquet` only.
+- **Reproduction:** overall 378.28, matched **256.46** (delta 0.00 vs E9), matched MAE 157.83. December matched 230.04.
+
+**Findings (matched Jan+Jul, N=339,046)**
+
+- Mean residual −0.3 s: **not globally biased**. July RMSE 277 vs January 228.
+- **Tail compression is the main structure:** mean residual −113 s if y<10 min, +370 s at 30–45 min, +1631 s if y>60 min. 775 flights >60 min = **19.6% of SSE**. 4.5% of flights >30 min = **45.8% of SSE**. Worst 1% of errors = 40.9% of SSE.
+- LIRF matched RMSE 463 and **25% of SSE**, but mean residual only +5 s (variance/tails, including one 87,002 s point). η² airport = 0.002.
+- Stand×runway η² of residual = 0.040. Geometry leftovers modest.
+- Traffic/queue corr(resid) ≈ 0. Queue Q1 vs Q8 mean residual 0 vs +2 s. Confirms E4/E5.
+- `AOBT−EOBT` Q8 (largest push delay) RMSE 452 and **36% of SSE**. Hard disrupted flights, still shrunk.
+- Hour / WTC / type η² ≤ 0.006. Missingness among matched is negligible.
+- Worst 50: almost all July, actual 1.5–24 h, LIRF 25 and LFPG, large `AOBT−EOBT`, queue not extreme.
+
+Artifacts: `analysis/E14/figures/`, `tables/`, `reports/E14_report.md`.
+
+- **Decision:** remaining matched error is **tail compression + disruption tails**, not unused congestion or missing stand–runway means. **E15 = tail-aware residual objective on frozen features.** Do not add feature families first.
+
+---
+
+### E15 — Tail-aware residual objective (frozen features)
+
+- **Question:** Can Huber, tail-weighted L2, or (if those fail) a two-stage `P(y>30 min)` + tail residual uncompress the E14 tail without degrading y<20 min?
+- **Frozen:** `P_cal`, E12 feature matrix, Jan+Jul / December splits, LIRF unmatched `MVT−SCHED`, preprocessing, LGB capacity (400 / 63 leaves / ES 40 / seed 1).
+- **Validation:** train 2025 except Jan+Jul; val Jan+Jul 2025. December stress. `training_*.parquet` only.
+- **Reproduction:** L2 matched RMSE **256.46** (delta −0.00 vs E14).
+
+**Jan+Jul matched**
+
+| Variant | Overall | Matched | MAE | <20 | >30 | >60 | SSE share >30 | Mean resid |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| L2 (E14) | **378.28** | **256.46** | **157.83** | 174.51 | 821.37 | 2375.85 | 45.8% | −0.3 |
+| A Huber δ=228 s | 384.21 | 267.66 | 156.66 | **162.90** | 932.83 | 2774.53 | 54.2% | +17.6 |
+| B tail-weighted | 411.87 | 300.34 | 201.78 | 268.87 | 653.67 | 1946.48 | 21.2% | −119.9 |
+| C two-stage | 426.31 | 317.99 | 195.68 | 274.95 | **623.31** | **1872.68** | 17.2% | −84.4 |
+
+December: L2 245.38 / 230.04 still best; A/B/C repeat the same bulk-vs-tail trade.
+
+- A: Huber is the wrong direction for RMSE tails. Bulk improves, tail and matched RMSE worsen.
+- B: tail RMSE does fall, but by overpredicting everyone (mean residual −120 s). Matched RMSE +44 s.
+- C run because A/B failed the “tail without bulk damage” gate. Best tail RMSE, worst contest RMSE. Gate `p_hat` mean 0.136 vs true 4.5%.
+- Winner = **L2**. >30 / >60 did **not** improve under the winner. <20 did **not** degrade under the winner. B/C improve the tail only by degrading the bulk.
+
+Artifacts: `analysis/E15/figures/`, `tables/`, `reports/E15_report.md`.
+
+- **Decision:** KEEP L2 residual. REJECT Huber, tail-weighted L2, and two-stage mixture. **Do not run another residual-objective experiment.** Remaining tail is unidentified given frozen features (E14 disruption tails), not an L2 artifact.
+
+---
+
+### E16-A — Airport / network disruption state
+
+- **Question:** Does a causal airport push-delay state distinguish a normal late push from a systemic disruption, beyond own `AOBT−EOBT`?
+- **Features:** `dis_state_30m` = mean of *other* flights' `AOBT−EOBT` with AOBT in the previous 30 min (self excluded). Companions: frac>20/30, delayed-push counts, airport×hour anomaly, already-landed arrival delay. No new clocks of the scored flight.
+- **Frozen:** `P_cal`, split, LIRF unmatched override, L2 residual capacity.
+- **Validation:** Jan+Jul 2025 holdout; December stress. `training_*.parquet` only.
+
+**Phase 2 (frozen model, Jan+Jul matched):** Q8 vs Q1 of `dis_state_30m`: >30 min rate 2.37%→12.34% (×5.22), residual RMSE 213→389, mean residual −28→+60, 28.6% of SSE. corr(state, own AOBT−EOBT)=0.45; corr(state, residual)=0.11. Inside all four own-lateness quartiles the >30 min rate still rises with disruption (×8.1 / 1.6 / 1.6 / 1.4). **Not redundant with AOBT−EOBT.**
+
+**Phase 3 (same L2 residual + disruption columns)**
+
+| Split | Overall | Matched | MAE | <20 | >30 | >60 |
+|---|---:|---:|---:|---:|---:|---:|
+| Jan+Jul baseline | 378.28 | 256.46 | 157.83 | 174.51 | 821.37 | 2375.85 |
+| Jan+Jul E16-A | **376.04** | **253.82** | 157.46 | 176.00 | 806.79 | 2382.43 |
+| Dec baseline | 245.38 | 230.04 | 151.04 | 162.13 | 733.59 | 2153.91 |
+| Dec E16-A | **241.27** | **226.95** | 148.10 | 156.13 | 726.70 | 2100.69 |
+
+Q8 mean residual +60 → −3.5. `dis_state_30m` rank 7. LIRF matched −11 s; LFPG ~0. >60 min not improved on the primary split.
+
+Artifacts: `analysis/E16A/`.
+
+- **Decision:** KEEP `dis_state_30m` (+ `dis_frac20_30m`). Small consistent matched-RMSE gain, not an E14 solution. Do not sweep extra disruption windows.
 
 ---
 
@@ -631,6 +735,9 @@ EOBT/WTC/aircraft type cannot be used: they are null on this slice.
 | `FLIGHT_ID` as aircraft/turnaround | It is a city-pair NM flight; paired ARR is after DEP (E7). |
 | LightGBM without LIRF unmatched override | Matched improves; overall still ~448–468 vs 410 with the simple rule (E12). |
 | Gate `MVT−SCHED` on LIRF unmatched via threshold/stand/hour/dest/prefix | Two y-regimes exist, but `MVT−SCHED` is large in both; gates do not generalize (E13). |
+| Huber residual (E15-A) | Improves <20 min RMSE, worsens >30/>60 and matched RMSE. Robust loss down-weights the tail we need (E15). |
+| Tail-weighted residual (E15-B) | >30/>60 RMSE fall; bulk overpredicted (mean residual −120 s); matched RMSE 256→300 (E15). |
+| Two-stage P(y>30)+tail residual (E15-C) | Best tail RMSE, worst matched/overall; gate fires at 14% vs true 4.5%; December unmatched 886→1365 (E15). |
 
 ---
 
@@ -667,38 +774,46 @@ EOBT/WTC/aircraft type cannot be used: they are null on this slice.
 - Do not use `FLIGHT_ID` as an aircraft key.
 - Traffic/queue stay out of the linear core and were not used by LGB top-gain; do not re-open without a new hypothesis.
 - Do not start a large hyperparameter search.
+- Residual trainer stays **L2**. Do not replace it with Huber, tail weights, or a P(y>30) mixture (E15). Do not start a residual-objective grid.
+- Keep causal `dis_state_30m` (other-flight AOBT−EOBT, 30 min, self excluded) in the residual model (E16-A). Do not sweep extra disruption aggregations without a new hypothesis.
 
 ---
 
 ## Current best model
 
-**Name:** E9 residual LightGBM + E11 LIRF unmatched override.
+**Name:** E9 residual LightGBM + E11 LIRF unmatched override + E16-A disruption state.
 
 ```
 P_cal = per-airport OLS(mvt_aobt, aobt_eobt, geo_mean)   # unmatched → geo_mean
 if unmatched and (airport==LIRF or type_null):
-    y_hat = MVT - SCHED          # optional clip to 24h
+    y_hat = MVT - SCHED
 else:
-    y_hat = P_cal + LightGBM_residual(clocks, geo, stand, dest, airline, hour, ...)
+    y_hat = P_cal + LightGBM_residual_L2(clocks, geo, stand, dest, airline,
+                                         dis_state_30m, dis_frac20_30m, ...)
 ```
 
 | Split | Overall RMSE | MAE | Matched RMSE | Unmatched RMSE | LIRF | EGLL | LFPG | LTFM |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Jan+Jul residual+override | **378.28** | 165.09 | **256.46** | 2241 | 869 | 285 | 585 | 277 |
+| Jan+Jul E16-A residual+override | **376.04** | 157.46 matched | **253.82** | 2236 | — | — | — | — |
+| Jan+Jul residual+override (no disruption) | 378.28 | 165.09 | 256.46 | 2241 | 869 | 285 | 585 | 277 |
 | Jan+Jul E3+override (no tree) | 410.02 | 189.85 | 303.53 | 2228 | 909 | 360 | 612 | 319 |
 | Jan+Jul E3 only | 576.63 | 191.04 | 303.53 | 3937 | 1721 | 360 | 612 | 319 |
-| Dec residual+override | 245.38 | 153.32 | 230.04 | 886 | 405 | 239 | 285 | 252 |
+| Dec E16-A residual+override | **241.27** | 148.10 matched | **226.95** | 852 | — | — | — | — |
+| Dec residual+override (no disruption) | 245.38 | 153.32 | 230.04 | 886 | 405 | 239 | 285 | 252 |
 | Dec direct LGB+override | 240.79 | 150.09 | 225.29 | 881 | 403 | 244 | 281 | 245 |
 
 Vs E3-only: Jan+Jul overall 577 → 378, matched 304 → 256, MAE 191 → 165.  
 Most of the overall drop is the LIRF unmatched rule (577 → 410) not the tree.
 
+E15 left the objective unchanged. E16-A adds causal airport push-delay state (`dis_state_30m`) on top of the same L2 residual: Jan+Jul matched 256.46→253.82, December 230.04→226.95.
+
 ---
 
 ## Open questions / research queue
 
-1. **Matched residual errors (E14):** where LightGBM still fails on typical flights (airports, stands, >1 h matched, not LIRF unmatched).
-2. **LIRF unmatched (closed as a gate problem):** always `MVT−SCHED`. Further gains need a gate-vs-taxi delay split, which unmatched rows do not provide (no AOBT/BLOCK). Low priority unless a new prediction-time feature appears.
+1. **E15 closed.** Huber, tail-weighted L2, and two-stage P(y>30)+tail expert all lose to L2 on contest RMSE. Do not reopen residual-objective work.
+1b. **E16-A kept (small).** `dis_state_30m` is not own AOBT−EOBT. Do not sweep extra disruption windows. Remaining >60 min / LFPG tails are still open.
+2. **LIRF unmatched (closed as a gate problem):** always `MVT−SCHED`. Further gains need a gate-vs-taxi delay split, which unmatched rows do not provide (no AOBT/BLOCK).
 3. **Callsign lag of `MVT−AOBT`** (not actual TAXITIME) — E7 corr 0.41 used leaky labels.
 4. **E8** calendar/route: ADES already high LGB gain; explicit airport×hour maybe redundant.
 5. **E10** hidden BLOCK: for LIRF unmatched, `BLOCK_hat ≈ SCHED` then `TAXI_hat = MVT − SCHED` is exactly the always-on E11 rule. Does not fix the normal unmatched half (their BLOCK is also late).
@@ -724,3 +839,6 @@ Most of the overall drop is the LIRF unmatched rule (577 → 410) not the tree.
 - **2026-09-05 E12/E9:** Residual LGB matched 304→256. Direct weaker on Jan+Jul. Trees do not replace the LIRF rule. Combined overall **378**. Traffic/queue unused. Current best updated. C8 recorded.
 - **2026-09-05 data policy:** Binding training-only rule. Training corpus = 12 `training_*.parquet` files. `ranking.parquet` / `submitting.parquet` must not enter fits, stats, encodings, or HP. Loaders in `experiments/common.py` now refuse non-`training_` files. E11 ranking descriptive peek removed from experiment code; it never entered fitted parameters. E0–E12 RMSE remains training-holdout only.
 - **2026-09-05 E13:** Two LIRF unmatched TAXITIME regimes confirmed. `MVT−SCHED` is ~6000 s in both (gate delay vs taxi). Thresholds/flags cannot gate the rule stably. KEEP always-on `MVT−SCHED`. C9 recorded. Current best pipeline unchanged.
+- **2026-09-05 E14:** Reproduced matched RMSE 256.46. Remaining error is tail compression (y>30 min = 46% SSE) plus LIRF/LFPG disruption tails. Traffic/geometry leftovers small. C10 recorded. Recommended E15: tail-aware residual, no new feature family. Artifacts in `analysis/E14/`.
+- **2026-09-06 E15:** Frozen-feature residual-objective test. L2 reproduced 256.46. Huber helps bulk, hurts tail. Tail-weight and two-stage help >30/>60 by overpredicting the bulk (matched 300 / 318). Winner = L2. C11 recorded. No further loss-function experiment. Artifacts in `analysis/E15/`.
+- **2026-09-06 E16-A:** Causal airport push-delay state (other flights' AOBT−EOBT, 30 min, self excluded) is not redundant with own AOBT−EOBT. L2 + `dis_state_30m`: Jan+Jul matched 256.46→253.82, >30 821→807, >60 not improved; December matched 230.04→226.95. KEEP the family, small gain. C12 recorded. Artifacts in `analysis/E16A/`.

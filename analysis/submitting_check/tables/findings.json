@@ -1,0 +1,110 @@
+{
+  "generated_utc": "2026-09-06T04:28:08.015075+00:00",
+  "submitting_verify": {
+    "path": "C:\\Users\\mukun\\prc\\OpenAir\\data\\submitting.parquet",
+    "n": 344841,
+    "n_unique_mvt_id": 344841,
+    "columns": [
+      "MVT_ID_mvt",
+      "TAXITIME_SEC_mvt"
+    ],
+    "schema": {
+      "MVT_ID_mvt": "Float64",
+      "TAXITIME_SEC_mvt": "Int32"
+    },
+    "taxitime_null": 344841,
+    "taxitime_non_null": 0,
+    "schema_ok": true,
+    "unique_ok": true,
+    "target_all_null": true,
+    "n_ok": true
+  },
+  "rank_meta": {
+    "ranking_rows": 689534,
+    "ranking_dep": 344841,
+    "ranking_arr": 344693,
+    "unmatched": 5290,
+    "type_null": 388,
+    "lirf_unmatched": 383,
+    "tmin": "2026-01-01 00:01:55+00:00",
+    "tmax": "2026-07-31 23:56:19+00:00",
+    "months": [
+      {
+        "month": 1,
+        "len": 152719
+      },
+      {
+        "month": 7,
+        "len": 192122
+      }
+    ]
+  },
+  "rank_summary": {
+    "name": "ranking_2026",
+    "n": 344841,
+    "min": -3916.55060216117,
+    "max": 111654.0,
+    "mean": 1031.6202202567881,
+    "median": 960.1352033331434,
+    "std": 625.2217295191138,
+    "p1": 394.44699174471435,
+    "p5": 553.2560525757608,
+    "p25": 771.4545870347317,
+    "p50": 960.1352033331434,
+    "p75": 1199.4808781975687,
+    "p95": 1677.127539132301,
+    "p99": 2382.7160456242063,
+    "lt_5m": 0.0035697611362917984,
+    "lt_10m": 0.07577115250216766,
+    "10_20m": 0.6746384565640396,
+    "20_30m": 0.214843942570634,
+    "30_60m": 0.03287892100997271,
+    "gt_60m": 0.001867527353185961,
+    "n_lt_5m": 1231,
+    "n_lt_10m": 26129,
+    "n_10_20m": 232643,
+    "n_20_30m": 74087,
+    "n_30_60m": 11338,
+    "n_gt_60m": 644,
+    "n_negative": 51,
+    "n_gt_4h": 44,
+    "n_gt_24h": 2
+  },
+  "val_summary": {
+    "name": "janjul_2025_val",
+    "n": 344419,
+    "min": -26577.0,
+    "max": 93535.0,
+    "mean": 1021.3564304636326,
+    "median": 958.7176073044095,
+    "std": 606.704215157187,
+    "p1": 365.28614113169056,
+    "p5": 534.5399513938031,
+    "p25": 764.2185736509789,
+    "p50": 958.7176073044095,
+    "p75": 1197.3968487779482,
+    "p95": 1650.2314423269881,
+    "p99": 2252.8513498854945,
+    "lt_5m": 0.004755835189115583,
+    "lt_10m": 0.08670253383233793,
+    "10_20m": 0.6653843138735087,
+    "20_30m": 0.2174763877718709,
+    "30_60m": 0.028613404022426174,
+    "gt_60m": 0.0018233604998562796,
+    "n_lt_5m": 1638,
+    "n_lt_10m": 29862,
+    "n_10_20m": 229171,
+    "n_20_30m": 74903,
+    "n_30_60m": 9855,
+    "n_gt_60m": 628,
+    "n_negative": 99,
+    "n_gt_4h": 47,
+    "n_gt_24h": 1
+  },
+  "val_rmse_overall": 376.04404209215693,
+  "n_fallback": 383,
+  "n_fallback_val": 397,
+  "looks_reasonable": false,
+  "verdict": "Distribution checks flagged something unusual (negatives, extreme tails, or a large shift vs Jan+Jul 2025 val preds). See tables. The model was not changed.",
+  "sanity_narrative": "Ranking predictions are +10.3 s mean / +1.4 s median vs Jan+Jul 2025 val preds. Share predicted \u226530 min differs by +0.43 pp. Largest airport mean shift: EHAM 72.3 s. Negatives=51, >24h=2, >4h=44."
+}

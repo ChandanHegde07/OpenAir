@@ -1,49 +1,61 @@
 # OpenAir
 
-OpenAir is an entry for the [PRC Data Challenge 2026](https://prc-data-challenge-2026.netlify.app/), organised by the EUROCONTROL Performance Review Commission. The goal is to predict the **taxi-out time** of flights at 10 major European airports and be ranked by Root Mean Square Error (RMSE).
+OpenAir is an entry for the [PRC Data Challenge 2026](https://prc-data-challenge-2026.netlify.app/), organised by the EUROCONTROL Performance Review Commission. The goal is to predict the **taxi-out time** of flights at 10 major European airports, ranked by RMSE.
 
-## Project Idea
+Target: `TAXITIME_SEC_mvt` for departures (`MVT_TIME − BLOCK_TIME`). Airports: LTFM, EHAM, LFPG, EGLL, EDDF, LEMD, LEBL, EDDM, LIRF, LSZH.
 
-Build a machine learning model that predicts taxi-out time for every departure using the 2025 movements dataset. Features drawn from the data:
+## Current model
 
-- **Airport & runway**: taxi distance depends on the stand, runway, and airport layout (EDDF, LFPG, EGLL, ...).
-- **Aircraft & wake category**: heavies taxi and hold differently (A380, heavy/medium/light).
-- **Market segment**: mainline, low-cost, regional, charter, all-cargo have different turnaround behaviour.
-- **Time factors**: hour-of-day, day-of-week, and month to capture congestion peaks and seasonality.
-- **Congestion**: rolling count of departures and arrivals in the minutes before pushback as a proxy for airport congestion.
+```
+P_cal = per-airport OLS(MVT−AOBT, AOBT−EOBT, geo_mean)
+if unmatched and airport == LIRF:
+    y_hat = MVT − SCHED
+else:
+    y_hat = P_cal + LightGBM_L2_residual(clocks, geometry, stand, dest, airline,
+                                         dis_state_30m, ...)
+```
+
+What is in the model, and why:
+
+- **Two clocks:** `MVT−AOBT` (NM off-block to takeoff) and `AOBT−EOBT` (lateness vs plan). These are not interchangeable with `MVT−EOBT` / `MVT−SCHED` as taxi substitutes.
+- **Stand×runway geometry:** train-split `geo_mean` hierarchy.
+- **LIRF unmatched override:** joint NM miss at LIRF is almost always type-null and is scored with `MVT−SCHED` (always on; gating failed in E13).
+- **Residual LightGBM (L2):** trees on `y − P_cal`. Direct trees are weaker on the ranking analogue. Huber / tail-weighted / two-stage losses lost to L2 (E15).
+- **Airport disruption state (E16-A):** mean of *other* flights’ `AOBT−EOBT` in the previous 30 min (AOBT already known at scored takeoff; self excluded). Not redundant with own `AOBT−EOBT`.
+
+Linear traffic/queue, airport additive bias, and `FLIGHT_ID` as a tail number were tested and rejected.
 
 ## Status
 
-Research-phase results are tracked in [`status.md`](status.md), the permanent research journal. Highlights (January + July 2025 holdout):
+Research is logged in [`status.md`](status.md). Numbers below are **January + July 2025** holdouts from `training_*.parquet` (December in parentheses).
 
-| Model | Overall RMSE | Matched RMSE | MAE |
-|---|---:|---:|---:|
-| Airport mean | 660 | 440 | — |
-| E3 linear (clocks + geometry) | 577 | 304 | 191 |
-| E11 LIRF unmatched override added | 410 | 304 | 190 |
-| E9 residual LightGBM + override (current best) | **378** | **256** | 165 |
+| Model | Overall RMSE | Matched RMSE | Notes |
+|---|---:|---:|---|
+| Airport mean | 660 | 440 | |
+| E3 linear (clocks + geometry) | 577 | 304 | |
+| E3 + LIRF unmatched `MVT−SCHED` | 410 | 304 | unmatched rule, not matched |
+| E9 residual LGB + override | 378.28 | 256.46 | L2 residual; E15 did not beat this |
+| **E16-A + disruption state (current)** | **376.04** (Dec **241.27**) | **253.82** (Dec **226.95**) | `dis_state_30m`; >30 min −15 s; >60 min not fixed |
 
-Key findings: `MVT − AOBT` and `AOBT − EOBT` are the two useful clocks; historical stand×runway `geo_mean` adds ~14 s; linear traffic/queue features are redundant; LIRF flights with no NM match are a separate generating process scored with `MVT − SCHED`.
+Remaining matched error is still **tail compression**: flights >30 min are ~4.5% of matched rows and ~45% of matched SSE. E16-A unbiases high-disruption residuals (Q8 mean residual +60 → −3.5 s) but does not fix 1–24 h bombs or LFPG.
+
+## Data policy
+
+**Train, fit, calibrate, encode, and select using `data/training_*.parquet` only.**  
+`ranking.parquet` / `submitting.parquet` must not enter fits, statistics, or feature engineering. `experiments/common.py` refuses to load them.
+
+Validation: train all 2025 months except January and July; hold out Jan+Jul. Stress: train Jan–Nov, score December. Rolling features use previous flights only (`shift 1`). Geometry and airport×hour tables are fit on the training split only. Always report **overall** RMSE (dominated by unmatched LIRF) and **matched** RMSE.
 
 ## Repository layout
 
 ```
-analysis/            # Discovery scripts (01..05) + DISCOVERY_REPORT.md
-  output/            # Analysis run outputs
-experiments/         # E0-E13 experiment runners + shared common.py
-  results/           # Saved results (JSON/txt) per experiment
-air-data/            # Raw parquet files (gitignored)
-status.md            # Research journal: conclusions, decisions, experiment log
+data/                # training_*.parquet plus ranking/submitting (not used in research fits)
+analysis/            # Discovery (01–05, DISCOVERY_REPORT.md) and experiment packs
+  E14/ E15/ E16A/    # figures, tables, reports for those experiments
+experiments/         # Runners E0–E16A and shared common.py
+  results/           # JSON/txt per experiment
+status.md            # Research journal: conclusions, failed approaches, current best
 ```
-
-Data policy is binding: **train, fit, calibrate, encode, and select using `training_*.parquet` only**. `ranking.parquet` / `submitting.parquet` must never enter fits or feature statistics, and `experiments/common.py` refuses to load them.
-
-## Validation protocol
-
-- Primary split: train all 2025 months except January and July; validate January + July 2025.
-- Sanity split: train Jan–Nov, validate December.
-- Rolling features use strictly previous flights (shift 1); geometry/calibration tables are fit on the training split only.
-- Always report both overall RMSE (dominated by ~1% unmatched rows) and matched RMSE.
 
 ## License
 
