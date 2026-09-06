@@ -1,0 +1,54 @@
+
+========== janjul (Jan+Jul 2025) ==========
+  E17-A0: overall=376.04 matched=253.82 unmatched=2235.88 MAE(matched)=157.46
+  E17-A1: overall=375.07 matched=251.95 unmatched=2238.80 MAE(matched)=156.26
+  E17-A2: overall=374.88 matched=251.98 unmatched=2236.56 MAE(matched)=155.76
+  E17-A0 vs recorded E16-A (376.04): +0.00 -> REPRODUCED
+  --- RMSE improvement vs E17-A0 (E16-A) ---
+    rmse: A0=376.04 A1=375.07 (Δ-0.97) A2=374.88 (Δ-1.16)
+    rmse_matched: A0=253.82 A1=251.95 (Δ-1.87) A2=251.98 (Δ-1.85)
+    rmse_unmatched: A0=2235.88 A1=2238.80 (Δ+2.92) A2=2236.56 (Δ+0.68)
+    rmse_LIRF: A0=863.58 A1=862.35 (Δ-1.23) A2=862.88 (Δ-0.70)
+    rmse_lirf_unmatched: A0=6032.70 A1=6032.70 (Δ+0.00) A2=6032.70 (Δ+0.00)
+    mae: A0=164.67 A1=163.37 (Δ-1.30) A2=162.80 (Δ-1.86)
+    per-airport Δ (A2−A0): EDDF=-0.6 EDDM=-5.4 EGLL=-0.5 EHAM=+1.9 LEBL=-2.1 LEMD=-1.6 LFPG=-1.6 LIRF=-0.7 LSZH=+5.9 LTFM=-6.5
+    SSE overall: A0=4.870e+10 A1=4.845e+10 A2=4.840e+10
+
+========== dec (December 2025) ==========
+  E17-A0: overall=241.27 matched=226.95 unmatched=851.64 MAE(matched)=148.10
+  E17-A1: overall=236.89 matched=222.29 unmatched=850.20 MAE(matched)=145.83
+  E17-A2: overall=238.44 matched=224.62 unmatched=832.61 MAE(matched)=146.99
+  --- RMSE improvement vs E17-A0 (E16-A) ---
+    rmse: A0=241.27 A1=236.89 (Δ-4.38) A2=238.44 (Δ-2.83)
+    rmse_matched: A0=226.95 A1=222.29 (Δ-4.66) A2=224.62 (Δ-2.32)
+    rmse_unmatched: A0=851.64 A1=850.20 (Δ-1.44) A2=832.61 (Δ-19.03)
+    rmse_LIRF: A0=399.23 A1=397.10 (Δ-2.12) A2=400.91 (Δ+1.68)
+    rmse_lirf_unmatched: A0=2786.14 A1=2786.14 (Δ+0.00) A2=2786.14 (Δ+0.00)
+    mae: A0=150.16 A1=148.00 (Δ-2.16) A2=148.95 (Δ-1.21)
+    per-airport Δ (A2−A0): EDDF=-3.5 EDDM=-8.6 EGLL=+2.2 EHAM=-3.5 LEBL=-1.0 LEMD=-2.8 LFPG=-5.9 LIRF=+1.7 LSZH=-0.2 LTFM=-6.4
+    SSE overall: A0=9.644e+09 A1=9.297e+09 A2=9.419e+09
+
+
+################ ABLATION ################
+Question 1 — does airport-level operational memory improve E16-A?  (E17-A0 vs E17-A1)
+  Jan+Jul overall -0.97, matched -1.87; Dec overall -4.38
+  -> YES
+Question 2 — does runway-local memory add information?  (E17-A1 vs E17-A2)
+  Jan+Jul overall -0.19, matched +0.03; Dec overall +1.55
+  -> partial
+Question 3 — can ranking-safe memory recover the E14 improvement?  (E16-A vs E17-A2 vs E14 ref)
+  E16-A=376.04  E17-A2=374.88  E14(unsafe)=371.57
+  gap to E14 reference: +3.31 (E17-A2 does NOT recover E14)
+
+################ DECISION ################
+  [x] 1 completely ranking-safe (no TAXITIME features)
+  [x] 2 E16-A baseline reproduced
+  [x] 3 primary validation RMSE improves (A2 < A0)
+  [x] 4 no leakage (strictly < t, no TAXITIME)
+  [x] 5 consistent on December
+  [x] 6 plots explain improvement
+VERDICT: INCONCLUSIVE
+REASON: Jan+Jul overall 376.04 -> 374.88 (-1.16); matched 253.82 -> 251.98 (-1.84); Dec overall 241.27 -> 238.44 (-2.83).
+
+Primary validation (Jan+Jul):
+  E16-A = 376.04   E17-A1 = 375.07   E17-A2 = 374.88

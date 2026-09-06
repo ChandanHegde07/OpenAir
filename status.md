@@ -843,3 +843,39 @@ E15 left the objective unchanged. E16-A adds causal airport push-delay state (`d
 - **2026-09-06 E15:** Frozen-feature residual-objective test. L2 reproduced 256.46. Huber helps bulk, hurts tail. Tail-weight and two-stage help >30/>60 by overpredicting the bulk (matched 300 / 318). Winner = L2. C11 recorded. No further loss-function experiment. Artifacts in `analysis/E15/`.
 - **2026-09-06 E16-A:** Causal airport push-delay state (other flights' AOBT−EOBT, 30 min, self excluded) is not redundant with own AOBT−EOBT. L2 + `dis_state_30m`: Jan+Jul matched 256.46→253.82, >30 821→807, >60 not improved; December matched 230.04→226.95. KEEP the family, small gain. C12 recorded. Artifacts in `analysis/E16A/`.
 - **2026-09-06 E14-surface-state (spec, `experiments/`):** Leakage-safe dynamic surface-state features (strictly `< t`) added to the residual LGB of the E13 architecture (P_cal unchanged; LIRF override unchanged). Refit E13 reproduces 378.28/256.46 exactly. E14 (31 new cols: dep/arr 5-60m counts, same-runway 10/30m, time-since, rates, rolling taxi mean/med/p90/std, pressure/accel/burst): Jan+Jul overall 378.28→**371.57** (matched 256.46→248.05, MAE 165→159); December 245.38→**231.09** (matched 230.04→218.40). Gain concentrated in rolling-taxi stats + `s_rwy_dep_30m`; traffic counts ≈0. All airports improve except EHAM (Jan+Jul). **Caveat:** the winning features consume other DEPs' `TAXITIME` — NOT ranking-safe (ranking blanks DEP TAXITIME); a ranking-safe variant (rolling `MVT−AOBT`) must be tested before transfer. Artifacts: `experiments/run_e14_dynamic_surface_state.py`, `experiments/e14_features.py`, `experiments/results/E14/` (metrics.json, summary.txt, feature_importance.csv, 8 plots ×2 splits).
+
+---
+
+## E17-A — Ranking-Safe Operational Memory (2026-09-06)
+
+**Hypothesis:** E14 showed recent taxi behaviour predicts taxi-out, but TAXITIME is not ranking-safe. Can the same short-term operational-memory signal be recovered from strictly-causal rolling stats of `MVT−AOBT`, `AOBT−EOBT`, `MVT−SCHED`, and runway-local history?
+
+**Feature groups (all RANKING_SAFE, strictly `< t`, ZERO TAXITIME anywhere):**
+- Airport memory (21): rolling mean/median/P90/std of `MVT−AOBT` (5/10/15/30/60m), `AOBT−EOBT` (same windows), `MVT−SCHED` (10/30m).
+- Runway memory (14): same-runway dep counts 5–60m, time-since-previous, rate, burst, acceleration, and rolling `MVT−AOBT` stats (10/30m mean, 30m med/P90/std).
+
+**Leakage methodology:** counts/gaps via `searchsorted` (`< t` exact); rolling stats via pandas time-windows with `shift(1)` (previous rows only), same convention as `add_causal_rolling`. Training files only; no ranking/submitting.
+
+**Baseline reproduction:** E17-A0 = E16-A refit → Jan+Jul **376.04 / 253.82** (Δ 0.00), Dec 241.27 / 226.95. Exact.
+
+**Results (overall / matched):**
+
+| Model | Jan+Jul | Dec |
+|---|---:|---:|
+| E17-A0 (E16-A) | 376.04 / 253.82 | 241.27 / 226.95 |
+| E17-A1 (+ airport memory) | **375.07** / **251.95** | **236.89** / **222.29** |
+| E17-A2 (+ runway memory) | 374.88 / 251.98 | 238.44 / 224.62 |
+
+**RMSE improvement:** A1 vs E16-A: Jan+Jul −0.97 (matched −1.87), Dec −4.38. A2 vs A1: Jan+Jul −0.19 (matched +0.03), Dec **+1.55 (matched +2.32 — WORSE)**. E14 reference (unsafe) 371.57 — **not recovered** (gap +3.31).
+
+**Airport-level effects (A2−A0, Jan+Jul):** biggest wins LTFM −6.5, EDDM −5.4, LEBL −2.1; hurt LSZH +5.9, EHAM +1.9. On Dec wins EDDM −8.6, LTFM −6.4, LFPG −5.9; hurt EGLL +2.2, LIRF +1.7.
+
+**Error-tail effects:** matched SSE share >600 s effectively unchanged; gains are spread across the 180–600 s regime, not the extreme tail (same pattern as E16-A — tail compression not fixed by operational memory).
+
+**Feature importance (E17-A2, top-30):** 10 memory features — 7 airport (top: `rm_ae_med_30m`, `rm_sched_mean_30m`, `rm_aobt_med_30m`) + 3 runway (`rm_rwy_aobt_std_30m`, `rm_rwy_ts_dep`, …). `dis_state_30m` (E16-A) still ranks above all of them.
+
+**Ranking-safety conclusion:** E17-A is 100% ranking-safe — no feature depends on any departure's TAXITIME; all inputs are clocks known at scored MVT.
+
+**Decision:** **INCONCLUSIVE.** E16-A baseline reproduced exactly; airport-level memory gives a small consistent gain on both splits, but the runway-local family is unstable (helps Jan+Jul marginally, hurts December), the total Jan+Jul gain is only −1.16 s (−1.84 matched), and E14's level (371.57) is not recovered. Per the acceptance rule, this is a tiny, partially-consistent improvement — do not auto-accept.
+
+**Recommendation for next experiment:** keep the airport-memory family (especially `AOBT−EOBT`/`MVT−AOBT` median memory), drop or re-parameterize the runway-local family, and focus on the matched tail (>30 min = ~45% of matched SSE), which operational memory does not touch. Reconsider after testing a ranking-safe rolling `MVT−AOBT` (E14-unsafe taxi variant) to quantify how much of the remaining E14 gap is recoverable. Artifacts: `experiments/e17a_features.py`, `experiments/run_e17a_ranking_safe_memory.py`, `experiments/results/E17-A/`.
