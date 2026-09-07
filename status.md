@@ -923,3 +923,67 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 **Decision:** **INCONCLUSIVE.** E16-A baseline reproduced exactly; airport-level memory gives a small consistent gain on both splits, but the runway-local family is unstable (helps Jan+Jul marginally, hurts December), the total Jan+Jul gain is only −1.16 s (−1.84 matched), and E14's level (371.57) is not recovered. Per the acceptance rule, this is a tiny, partially-consistent improvement — do not auto-accept.
 
 **Recommendation for next experiment:** keep the airport-memory family (especially `AOBT−EOBT`/`MVT−AOBT` median memory), drop or re-parameterize the runway-local family, and focus on the matched tail (>30 min = ~45% of matched SSE), which operational memory does not touch. Reconsider after testing a ranking-safe rolling `MVT−AOBT` (E14-unsafe taxi variant) to quantify how much of the remaining E14 gap is recoverable. Artifacts: `experiments/e17a_features.py`, `experiments/run_e17a_ranking_safe_memory.py`, `experiments/results/E17-A/`.
+
+---
+
+## E19 — RMSE tail reduction (causal local queue state) (2026-09-07)
+
+**Hypothesis:** the residual error is dominated by large positive residuals (~45% of matched SSE >30 min); the model under-estimates the local operational queue. Reconstruct a causal local queue/state from flights strictly before t (no TAXITIME, ranking-safe) and add it to the E18-H residual (identical L2, seed, early stopping).
+
+**Feature families (all strictly `< t`):** A neighbour state (prev-1/2/3/5/10 dep gaps; rolling AOBT−EOBT/MVT−AOBT/MVT−SCHED; same-runway/airline/type flags; delayed counts; consec runs); B same-runway queue (gaps, counts, rolling delay stats); C delay shock (`recent − expected`, climatology fit on train split: airport×hour / airport×runway); D queue/arrival pressure (2–30m dep/rwy/arr counts, delayed-arrival counts, inverse gaps, gap compression); E interactions (queue-pressure × shock × disruption); F tail-aware products.
+
+**Baseline reproduction:** E19-0 = E18-H refit → Jan+Jul **372.36 / 250.98** (Δ 0.00), Dec 238.01 / 223.95. Exact.
+
+**Results (Jan+Jul overall / matched; Dec overall):**
+
+| Variant | Jan+Jul | matched | Dec |
+|---|---:|---:|---:|
+| E19-0 (E18-H) | 372.36 | 250.98 | 238.01 |
+| E19-A neighbour | 371.99 | 250.18 | 235.39 |
+| E19-B same-runway queue | 371.14 | 249.35 | 233.67 |
+| E19-C shock | 372.22 | 250.64 | 236.40 |
+| E19-D pressure | 371.95 | 250.24 | 236.12 |
+| E19-E full state | 371.05 | 249.09 | 233.69 |
+| **E19-F + tail-aware (best)** | **371.02** | 249.22 | **233.67** |
+
+**Tail verdict: E19 did NOT reduce the extreme tail.** Positive >300 s SSE share and top-1%/top-5% SSE shares are unchanged or marginally *worse* (top-1% 72.25%→72.73%); the Jan+Jul gain (only −1.34 s overall, −1.76 matched) comes from the mid-range/bulk. Gains are consistent across airports except EGLL (tail +8 s). December improvement is larger (−4.34 s) than Jan+Jul.
+
+**Decision: WEAK — not accepted for submission.** The 1–3 s Jan+Jul band is below the meaningful bar, and the core hypothesis (local queue state reduces the large-positive tail) is falsified: better rolling state representations do not touch the >30 min flights (same conclusion as E16-A/E17-A — tail rows are not identified by any causal rolling statistic of delay/clocks). Do not keep adding rolling-statistic features.
+
+**Recommendation for next experiment:** the next candidate must be a genuine temporal/sequence representation of the queue (e.g., position-in-queue / departure-burst decomposition with explicit service-rate structure), not more rolling statistics; or attack the >60 min rows as a rare-event regime via the E11 gate idea revisited with the E18-H trainer. Artifacts: `experiments/e19_features.py`, `experiments/run_e19_rmse_tail.py`, `experiments/results/E19/` (summary.md, metrics.csv, ablation.csv, per_airport.csv, tail_metrics.csv, feature_importance.csv, E19.json, plots/). No submission generated.
+
+---
+
+## E20 — Stacked residual ensemble (2026-09-07)
+
+**Objective:** break the single-model ceiling by blending genuinely different experts. E18-H hygiene everywhere (matched-only geo_mean, LIRF-override rows excluded from every expert fit, always-on LIRF `MVT−SCHED`).
+
+**Experts (ranking-safe causal matrix; Jan+Jul / Dec overall, matched):**
+
+| Expert | Jan+Jul | matched | Dec | matched |
+|---|---:|---:|---:|---:|
+| A LGB residual (E18-H, reproduced Δ0.00) | 372.36 | 250.98 | 238.01 | 223.95 |
+| A2 A + E19-B same-runway | 371.14 | 249.35 | 233.67 | 220.11 |
+| B LGB direct TAXITIME (P_cal as feature) | 394.63 | 283.08 | 237.51 | 223.62 |
+| C CatBoost residual | 370.37 | 248.25 | 232.37 | 218.56 |
+| D XGBoost residual (numeric) | 385.50 | 266.24 | 246.17 | 232.70 |
+| E airport-specific residual LGB | 370.52 | 247.76 | 229.94 | 215.90 |
+
+CatBoost and airport experts both beat E18-H alone; the direct-LGB and numeric-XGB experts are individually weaker but add diversity.
+
+**Blends (weights fit on Jan+Jul holdout, NNLS/Ridge constrained ≥0, sum=1):**
+
+| Blend | Jan+Jul | Δ vs E18-H | matched | Dec | Δ Dec |
+|---|---:|---:|---:|---:|---:|
+| equal5 | 371.99 | −0.38 | 250.86 | 232.00 | −6.01 |
+| A_E | 369.99 | −2.37 | 247.49 | 233.50 | −4.51 |
+| **nnls** | **368.03** | **−4.33** | **244.76** | **228.45** | **−9.56** |
+| ridge1 / ridge10 | 368.17 | −4.19 | 244.93 | 229.60 | −8.41 |
+
+**NNLS weights: A=0, B=0, C=0.456, D=0.053, E=0.491** — the optimizer drops the LightGBM E18-H entirely in favour of CatBoost (C) + airport experts (E); ridge gives the same picture. Improvement is not a Jan+Jul artifact: December improves by −9.56 s (weights were fit only on Jan+Jul). Matched RMSE drops to 244.76 (Jan+Jul) / 215.90 (Dec) — the best matched result so far.
+
+**Decision: ACCEPT.** Meaningful (4.3 s Jan+Jul, 9.6 s Dec), consistent, no December regression. Leaderboard = the final judge; submission in progress.
+
+**Residual correlation (Jan+Jul matched):** expert residuals are positively but not perfectly correlated (A–C ~0.97, A–E ~0.96, C–E ~0.98) — the gain comes from C and E each being individually stronger and slightly different, not from low-correlation averaging of equals. See `experiments/results/E20/error_correlation.csv`.
+
+**Artifacts:** `experiments/run_e20_ensemble.py`, `experiments/make_submission_e20.py`, `experiments/results/E20/` (summary.md, model_metrics.csv, blend_metrics.csv, error_correlation.csv, regime_metrics.csv, feature_importance.csv, E20.json, oof_predictions_{janjul,dec}.parquet, plots/). Submission: `likable-eagle_v4.parquet` (fit on all 2025 training months). **Leaderboard RMSE: PENDING (manual upload).**

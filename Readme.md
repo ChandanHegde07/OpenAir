@@ -39,13 +39,19 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E3 + LIRF unmatched `MVT−SCHED` | 410 | 304 | unmatched rule, not matched |
 | E9 residual LGB + override | 378.28 | 256.46 | L2 residual; E15 did not beat this |
 | E16-A + disruption state | 376.04 (Dec 241.27) | 253.82 (Dec 226.95) | `dis_state_30m`; >30 min −15 s; >60 min not fixed |
-| **E18-H hygiene (current)** | **372.36** (Dec **238.01**) | **250.98** (Dec **223.95**) | matched-only `geo_mean` + drop LIRF-override rows from residual train |
+| E18-H hygiene | 372.36 (Dec 238.01) | 250.98 (Dec 223.95) | matched-only `geo_mean` + drop LIRF-override rows from residual train |
+| **E20-nnls ensemble (current)** | **368.03** (Dec **228.45**) | **244.76** (Dec **215.90**) | NNLS blend CatBoost 0.456 + airport experts 0.491 + XGB 0.053; submission `likable-eagle_v4.parquet` |
 | E14-surface-state (research) | 371.57 (Dec 231.09) | 248.05 (Dec 218.40) | 31 strictly-causal features in residual LGB; **not ranking-safe** (needs other DEPs' TAXITIME) |
 | E17-A2 ranking-safe memory (INCONCLUSIVE) | 374.88 (Dec 238.44) | 251.98 (Dec 224.62) | airport + runway operational memory, zero TAXITIME; small gain, runway family unstable, E14 not recovered |
+| E19-F local queue state (WEAK) | 371.02 (Dec 233.67) | 249.22 (Dec 220.00) | causal neighbour/queue/shock/pressure state; tail not reduced; not submitted |
+
+**Current best = E20 ensemble.** E18-H (LightGBM residual) reproduced exactly as expert A; the blend that wins (weights fit on Jan+Jul, constrained ≥0) is **0.456 CatBoost residual + 0.491 airport-specific LGB experts + 0.053 XGB residual** — the LightGBM gets zero weight. Improvement is consistent (−4.33 s Jan+Jul, −9.56 s Dec) and not a split artifact. `likable-eagle_v4.parquet` (fit on all 2025 training) is the current submission; leaderboard RMSE to be recorded after upload (previous benchmark ≈ 323).
 
 Remaining matched error is still **tail compression**: flights >30 min are ~4.5% of matched rows and ~45% of matched SSE. E18-H improved the residual trainer (LIRF-override rows no longer poison it) but does not fix 1–24 h bombs, LFPG, or LIRF unmatched (RMSE 6033).
 
 **Ranking-safe variant of the E14 signal (E17-A):** E14's gain came from rolling taxi behaviour, which is not computable at submission time (ranking blanks other DEPs' TAXITIME). E17-A reproduced E16-A exactly and re-added the memory using only ranking-safe clocks (`MVT−AOBT`, `AOBT−EOBT`, `MVT−SCHED`) plus runway-local history: airport memory alone −0.97 s Jan+Jul / −4.38 s Dec, but the runway-local family is unstable and E14's 371.57 is not recovered (gap +3.31). Held as INCONCLUSIVE; the airport-memory family is the keep candidate.
+
+**E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows. Next candidate must be a genuine temporal/sequence queue representation, not more rolling statistics.
 
 ## Data policy
 
@@ -60,12 +66,17 @@ Validation: train all 2025 months except January and July; hold out Jan+Jul. Str
 data/                # training_*.parquet plus ranking/submitting (not used in research fits)
 analysis/            # Discovery (01–05, DISCOVERY_REPORT.md) and experiment packs
   E14/ E15/ E16A/ E18/  # figures, tables, reports for those experiments
-experiments/         # Runners E0–E18 and shared common.py
+experiments/         # Runners E0–E20 and shared common.py
   e14_features.py    # strictly-causal surface-state features (E14-surface-state, unsafe)
   e17a_features.py   # ranking-safe operational memory (E17-A)
+  e19_features.py    # causal local queue-state features (E19, weak)
+  run_e20_ensemble.py      # E20 experts (LGB/CatBoost/XGB/airport) + blends
+  make_submission_e20.py   # full-train ensemble fit -> likable-eagle_v4.parquet
   results/           # JSON/txt per experiment
   results/E14/       # E14-surface-state: metrics.json, summary.txt, feature_importance.csv, plots/
   results/E17-A/     # E17-A: metrics.json, summary.txt, feature_importance.csv, plots/
+  results/E19/       # E19: summary.md + metrics/ablation/per_airport/tail/feature CSVs, plots/
+  results/E20/       # E20: summary.md, model/blend/error_corr/regime/feature CSVs, oof parquet, plots/
 status.md            # Research journal: conclusions, failed approaches, current best
 ```
 
