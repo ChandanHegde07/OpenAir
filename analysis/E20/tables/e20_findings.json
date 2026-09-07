@@ -1,0 +1,205 @@
+{
+  "janjul": {
+    "p0": 0.5701191567369386,
+    "n_train_lu": 1091,
+    "n_val_lu": 397,
+    "best_lo_T": 0.25,
+    "best_hi_T": 0.25,
+    "metrics": [
+      {
+        "name": "always_sched",
+        "rmse_lirf_u": 6032.69683773519,
+        "rmse_normal": 7081.353529615896,
+        "rmse_extreme": 4223.772326099253,
+        "overall": 372.3646118481625,
+        "d_overall": 0.0,
+        "d_lirf_u": 0.0
+      },
+      {
+        "name": "mix_prefix",
+        "rmse_lirf_u": 7657.574344671702,
+        "rmse_normal": 3437.8914165203714,
+        "rmse_extreme": 11036.44001800703,
+        "overall": 405.33501025520394,
+        "d_overall": 32.97039840704144,
+        "d_lirf_u": 1624.8775069365129
+      },
+      {
+        "name": "mix_ades",
+        "rmse_lirf_u": 7124.901946682706,
+        "rmse_normal": 3796.7370995951887,
+        "rmse_extreme": 9990.151938684648,
+        "overall": 393.97985969055713,
+        "d_overall": 21.615247842394638,
+        "d_lirf_u": 1092.2051089475162
+      },
+      {
+        "name": "mix_stand",
+        "rmse_lirf_u": 6799.042970781466,
+        "rmse_normal": 3739.1813802894453,
+        "rmse_extreme": 9472.581524716354,
+        "overall": 387.28569001900956,
+        "d_overall": 14.921078170847068,
+        "d_lirf_u": 766.346133046276
+      },
+      {
+        "name": "mix_flight",
+        "rmse_lirf_u": 6970.304399419962,
+        "rmse_normal": 3569.8502541010394,
+        "rmse_extreme": 9845.76576975566,
+        "overall": 390.77918812784344,
+        "d_overall": 18.414576279680944,
+        "d_lirf_u": 937.607561684772
+      },
+      {
+        "name": "mix_mean3",
+        "rmse_lirf_u": 7073.343147600207,
+        "rmse_normal": 3586.097344931703,
+        "rmse_extreme": 10009.071416085788,
+        "overall": 392.90753012153465,
+        "d_overall": 20.542918273372152,
+        "d_lirf_u": 1040.6463098650174
+      },
+      {
+        "name": "mix_max",
+        "rmse_lirf_u": 6585.907847422977,
+        "rmse_normal": 4066.817948782919,
+        "rmse_extreme": 8920.641725817512,
+        "overall": 383.016810458108,
+        "d_overall": 10.652198609945515,
+        "d_lirf_u": 553.2110096877877
+      },
+      {
+        "name": "oracle",
+        "rmse_lirf_u": 2767.762160851492,
+        "rmse_normal": 339.10828291453174,
+        "rmse_extreme": 4223.772326099253,
+        "overall": 324.86296463155537,
+        "d_overall": -47.501647216607125,
+        "d_lirf_u": -3264.9346768836976
+      },
+      {
+        "name": "gate_normal",
+        "rmse_lirf_u": 5939.265504228453,
+        "rmse_normal": 6942.471173773482,
+        "rmse_extreme": 4223.772326099253,
+        "overall": 370.6293059769633,
+        "d_overall": -1.7353058711992162,
+        "d_lirf_u": -93.43133350673634
+      },
+      {
+        "name": "gate_extreme",
+        "rmse_lirf_u": 5939.265504228453,
+        "rmse_normal": 6942.471173773482,
+        "rmse_extreme": 4223.772326099253,
+        "overall": 370.6293059769633,
+        "d_overall": -1.7353058711992162,
+        "d_lirf_u": -93.43133350673634
+      }
+    ]
+  },
+  "dec": {
+    "p0": 0.5221428571428571,
+    "n_train_lu": 1400,
+    "n_val_lu": 88,
+    "best_lo_T": 0.25,
+    "best_hi_T": 0.25,
+    "metrics": [
+      {
+        "name": "always_sched",
+        "rmse_lirf_u": 2786.1434163308313,
+        "rmse_normal": 4931.127736126899,
+        "rmse_extreme": 194.07004749144917,
+        "overall": 238.01080378154546,
+        "d_overall": 0.0,
+        "d_lirf_u": 0.0
+      },
+      {
+        "name": "mix_prefix",
+        "rmse_lirf_u": 5050.369102889776,
+        "rmse_normal": 2460.6993895917494,
+        "rmse_extreme": 5880.769378563547,
+        "overall": 257.0481359436825,
+        "d_overall": 19.037332162137034,
+        "d_lirf_u": 2264.2256865589443
+      },
+      {
+        "name": "mix_ades",
+        "rmse_lirf_u": 5963.176045599087,
+        "rmse_normal": 2033.377148769319,
+        "rmse_extreme": 7086.917288044632,
+        "overall": 267.23316225208345,
+        "d_overall": 29.222358470537984,
+        "d_lirf_u": 3177.0326292682557
+      },
+      {
+        "name": "mix_stand",
+        "rmse_lirf_u": 4992.167477378327,
+        "rmse_normal": 2286.41226401875,
+        "rmse_extreme": 5840.573187629664,
+        "overall": 256.44353951237326,
+        "d_overall": 18.4327357308278,
+        "d_lirf_u": 2206.0240610474957
+      },
+      {
+        "name": "mix_flight",
+        "rmse_lirf_u": 6144.018594535821,
+        "rmse_normal": 2438.817441986596,
+        "rmse_extreme": 7251.861394026943,
+        "overall": 269.4003016269852,
+        "d_overall": 31.389497845439735,
+        "d_lirf_u": 3357.8751782049894
+      },
+      {
+        "name": "mix_mean3",
+        "rmse_lirf_u": 5245.612885437114,
+        "rmse_normal": 2203.0405179798954,
+        "rmse_extreme": 6171.916435478678,
+        "overall": 259.1167381827657,
+        "d_overall": 21.105934401220225,
+        "d_lirf_u": 2459.4694691062823
+      },
+      {
+        "name": "mix_max",
+        "rmse_lirf_u": 4642.67894068904,
+        "rmse_normal": 2559.781991931536,
+        "rmse_extreme": 5343.724690360126,
+        "overall": 252.93230500725264,
+        "d_overall": 14.921501225707175,
+        "d_lirf_u": 1856.535524358209
+      },
+      {
+        "name": "oracle",
+        "rmse_lirf_u": 358.86870620602093,
+        "rmse_normal": 569.2552418313943,
+        "rmse_extreme": 194.07004749144917,
+        "overall": 229.33472243457763,
+        "d_overall": -8.676081346967834,
+        "d_lirf_u": -2427.2747101248106
+      },
+      {
+        "name": "gate_normal",
+        "rmse_lirf_u": 2642.620807183877,
+        "rmse_normal": 4382.598282839505,
+        "rmse_extreme": 1130.9468042636108,
+        "overall": 237.13981923753312,
+        "d_overall": -0.8709845440123445,
+        "d_lirf_u": -143.52260914695444
+      },
+      {
+        "name": "gate_extreme",
+        "rmse_lirf_u": 2642.620807183877,
+        "rmse_normal": 4382.598282839505,
+        "rmse_extreme": 1130.9468042636108,
+        "overall": 237.13981923753312,
+        "d_overall": -0.8709845440123445,
+        "d_lirf_u": -143.52260914695444
+      }
+    ]
+  },
+  "decision": {
+    "verdict": "INCONCLUSIVE",
+    "keep": "gate_normal",
+    "reason": "Jan+Jul always=372.36 best-keep=gate_normal 370.63 (-1.74); Dec -0.87. Oracle 324.86 / 229.33."
+  }
+}
