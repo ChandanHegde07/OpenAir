@@ -1,0 +1,53 @@
+[11:55:39] E18: load training_*.parquet only...
+C:\Users\mukun\prc\OpenAir\experiments\run_e4_e5.py:63: UserWarning: Sortedness of columns cannot be checked when 'by' groups provided
+  now = keys.join_asof(arr_c, left_on="MVT_TIME_UTC_mvt", right_on="arr_t", by="airport", strategy="backward")
+C:\Users\mukun\prc\OpenAir\experiments\run_e4_e5.py:67: UserWarning: Sortedness of columns cannot be checked when 'by' groups provided
+  jw = left.join_asof(arr_c, left_on="t0", right_on="arr_t", by="airport", strategy="backward").select(
+[11:56:22]   disruption state...
+C:\Users\mukun\prc\OpenAir\experiments\run_e16a.py:302: UserWarning: Sortedness of columns cannot be checked when 'by' groups provided
+  j = keys.join_asof(
+[11:56:44] ready 2,085,047 rows
+[11:56:44] ===== janjul Jan+Jul 2025 =====
+[11:56:51]   val n=344,419 unmatched=5,373 LIRF_u=397 non-LIRF_u=4,976
+[11:56:51]   fitting E18-0 (E16-A residual, exact helper)...
+[11:58:09]   E18-0        overall=376.04  matched=253.82  unmatched=2235.88  nlu=1579.38  lirf_u=6032.70
+[11:58:10]   fitting E18-H (matched geo + drop LIRF-override from residual train)...
+[11:58:47]     hygiene: dropped 1,091 LIRF-override rows from residual train
+[12:00:06]   fitting E18-B unmatched specialist...
+[12:00:24]     specialist n_train=16,006 trees=113 top=[('RUNWAY_mvt', 357), ('geo_mean', 337), ('mvt_sched', 336), ('ADES_mvt', 303), ('roll10_mean_mvt_aobt', 293), ('dis_state_30m', 273), ('STAND_mvt', 249), ('flt_prefix', 235)]
+[12:00:32]   E18-0        overall=376.04  matched=253.82  unmatched=2235.88  nlu=1579.38  lirf_u=6032.70
+[12:00:32]   E18-A-geo    overall=375.29  matched=253.82  unmatched=2227.72  nlu=1566.87  lirf_u=6032.70
+[12:00:32]   E18-A-mean   overall=376.22  matched=253.82  unmatched=2237.76  nlu=1582.25  lirf_u=6032.70
+[12:00:32]   E18-A-med    overall=376.58  matched=253.82  unmatched=2241.63  nlu=1588.15  lirf_u=6032.70
+[12:00:32]   E18-H        overall=372.36  matched=250.98  unmatched=2216.59  nlu=1549.74  lirf_u=6032.70
+[12:00:32]   E18-B        overall=374.45  matched=253.82  unmatched=2218.62  nlu=1552.88  lirf_u=6032.70
+[12:00:33]   table e18_unmatched_by_airport_janjul.csv
+[12:00:36]   figure 01_rmse_comparison.png
+[12:00:40]   figure 02_unmatched_rmse_by_airport.png
+[12:00:44]   figure 03_nlu_actual_vs_pred.png
+[12:00:47]   figure 04_eham_unmatched_residual.png
+[12:00:51]   figure 05_unmatched_mean_by_airport.png
+[12:00:52] ===== dec December 2025 =====
+[12:01:17]   val n=165,677 unmatched=1,649 LIRF_u=88 non-LIRF_u=1,561
+[12:01:17]   fitting E18-0 (E16-A residual, exact helper)...
+[12:03:23]   E18-0        overall=241.27  matched=226.95  unmatched=851.64  nlu=573.21  lirf_u=2786.14
+[12:03:24]   fitting E18-H (matched geo + drop LIRF-override from residual train)...
+[12:04:24]     hygiene: dropped 1,400 LIRF-override rows from residual train
+[12:06:28]   fitting E18-B unmatched specialist...
+[12:06:34]     specialist n_train=19,421 trees=36 top=[('geo_mean', 161), ('mvt_sched', 160), ('RUNWAY_mvt', 103), ('month', 82), ('roll10_mean_mvt_aobt', 78), ('flt_prefix', 75), ('STAND_mvt', 71), ('dis_state_30m', 69)]
+[12:06:38]   E18-0        overall=241.27  matched=226.95  unmatched=851.64  nlu=573.21  lirf_u=2786.14
+[12:06:38]   E18-A-geo    overall=242.67  matched=226.95  unmatched=890.80  nlu=632.97  lirf_u=2786.14
+[12:06:38]   E18-A-mean   overall=244.00  matched=226.95  unmatched=926.37  nlu=684.79  lirf_u=2786.14
+[12:06:38]   E18-A-med    overall=244.05  matched=226.95  unmatched=927.69  nlu=686.67  lirf_u=2786.14
+[12:06:38]   E18-H        overall=238.01  matched=223.95  unmatched=838.40  nlu=552.21  lirf_u=2786.14
+[12:06:38]   E18-B        overall=241.80  matched=226.95  unmatched=866.51  nlu=596.28  lirf_u=2786.14
+[12:06:39]   table e18_unmatched_by_airport_dec.csv
+[12:06:42]   figure 01_rmse_comparison.png
+[12:06:45]   figure 02_unmatched_rmse_by_airport.png
+[12:06:47]   figure 03_nlu_actual_vs_pred.png
+[12:06:51]   figure 04_eham_unmatched_residual.png
+[12:06:54]   figure 05_unmatched_mean_by_airport.png
+[12:06:55] VERDICT ACCEPTED
+[12:06:55] Jan+Jul E18-0=376.04 / unmatched=2235.88 / nlu=1579.38. Best splice+hygiene: E18-H -3.68/-3.26. E18-A-geo: reject (Jan+Jul -0.76, Dec +1.40) E18-A-mean: reject (Jan+Jul +0.17, Dec +2.73) E18-A-med: reject (Jan+Jul +0.53, Dec +2.78) E18-B: reject (Jan+Jul -1.60, Dec +0.53) E18-H: KEEP candidate (overall -3.68/-3.26, matched -2.84)
+[12:06:55] wrote C:\Users\mukun\prc\OpenAir\analysis\E18\reports\E18_report.md
+[12:06:55] done in 11.3 min

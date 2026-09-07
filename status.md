@@ -221,6 +221,12 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE: `dis_state_30m` = mean of *other* flights' AOBT−EOBT in the previous 30 min (self excluded, AOBT ≤ scored MVT). corr vs own AOBT−EOBT = 0.45, vs frozen residual = 0.11 (own AOBT−EOBT vs residual = 0.02). Inside every own-lateness quartile, high vs low disruption still raises >30 min rate (8.1× / 1.6× / 1.6× / 1.4×) and flips residual mean from over- to under-prediction. Adding it to the frozen L2 residual: Jan+Jul matched 256.46→253.82, >30 821→807, <20 +1.5 s; December matched 230.04→226.95. Q8 mean residual +60→−3.5. >60 min Jan+Jul not improved. LIRF matched −11 s; LFPG ~0.
 - NEW: **KEEP `dis_state_30m` (+ `dis_frac20_30m`)** in the residual LightGBM. It is a real but small (~1% matched RMSE) uncompression of the operational disruption tail, not a fix for 1–24 h bombs. Do not sweep extra windows.
 
+**C13. Non-LIRF unmatched is not a mean-offset problem; LIRF residuals were contaminating the tree (E18)**
+
+- OLD: remaining unmatched RMSE ~2200 is non-LIRF unmatched (EHAM shorter, LTFM/EGLL tails) scored with matched `geo_mean` + residual; a dedicated unmatched head or airport unmatched mean should move overall RMSE.
+- EVIDENCE (E16-A reproduced 376.04 / 253.82): non-LIRF unmatched n=4,976 RMSE **1579**. Train airport-unmatched mean/median **raise** overall RMSE. Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565 — the full-year “EHAM shorter” fact is not a stable prior. Dropping the residual on unmatched (A-geo) helps LSZH 1017→640 but fails December (+1.40 overall). A small unmatched-only tree helps Jan+Jul (−1.60) and fails December (+0.53). **Hygiene** (matched-only `geo_mean` + drop 1,091 LIRF-override rows from residual train): Jan+Jul 376.04→**372.36**, matched 253.82→**250.98**; December 241.27→**238.01**, matched 226.95→**223.95**. LIRF unmatched RMSE unchanged at 6032.70.
+- NEW: **KEEP E18-H.** REJECT unmatched airport mean/median and the unmatched specialist as production heads. The residual tree was being poisoned by LIRF-override rows it never scores, and unmatched LIRF y was leaking into `geo_mean`. Do not apply `MVT−SCHED` to non-LIRF unmatched. Remaining unmatched bomb is still LIRF (E19).
+
 **C9. LIRF unmatched has two TARGET regimes, but they are not separable at prediction time (E13)**
 
 - OLD (E11 / queue item 1): LIRF unmatched is bimodal (~15 min vs multi-hour). Gate `MVT−SCHED` so it is not applied to the normal half.
@@ -297,8 +303,9 @@ Jan+Jul 2025 unless noted. “Matched RMSE” drops rows with NaN prediction; �
 | E14 | Matched residual diagnosis | current best, no new features | residual LGB reproduced | Jan+Jul | 378 | **256.46** | 158 matched | Tail compression + LIRF/LFPG disruption tails | KEEP diagnosis; E15 = tail-aware residual |
 | E15 | Tail-aware residual objective | frozen E14 features | Huber / tail-weight / two-stage | Jan+Jul | 378 / 384 / 412 / 426 | **256** / 268 / 300 / 318 | 158 / 157 / 202 / 196 matched | Huber helps bulk, hurts tail; B/C help tail, wreck bulk | KEEP L2; REJECT A/B/C; no more loss experiments |
 | E16-A | Airport disruption state | causal other-flight AOBT−EOBT 30m | E14 L2 + dis_state | Jan+Jul | **376.04** | **253.82** | 157.46 matched | Not just own AOBT−EOBT; Q8 resid +60→−3.5; >30 −15s; >60 no | KEEP `dis_state_30m`; small gain |
+| E18 | Non-LIRF unmatched specialist | unmatched mean/median/geo splice; unmatched-only tree; matched-only geo + drop LIRF-override from residual train | E16-A + splice / hygiene | Jan+Jul | **372.36** (H) | **250.98** | 155.03 matched | Mean/median/specialist fail December; H wins both splits; LIRF_u still 6033 | KEEP H; REJECT A/B |
 
-December of current best (E9 residual LGB + LIRF unmatched `MVT−SCHED`): overall **245**, matched **230**, MAE **153**. Direct LGB + override: overall 241, matched 225.
+December of current best (E18-H): overall **238.01**, matched **223.95**, MAE **145.83** matched. Direct LGB + override remains a Dec sanity check (241 / 225 on the pre-H pipeline).
 
 ---
 
@@ -718,6 +725,32 @@ Artifacts: `analysis/E16A/`.
 
 ---
 
+### E18 — Non-LIRF unmatched specialist
+
+- **Question:** After the LIRF override, can a dedicated non-LIRF unmatched head (airport unmatched mean, or a small tree on ranking-present fields) move overall RMSE? Does residual-train hygiene (matched-only `geo_mean`, drop LIRF-override rows) help?
+- **Frozen:** E16-A path for A/B splices. H is allowed to refit.
+- **Validation:** Jan+Jul 2025 holdout; December stress. `training_*.parquet` only.
+- **Reproduction:** E18-0 = E16-A: Jan+Jul **376.04 / 253.82** (delta 0.00).
+
+**Jan+Jul overall / matched / unmatched / non-LIRF unmatched**
+
+| Variant | Overall | Matched | Unmatched | Non-LIRF u |
+|---|---:|---:|---:|---:|
+| E18-0 | 376.04 | 253.82 | 2235.88 | 1579.38 |
+| A-geo | 375.29 | 253.82 | 2227.72 | 1566.87 |
+| A-mean | 376.22 | 253.82 | 2237.76 | 1582.25 |
+| A-med | 376.58 | 253.82 | 2241.63 | 1588.15 |
+| **H** | **372.36** | **250.98** | **2216.59** | **1549.74** |
+| B specialist | 374.45 | 253.82 | 2218.62 | 1552.88 |
+
+December: only H improves (241.27→**238.01**, matched 226.95→**223.95**). A/B raise December overall.
+
+Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565 — full-year “EHAM shorter” is not a stable prior. LSZH unmatched: dropping the residual 1017→640 (tree was overpredicting). LFPG unmatched ~3444 on every variant. LIRF unmatched frozen at 6032.70.
+
+- **Decision:** KEEP H. REJECT A-mean/A-med/A-geo/B. C13 recorded. Artifacts: `analysis/E18/`.
+
+---
+
 ## Failed approaches
 
 | Approach | Why it failed |
@@ -738,6 +771,9 @@ Artifacts: `analysis/E16A/`.
 | Huber residual (E15-A) | Improves <20 min RMSE, worsens >30/>60 and matched RMSE. Robust loss down-weights the tail we need (E15). |
 | Tail-weighted residual (E15-B) | >30/>60 RMSE fall; bulk overpredicted (mean residual −120 s); matched RMSE 256→300 (E15). |
 | Two-stage P(y>30)+tail residual (E15-C) | Best tail RMSE, worst matched/overall; gate fires at 14% vs true 4.5%; December unmatched 886→1365 (E15). |
+| Non-LIRF unmatched → train airport mean/median (E18-A) | Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565; overall RMSE up on both splits (E18). |
+| Non-LIRF unmatched specialist tree (E18-B) | Jan+Jul overall −1.60; December +0.53 (EDDM unmatched mean jumps to 1687). Does not generalize (E18). |
+| Drop residual on non-LIRF unmatched (E18-A-geo) | Helps LSZH 1017→640; December unmatched 573→633, overall +1.40 (E18). |
 
 ---
 
@@ -776,16 +812,19 @@ Artifacts: `analysis/E16A/`.
 - Do not start a large hyperparameter search.
 - Residual trainer stays **L2**. Do not replace it with Huber, tail weights, or a P(y>30) mixture (E15). Do not start a residual-objective grid.
 - Keep causal `dis_state_30m` (other-flight AOBT−EOBT, 30 min, self excluded) in the residual model (E16-A). Do not sweep extra disruption aggregations without a new hypothesis.
+- Fit `geo_mean` on **matched** train rows only. Drop LIRF-override rows from residual training (E18-H). Do not splice airport unmatched means. LIRF override remains `unmatched and airport==LIRF` (not `type_null`).
 
 ---
 
 ## Current best model
 
-**Name:** E9 residual LightGBM + E11 LIRF unmatched override + E16-A disruption state.
+**Name:** E9 residual LightGBM + E11 LIRF unmatched override + E16-A disruption state + E18-H hygiene.
 
 ```
+geo_mean tables fit on matched train rows only
 P_cal = per-airport OLS(mvt_aobt, aobt_eobt, geo_mean)   # unmatched → geo_mean
-if unmatched and (airport==LIRF or type_null):
+residual LightGBM trained with LIRF-override rows dropped
+if unmatched and airport==LIRF:
     y_hat = MVT - SCHED
 else:
     y_hat = P_cal + LightGBM_residual_L2(clocks, geo, stand, dest, airline,
@@ -794,18 +833,20 @@ else:
 
 | Split | Overall RMSE | MAE | Matched RMSE | Unmatched RMSE | LIRF | EGLL | LFPG | LTFM |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Jan+Jul E16-A residual+override | **376.04** | 157.46 matched | **253.82** | 2236 | — | — | — | — |
+| Jan+Jul **E18-H** | **372.36** | 155.03 matched | **250.98** | 2217 | — | — | — | — |
+| Jan+Jul E16-A residual+override | 376.04 | 157.46 matched | 253.82 | 2236 | — | — | — | — |
 | Jan+Jul residual+override (no disruption) | 378.28 | 165.09 | 256.46 | 2241 | 869 | 285 | 585 | 277 |
 | Jan+Jul E3+override (no tree) | 410.02 | 189.85 | 303.53 | 2228 | 909 | 360 | 612 | 319 |
 | Jan+Jul E3 only | 576.63 | 191.04 | 303.53 | 3937 | 1721 | 360 | 612 | 319 |
-| Dec E16-A residual+override | **241.27** | 148.10 matched | **226.95** | 852 | — | — | — | — |
+| Dec **E18-H** | **238.01** | 145.83 matched | **223.95** | 838 | — | — | — | — |
+| Dec E16-A residual+override | 241.27 | 148.10 matched | 226.95 | 852 | — | — | — | — |
 | Dec residual+override (no disruption) | 245.38 | 153.32 | 230.04 | 886 | 405 | 239 | 285 | 252 |
 | Dec direct LGB+override | 240.79 | 150.09 | 225.29 | 881 | 403 | 244 | 281 | 245 |
 
-Vs E3-only: Jan+Jul overall 577 → 378, matched 304 → 256, MAE 191 → 165.  
-Most of the overall drop is the LIRF unmatched rule (577 → 410) not the tree.
+Vs E3-only: Jan+Jul overall 577 → 372, matched 304 → 251.  
+Most of the overall drop is still the LIRF unmatched rule (577 → 410), then residual trees, then E16-A + E18-H.
 
-E15 left the objective unchanged. E16-A adds causal airport push-delay state (`dis_state_30m`) on top of the same L2 residual: Jan+Jul matched 256.46→253.82, December 230.04→226.95.
+E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-LIRF unmatched 1579 → 1550.
 
 ---
 
@@ -820,7 +861,9 @@ E15 left the objective unchanged. E16-A adds causal airport push-delay state (`d
 6. CatBoost vs LightGBM, still no large HP search.
 7. Why `AOBT−EOBT` works — triangulation vs delay→taxi.
 8. E6 rolling quantiles remain low priority.
-9. Remaining unmatched RMSE (~2200 Jan+Jul) = non-LIRF unmatched + LIRF normal-half damage from `MVT−SCHED`.
+9. Remaining unmatched RMSE (~2217 Jan+Jul after E18-H) = LIRF unmatched 6033 (~30% of all SSE) + non-LIRF unmatched ~1550. E18 closed unmatched *means* and an unmatched-only tree. Next is E19 (neighbor gate-vs-taxi delay split for LIRF).
+9b. **E18-H kept as a bundle.** Matched-only `geo_mean` and dropping LIRF-override rows from residual train were not ablated separately. Optional micro-ablation before treating them as atomic.
+9c. Do not auto-stack E17-A1 airport memory on E18-H without a new experiment.
 
 ---
 
@@ -842,6 +885,7 @@ E15 left the objective unchanged. E16-A adds causal airport push-delay state (`d
 - **2026-09-05 E14:** Reproduced matched RMSE 256.46. Remaining error is tail compression (y>30 min = 46% SSE) plus LIRF/LFPG disruption tails. Traffic/geometry leftovers small. C10 recorded. Recommended E15: tail-aware residual, no new feature family. Artifacts in `analysis/E14/`.
 - **2026-09-06 E15:** Frozen-feature residual-objective test. L2 reproduced 256.46. Huber helps bulk, hurts tail. Tail-weight and two-stage help >30/>60 by overpredicting the bulk (matched 300 / 318). Winner = L2. C11 recorded. No further loss-function experiment. Artifacts in `analysis/E15/`.
 - **2026-09-06 E16-A:** Causal airport push-delay state (other flights' AOBT−EOBT, 30 min, self excluded) is not redundant with own AOBT−EOBT. L2 + `dis_state_30m`: Jan+Jul matched 256.46→253.82, >30 821→807, >60 not improved; December matched 230.04→226.95. KEEP the family, small gain. C12 recorded. Artifacts in `analysis/E16A/`.
+- **2026-09-07 E18:** Non-LIRF unmatched specialist. E16-A reproduced 376.04/253.82. Airport unmatched mean/median and an unmatched-only tree fail December. Hygiene (matched-only `geo_mean` + drop LIRF-override rows from residual train): Jan+Jul **372.36 / 250.98**, December **238.01 / 223.95**. KEEP H. REJECT A/B. C13 recorded. Override formula in the journal corrected to `unmatched and airport==LIRF` (matches code). Artifacts in `analysis/E18/`.
 - **2026-09-06 E14-surface-state (spec, `experiments/`):** Leakage-safe dynamic surface-state features (strictly `< t`) added to the residual LGB of the E13 architecture (P_cal unchanged; LIRF override unchanged). Refit E13 reproduces 378.28/256.46 exactly. E14 (31 new cols: dep/arr 5-60m counts, same-runway 10/30m, time-since, rates, rolling taxi mean/med/p90/std, pressure/accel/burst): Jan+Jul overall 378.28→**371.57** (matched 256.46→248.05, MAE 165→159); December 245.38→**231.09** (matched 230.04→218.40). Gain concentrated in rolling-taxi stats + `s_rwy_dep_30m`; traffic counts ≈0. All airports improve except EHAM (Jan+Jul). **Caveat:** the winning features consume other DEPs' `TAXITIME` — NOT ranking-safe (ranking blanks DEP TAXITIME); a ranking-safe variant (rolling `MVT−AOBT`) must be tested before transfer. Artifacts: `experiments/run_e14_dynamic_surface_state.py`, `experiments/e14_features.py`, `experiments/results/E14/` (metrics.json, summary.txt, feature_importance.csv, 8 plots ×2 splits).
 
 ---
