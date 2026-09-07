@@ -1,0 +1,344 @@
+{
+  "generated": "2026-09-07T07:04:53.054614Z",
+  "e18h_sse": {
+    "overall": 47755555644.29217,
+    "matched_share": 0.44720598744390705,
+    "unmatched_share": 0.5527940125560926,
+    "lirf_unmatched_share": 0.30254473989618164,
+    "nlu_share": 0.2502492726599112
+  },
+  "unmatched_by_airport": [
+    {
+      "airport": "LIRF",
+      "n": 397,
+      "mean_y": 6272.493702770781,
+      "med_y": 1447.0,
+      "rmse_H": 6032.69683773519,
+      "sse": 14448192161.000002,
+      "sse_share_overall": 0.30254473989618164,
+      "sse_share_unmatched": 0.5473010434704773,
+      "lirf_override": true
+    },
+    {
+      "airport": "LFPG",
+      "n": 880,
+      "mean_y": 1294.5204545454546,
+      "med_y": 1025.5,
+      "rmse_H": 3439.301291936121,
+      "sse": 10409338171.507853,
+      "sse_share_overall": 0.2179712502780186,
+      "sse_share_unmatched": 0.3943082691328912,
+      "lirf_override": false
+    },
+    {
+      "airport": "EGLL",
+      "n": 466,
+      "mean_y": 1704.7210300429183,
+      "med_y": 1434.5,
+      "rmse_H": 1139.0176607919698,
+      "sse": 604570333.923741,
+      "sse_share_overall": 0.012659685889258422,
+      "sse_share_unmatched": 0.022901271724562737,
+      "lirf_override": false
+    },
+    {
+      "airport": "EHAM",
+      "n": 808,
+      "mean_y": 742.1101485148515,
+      "med_y": 659.0,
+      "rmse_H": 565.6473868712784,
+      "sse": 258525228.749639,
+      "sse_share_overall": 0.005413511061943605,
+      "sse_share_unmatched": 0.009792998728245614,
+      "lirf_override": false
+    },
+    {
+      "airport": "LSZH",
+      "n": 524,
+      "mean_y": 632.8206106870228,
+      "med_y": 628.5,
+      "rmse_H": 648.9531090770233,
+      "sse": 220677432.1971051,
+      "sse_share_overall": 0.004620979260315253,
+      "sse_share_unmatched": 0.008359314962454222,
+      "lirf_override": false
+    },
+    {
+      "airport": "LTFM",
+      "n": 657,
+      "mean_y": 1146.324200913242,
+      "med_y": 1012.0,
+      "rmse_H": 578.2323288367173,
+      "sse": 219669675.3555404,
+      "sse_share_overall": 0.004599876860228632,
+      "sse_share_unmatched": 0.008321140887469141,
+      "lirf_override": false
+    },
+    {
+      "airport": "EDDM",
+      "n": 237,
+      "mean_y": 1006.1392405063292,
+      "med_y": 890.0,
+      "rmse_H": 613.8853904615004,
+      "sse": 89314699.6114303,
+      "sse_share_overall": 0.0018702473127250767,
+      "sse_share_unmatched": 0.003383262608213038,
+      "lirf_override": false
+    },
+    {
+      "airport": "EDDF",
+      "n": 599,
+      "mean_y": 1005.068447412354,
+      "med_y": 971.0,
+      "rmse_H": 348.5008141131154,
+      "sse": 72750237.64506501,
+      "sse_share_overall": 0.0015233879422730631,
+      "sse_share_unmatched": 0.002755796748284214,
+      "lirf_override": false
+    },
+    {
+      "airport": "LEBL",
+      "n": 496,
+      "mean_y": 1055.6189516129032,
+      "med_y": 1058.0,
+      "rmse_H": 338.59258624404424,
+      "sse": 56863889.971877545,
+      "sse_share_overall": 0.0011907282661608822,
+      "sse_share_unmatched": 0.002154018023196403,
+      "lirf_override": false
+    },
+    {
+      "airport": "LEMD",
+      "n": 309,
+      "mean_y": 1149.977346278317,
+      "med_y": 1106.0,
+      "rmse_H": 248.512705305632,
+      "sse": 19083396.491782084,
+      "sse_share_overall": 0.0003996057889876728,
+      "sse_share_unmatched": 0.000722883714206518,
+      "lirf_override": false
+    }
+  ],
+  "clocks_janjul": [
+    {
+      "airport": "EDDF",
+      "n": 599,
+      "corr_y_mvt_sched": 0.13360824499507154,
+      "rmse_geo_mean": 442.0359702165018,
+      "mae_geo_mean": 314.8267554293536,
+      "rmse_mvt_sched": 8388.272404666619,
+      "mae_mvt_sched": 6111.5242070116865,
+      "mean_y": 1005.068447412354,
+      "mean_mvt_sched": 7052.171953255426,
+      "med_y": 971.0,
+      "med_mvt_sched": 5967.0,
+      "n_type_null": 0
+    },
+    {
+      "airport": "EDDM",
+      "n": 237,
+      "corr_y_mvt_sched": 0.24000917354675486,
+      "rmse_geo_mean": 724.8981437098364,
+      "mae_geo_mean": 340.74043163404315,
+      "rmse_mvt_sched": 5818.015471388543,
+      "mae_mvt_sched": 5259.721518987341,
+      "mean_y": 1006.1392405063291,
+      "mean_mvt_sched": 6265.860759493671,
+      "med_y": 890.0,
+      "med_mvt_sched": 5757.0,
+      "n_type_null": 0
+    },
+    {
+      "airport": "EGLL",
+      "n": 466,
+      "corr_y_mvt_sched": 0.15000999387558656,
+      "rmse_geo_mean": 1224.4621576576603,
+      "mae_geo_mean": 518.4774963458696,
+      "rmse_mvt_sched": 6348.321607292256,
+      "mae_mvt_sched": 5730.942060085837,
+      "mean_y": 1704.7210300429185,
+      "mean_mvt_sched": 7426.881974248927,
+      "med_y": 1434.5,
+      "med_mvt_sched": 6657.5,
+      "n_type_null": 0
+    },
+    {
+      "airport": "EHAM",
+      "n": 808,
+      "corr_y_mvt_sched": 0.3094631553156609,
+      "rmse_geo_mean": 728.3937400440436,
+      "mae_geo_mean": 448.56424058648764,
+      "rmse_mvt_sched": 7778.451577789747,
+      "mae_mvt_sched": 4769.514851485149,
+      "mean_y": 742.1101485148515,
+      "mean_mvt_sched": 5326.652227722772,
+      "med_y": 659.0,
+      "med_mvt_sched": 5052.0,
+      "n_type_null": 0
+    },
+    {
+      "airport": "LEBL",
+      "n": 496,
+      "corr_y_mvt_sched": 0.13248773508020287,
+      "rmse_geo_mean": 386.3525278088736,
+      "mae_geo_mean": 289.44105841313814,
+      "rmse_mvt_sched": 6969.963447802985,
+      "mae_mvt_sched": 6023.076612903225,
+      "mean_y": 1055.6189516129032,
+      "mean_mvt_sched": 7078.207661290323,
+      "med_y": 1058.0,
+      "med_mvt_sched": 6189.5,
+      "n_type_null": 0
+    },
+    {
+      "airport": "LEMD",
+      "n": 309,
+      "corr_y_mvt_sched": 0.30073751595141723,
+      "rmse_geo_mean": 360.4518546160474,
+      "mae_geo_mean": 264.88424547677187,
+      "rmse_mvt_sched": 6522.626044608058,
+      "mae_mvt_sched": 5998.744336569579,
+      "mean_y": 1149.977346278317,
+      "mean_mvt_sched": 7147.964401294498,
+      "med_y": 1106.0,
+      "med_mvt_sched": 6444.0,
+      "n_type_null": 0
+    },
+    {
+      "airport": "LFPG",
+      "n": 880,
+      "corr_y_mvt_sched": -0.02018531326733935,
+      "rmse_geo_mean": 3455.994236928038,
+      "mae_geo_mean": 514.4388192687763,
+      "rmse_mvt_sched": 7903.608117283581,
+      "mae_mvt_sched": 5651.382954545455,
+      "mean_y": 1294.5204545454546,
+      "mean_mvt_sched": 6446.514772727272,
+      "med_y": 1025.5,
+      "med_mvt_sched": 5884.5,
+      "n_type_null": 1
+    },
+    {
+      "airport": "LIRF",
+      "n": 397,
+      "corr_y_mvt_sched": 0.915765256966182,
+      "rmse_geo_mean": 13460.173708719462,
+      "mae_geo_mean": 5345.6686533833,
+      "rmse_mvt_sched": 6032.69683773519,
+      "mae_mvt_sched": 4228.75314861461,
+      "mean_y": 6272.493702770781,
+      "mean_mvt_sched": 9587.21662468514,
+      "med_y": 1447.0,
+      "med_mvt_sched": 6781.0,
+      "n_type_null": 397
+    },
+    {
+      "airport": "LSZH",
+      "n": 524,
+      "corr_y_mvt_sched": 0.3453636576992582,
+      "rmse_geo_mean": 708.2565972122175,
+      "mae_geo_mean": 384.38998997796205,
+      "rmse_mvt_sched": 4362.926530035607,
+      "mae_mvt_sched": 3226.9713740458014,
+      "mean_y": 632.8206106870228,
+      "mean_mvt_sched": 3542.4332061068703,
+      "med_y": 628.5,
+      "med_mvt_sched": 4245.0,
+      "n_type_null": 3
+    },
+    {
+      "airport": "LTFM",
+      "n": 657,
+      "corr_y_mvt_sched": 0.1797737860237961,
+      "rmse_geo_mean": 655.5645844777537,
+      "mae_geo_mean": 335.1011682959242,
+      "rmse_mvt_sched": 3154.0365111308433,
+      "mae_mvt_sched": 1787.579908675799,
+      "mean_y": 1146.324200913242,
+      "mean_mvt_sched": 2707.882800608828,
+      "med_y": 1012.0,
+      "med_mvt_sched": 1443.0,
+      "n_type_null": 1
+    }
+  ],
+  "lfpg_corr_full_year": 0.020498204095233046,
+  "lfpg_concentration": [
+    {
+      "k": 1,
+      "sse_share": 0.6601057489464941,
+      "max_y": 84240.0
+    },
+    {
+      "k": 2,
+      "sse_share": 0.9714355275374065,
+      "max_y": 84240.0
+    },
+    {
+      "k": 3,
+      "sse_share": 0.9752385617498907,
+      "max_y": 84240.0
+    },
+    {
+      "k": 5,
+      "sse_share": 0.9790948091546239,
+      "max_y": 84240.0
+    },
+    {
+      "k": 10,
+      "sse_share": 0.9827819716769023,
+      "max_y": 84240.0
+    },
+    {
+      "k": 20,
+      "sse_share": 0.9864738178656793,
+      "max_y": 84240.0
+    },
+    {
+      "k": 8,
+      "sse_share": 0.9815284185405351,
+      "max_y": 84240.0
+    },
+    {
+      "k": 44,
+      "sse_share": 0.9898037951296962,
+      "max_y": 84240.0
+    }
+  ],
+  "lfpg_ybins": [
+    {
+      "bin": "<15m",
+      "n": 1317,
+      "mean_y": 707.6940015186029,
+      "mean_ms": 6196.182232346241,
+      "rmse_ms": 7683.965476361372
+    },
+    {
+      "bin": "15-30m",
+      "n": 2143,
+      "mean_y": 1207.2659822678488,
+      "mean_ms": 6504.255716285581,
+      "rmse_ms": 6866.039904258413
+    },
+    {
+      "bin": "30-60m",
+      "n": 257,
+      "mean_y": 2264.206225680934,
+      "mean_ms": 7886.634241245136,
+      "rmse_ms": 6196.260427390596
+    },
+    {
+      "bin": "1-2h",
+      "n": 39,
+      "mean_y": 4664.615384615385,
+      "mean_ms": 8013.589743589743,
+      "rmse_ms": 4273.739082301322
+    },
+    {
+      "bin": ">2h",
+      "n": 7,
+      "mean_y": 26205.0,
+      "mean_ms": 7826.571428571428,
+      "rmse_ms": 37772.15356582148
+    }
+  ]
+}

@@ -35,8 +35,8 @@ from run_submitting_check import (  # noqa: E402
     verify_submitting,
 )
 
-OUT_PATH = ROOT / "likable-eagle_v3.parquet"
-OUT_COPY = ROOT / "analysis" / "submitting_check" / "likable-eagle_v3.parquet"
+OUT_PATH = ROOT / "likable-eagle_v2.parquet"
+OUT_COPY = ROOT / "analysis" / "submitting_check" / "likable-eagle_v2.parquet"
 PRED_PATH = ROOT / "analysis" / "submitting_check" / "tables" / "submitting_predictions_e18h.parquet"
 
 

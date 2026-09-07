@@ -227,6 +227,30 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE (E16-A reproduced 376.04 / 253.82): non-LIRF unmatched n=4,976 RMSE **1579**. Train airport-unmatched mean/median **raise** overall RMSE. Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565 — the full-year “EHAM shorter” fact is not a stable prior. Dropping the residual on unmatched (A-geo) helps LSZH 1017→640 but fails December (+1.40 overall). A small unmatched-only tree helps Jan+Jul (−1.60) and fails December (+0.53). **Hygiene** (matched-only `geo_mean` + drop 1,091 LIRF-override rows from residual train): Jan+Jul 376.04→**372.36**, matched 253.82→**250.98**; December 241.27→**238.01**, matched 226.95→**223.95**. LIRF unmatched RMSE unchanged at 6032.70.
 - NEW: **KEEP E18-H.** REJECT unmatched airport mean/median and the unmatched specialist as production heads. The residual tree was being poisoned by LIRF-override rows it never scores, and unmatched LIRF y was leaking into `geo_mean`. Do not apply `MVT−SCHED` to non-LIRF unmatched. Remaining unmatched bomb is still LIRF (E19).
 
+**C14. After E18-H, overall SSE is two unmatched generating processes plus matched tail (E19-A)**
+
+- OLD: remaining unmatched RMSE ~2217 = LIRF unmatched 6033 (~30% SSE) + non-LIRF unmatched ~1550 (~25%), with EHAM/LTFM/EGLL as the non-LIRF story.
+- EVIDENCE (E18-H metrics + training holdout, no new fit): unmatched is 55.3% of Jan+Jul SSE. LIRF unmatched 30.3%. **LFPG unmatched 21.8%** — but 97% of that LFPG unmatched SSE is **two easyJet rows** (EJU983W y=84,240 with MVT−SCHED=1,740; EJU42AY y=58,206 with MVT−SCHED=2,043). Implied BLOCK is 16–23 h *before* schedule (wrong-day BLOCK). corr(y, MVT−SCHED) on LFPG unmatched = **−0.02** (full year +0.02). A LIRF-style MVT−SCHED override on LFPG raises overall 372→518. Other unmatched airports together ≈ 3% of all SSE. Matched 251→240 would move overall by only −7 s. LIRF oracle gate 6033→2771: overall −47 s. Fixing the two LFPG bombs: overall −42 s.
+- NEW: Structural leftover is (1) LIRF unmatched regimes, (2) a handful of wrong-day BLOCK bombs (LFPG, not a CDG unmatched model), (3) matched y>30 min tail. Do not build a non-LIRF unmatched mean/tree. Do not apply MVT−SCHED outside LIRF. Next experiments: ranking-safe “BLOCK yesterday” gate; LIRF neighbor gate-vs-taxi split.
+
+**C15. Wrong-day BLOCK wrap is an oracle, not a ranking-safe gate (E19-B)**
+
+- OLD (E19-A): two CDG easyJet unmatched rows are 97% of LFPG unmatched SSE; a 24 h wrap `MVT−SCHED+86400` would recover ~42 overall RMSE if gated.
+- EVIDENCE: full-year unmatched wrong-day BLOCK = 3 real bombs (EJU×2 Jan LFPG, NJE May LSZH) plus LIRF ITY already under `MVT−SCHED`. Jan+Jul *train* contains none of the CDG bombs. Every train-selectable gate has precision 0. The val-perfect `LFPG∩EJU∩ms<2400` fires on 2 December false positives. Oracle wrap on the two val bombs: Jan+Jul 372.36→**334.39**; December 238.01→238.01 (zero events).
+- NEW: **REJECT** a deployable wrap. KEEP the oracle fact (those labels are yesterday’s BLOCK). Do not reopen LFPG unmatched as a model class. Next structural experiment is LIRF neighbour gate-vs-taxi (E19-C).
+
+**C16. LIRF unmatched is not the airport’s surface-delay regime (E19-C)**
+
+- OLD: matched neighbours’ `(MVT−AOBT)/(MVT−SCHED)` should say whether a late unmatched takeoff was a gate hold or a long taxi, gating `geo_mean` vs `MVT−SCHED`.
+- EVIDENCE: on LIRF unmatched, corr(neigh_taxi_frac, y>30 min) = −0.02 train / −0.12 val. Q8/Q1 P(y>30) = 0.86 train / 0.66 val (wrong sign, weak). No train threshold on taxi_frac / push_mean / taxi_mean beats always-`MVT−SCHED` by 1 s. Oracle mix still 372→325 overall.
+- NEW: **REJECT** neighbour gate-vs-taxi for LIRF unmatched. Keep always-on `MVT−SCHED`. That slice is a join miss, not congestion. Do not sweep neighbour windows.
+
+**C17. LIRF prefix/ADES rates are descriptive, not a contest-RMSE rule (E20)**
+
+- OLD: E13 rejected those keys as exclusive *extreme* triggers; a train-only P(y>30) mixture or reverse (low-p → geo) gate might still recover part of the oracle −47 overall.
+- EVIDENCE: soft mix of geo and `MVT−SCHED` raises Jan+Jul overall +11 to +33 (December +15 to +31). A convex combination of a 400 s expert and a 6000 s expert is still thousands of seconds on both halves. Low-p prefix → geo: Jan+Jul −1.74, December −0.87 but extreme RMSE 194→1131.
+- NEW: **REJECT** history-prior mix/gate. Keep always-on `MVT−SCHED`. Do not reopen airline/dest/stand as LIRF unmatched splitters. The E13 oracle remains unreachable from prediction-time keys on the row.
+
 **C9. LIRF unmatched has two TARGET regimes, but they are not separable at prediction time (E13)**
 
 - OLD (E11 / queue item 1): LIRF unmatched is bimodal (~15 min vs multi-hour). Gate `MVT−SCHED` so it is not applied to the normal half.
@@ -861,7 +885,10 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 6. CatBoost vs LightGBM, still no large HP search.
 7. Why `AOBT−EOBT` works — triangulation vs delay→taxi.
 8. E6 rolling quantiles remain low priority.
-9. Remaining unmatched RMSE (~2217 Jan+Jul after E18-H) = LIRF unmatched 6033 (~30% of all SSE) + non-LIRF unmatched ~1550. E18 closed unmatched *means* and an unmatched-only tree. Next is E19 (neighbor gate-vs-taxi delay split for LIRF).
+9. **E19-A located remaining SSE.** After E18-H: LIRF unmatched 30.3% of all SSE; LFPG unmatched 21.8% of all SSE but **2 rows = 97% of that LFPG slice** (wrong-day BLOCK, not a CDG unmatched DGP); all other unmatched airports ~3%; matched 44.7%.
+9d. **E19-B closed the wrap.** Oracle 24 h wrap on the two CDG bombs: Jan+Jul 372→334. No train-safe gate; December FPs. REJECT deployable wrap.
+9e. **E19-C closed neighbour gate-vs-taxi.** LIRF unmatched corr with neighbour taxi fraction ≈ 0. No train threshold beats always-SCHED. Oracle 372→325 still unreachable. Keep always-on `MVT−SCHED`.
+9f. **E20 closed LIRF history priors.** Soft mix of geo and SCHED wrecks RMSE. Low-p→geo is ~2 s and hurts December extremes. Always-on `MVT−SCHED` stays. Unmatched deployable headroom is closed. Left: matched >30 min tail with a *new* information source (not another loss, mix, or prefix table).
 9b. **E18-H kept as a bundle.** Matched-only `geo_mean` and dropping LIRF-override rows from residual train were not ablated separately. Optional micro-ablation before treating them as atomic.
 9c. Do not auto-stack E17-A1 airport memory on E18-H without a new experiment.
 
@@ -886,6 +913,10 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 - **2026-09-06 E15:** Frozen-feature residual-objective test. L2 reproduced 256.46. Huber helps bulk, hurts tail. Tail-weight and two-stage help >30/>60 by overpredicting the bulk (matched 300 / 318). Winner = L2. C11 recorded. No further loss-function experiment. Artifacts in `analysis/E15/`.
 - **2026-09-06 E16-A:** Causal airport push-delay state (other flights' AOBT−EOBT, 30 min, self excluded) is not redundant with own AOBT−EOBT. L2 + `dis_state_30m`: Jan+Jul matched 256.46→253.82, >30 821→807, >60 not improved; December matched 230.04→226.95. KEEP the family, small gain. C12 recorded. Artifacts in `analysis/E16A/`.
 - **2026-09-07 E18:** Non-LIRF unmatched specialist. E16-A reproduced 376.04/253.82. Airport unmatched mean/median and an unmatched-only tree fail December. Hygiene (matched-only `geo_mean` + drop LIRF-override rows from residual train): Jan+Jul **372.36 / 250.98**, December **238.01 / 223.95**. KEEP H. REJECT A/B. C13 recorded. Override formula in the journal corrected to `unmatched and airport==LIRF` (matches code). Artifacts in `analysis/E18/`.
+- **2026-09-07 E19-A:** Structural SSE after E18-H. Unmatched 55% of overall SSE. LIRF unmatched 30.3%. LFPG unmatched 21.8% is two easyJet wrong-day BLOCK rows (97% of that slice SSE); corr(y, MVT−SCHED)=0. Do not LIRF-rule LFPG. Matched 1% features move overall ~7 s. C14 recorded. Artifacts in `analysis/E19A/`.
+- **2026-09-07 E19-B:** Wrong-day BLOCK wrap. Full year: 3 real non-LIRF unmatched bombs. No train-safe gate (CDG bombs are in Jan val; Dec gate FPs). Oracle wrap Jan+Jul 372.36→334.39, Dec unchanged. REJECT rule. C15 recorded. Artifacts in `analysis/E19B/`.
+- **2026-09-07 E19-C:** LIRF neighbour gate-vs-taxi. Neighbour taxi fraction does not identify y>30 on unmatched LIRF (corr −0.12 val). No train threshold beats always-SCHED. Oracle mix 372→325. REJECT. C16 recorded. Artifacts in `analysis/E19C/`.
+- **2026-09-07 E20:** LIRF prefix/ADES/flight-number prior. Soft mix +11 to +33 overall (wrong functional form). Low-p→geo −1.74 / −0.87 with December extreme damage. REJECT. C17 recorded. Artifacts in `analysis/E20/`.
 - **2026-09-06 E14-surface-state (spec, `experiments/`):** Leakage-safe dynamic surface-state features (strictly `< t`) added to the residual LGB of the E13 architecture (P_cal unchanged; LIRF override unchanged). Refit E13 reproduces 378.28/256.46 exactly. E14 (31 new cols: dep/arr 5-60m counts, same-runway 10/30m, time-since, rates, rolling taxi mean/med/p90/std, pressure/accel/burst): Jan+Jul overall 378.28→**371.57** (matched 256.46→248.05, MAE 165→159); December 245.38→**231.09** (matched 230.04→218.40). Gain concentrated in rolling-taxi stats + `s_rwy_dep_30m`; traffic counts ≈0. All airports improve except EHAM (Jan+Jul). **Caveat:** the winning features consume other DEPs' `TAXITIME` — NOT ranking-safe (ranking blanks DEP TAXITIME); a ranking-safe variant (rolling `MVT−AOBT`) must be tested before transfer. Artifacts: `experiments/run_e14_dynamic_surface_state.py`, `experiments/e14_features.py`, `experiments/results/E14/` (metrics.json, summary.txt, feature_importance.csv, 8 plots ×2 splits).
 
 ---
