@@ -1,0 +1,11 @@
+{
+    "status": "Succeeded",
+    "file": "likable-eagle_v4.parquet",
+    "bucket": "prc-2026-likable-eagle",
+    "used_pairs": 344841,
+    "inputs": {
+        "test_set_bucket": "prc-2026-testsets",
+        "test_set_file": "truthing.parquet"
+    },
+    "score": 316.9654
+}

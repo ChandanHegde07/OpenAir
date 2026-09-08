@@ -60,3 +60,7 @@ Icon?
 .TemporaryItems
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+
+# Generated experiment artifacts
+experiments/results/temporal_v2/*.parquet
+experiments/results/temporal_v2/cache/

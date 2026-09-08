@@ -1,0 +1,606 @@
+{
+  "branch": "B_metar",
+  "generated_utc": "2026-09-07T10:32:14.840344+00:00",
+  "coverage": [
+    {
+      "airport": "EDDF",
+      "n": 230141,
+      "miss_rate": 0.0,
+      "fog_rate": 0.01043707987711881,
+      "precip_rate": 0.11927036034431066,
+      "low_vis_rate": 0.008108072877062323,
+      "strong_wind_rate": 0.005826862662454756,
+      "med_vsby": 6.21,
+      "med_age_min": 28.0
+    },
+    {
+      "airport": "EDDM",
+      "n": 167334,
+      "miss_rate": 0.0,
+      "fog_rate": 0.03133852056366309,
+      "precip_rate": 0.1500950195417548,
+      "low_vis_rate": 0.02688037099453787,
+      "strong_wind_rate": 0.009155342010589599,
+      "med_vsby": 6.21,
+      "med_age_min": 28.0
+    },
+    {
+      "airport": "EGLL",
+      "n": 239546,
+      "miss_rate": 0.0,
+      "fog_rate": 0.003176842861078874,
+      "precip_rate": 0.08651365499737003,
+      "low_vis_rate": 0.0026967680529000693,
+      "strong_wind_rate": 0.008486887695891395,
+      "med_vsby": 6.21,
+      "med_age_min": 30.0
+    },
+    {
+      "airport": "EHAM",
+      "n": 247951,
+      "miss_rate": 0.0,
+      "fog_rate": 0.026299551120987613,
+      "precip_rate": 0.15281245084714318,
+      "low_vis_rate": 0.012687990772370348,
+      "strong_wind_rate": 0.03261934817766413,
+      "med_vsby": 6.21,
+      "med_age_min": 29.683333333333334
+    },
+    {
+      "airport": "LEBL",
+      "n": 179705,
+      "miss_rate": 0.0,
+      "fog_rate": 0.0031496062992125984,
+      "precip_rate": 0.06738265490665257,
+      "low_vis_rate": 0.003800673325728277,
+      "strong_wind_rate": 0.008246849002531927,
+      "med_vsby": 6.21,
+      "med_age_min": 29.0
+    },
+    {
+      "airport": "LEMD",
+      "n": 212242,
+      "miss_rate": 0.0,
+      "fog_rate": 0.0038022634539817755,
+      "precip_rate": 0.06394116150432054,
+      "low_vis_rate": 0.0023086853685886865,
+      "strong_wind_rate": 0.0017197350194589195,
+      "med_vsby": 6.21,
+      "med_age_min": 30.0
+    },
+    {
+      "airport": "LFPG",
+      "n": 239552,
+      "miss_rate": 0.0,
+      "fog_rate": 0.018221513491851457,
+      "precip_rate": 0.07865515629174459,
+      "low_vis_rate": 0.014360138925995192,
+      "strong_wind_rate": 0.012481632380443494,
+      "med_vsby": 6.21,
+      "med_age_min": 29.0
+    },
+    {
+      "airport": "LIRF",
+      "n": 160704,
+      "miss_rate": 4.3558343289526084e-05,
+      "fog_rate": 0.008730336519315015,
+      "precip_rate": 0.05395634209478296,
+      "low_vis_rate": 0.0011325169255276782,
+      "strong_wind_rate": 0.004162933094384707,
+      "med_vsby": 6.21,
+      "med_age_min": 30.0
+    },
+    {
+      "airport": "LSZH",
+      "n": 134907,
+      "miss_rate": 0.0,
+      "fog_rate": 0.04881140341123885,
+      "precip_rate": 0.1674486868731793,
+      "low_vis_rate": 0.024379757907299102,
+      "strong_wind_rate": 0.0017419407443646363,
+      "med_vsby": 6.21,
+      "med_age_min": 29.0
+    },
+    {
+      "airport": "LTFM",
+      "n": 272965,
+      "miss_rate": 2.93077867125822e-05,
+      "fog_rate": 0.018405290055501622,
+      "precip_rate": 0.10414155660982177,
+      "low_vis_rate": 0.012840474053450075,
+      "strong_wind_rate": 0.10729214368142435,
+      "med_vsby": 6.21,
+      "med_age_min": 28.0
+    }
+  ],
+  "janjul": {
+    "baseline": {
+      "overall": 372.3646118481625,
+      "matched": 250.97845615746274,
+      "unmatched": 2216.589114920439,
+      "mae_matched": 155.03054878156226,
+      "rmse_lt20": 173.95089483943363,
+      "rmse_gt30": 798.5993762978367,
+      "rmse_gt60": 2402.396442190914,
+      "sse_share_gt30": 0.45211851918975343,
+      "sse_share_gt60": 0.20943995820550587,
+      "n_gt30": 15140,
+      "n_gt60": 775,
+      "n_matched": 339046,
+      "n_unmatched": 5373,
+      "n": 344419,
+      "rmse": 372.3646118481625,
+      "mae": 161.994332427511,
+      "rmse_matched": 250.97845615746274,
+      "rmse_unmatched": 2216.589114920439,
+      "mae_unmatched": 601.4216523650415,
+      "n_gt30m": 15629,
+      "rmse_gt30m": 1244.5031284913337,
+      "n_gt1h": 981,
+      "rmse_gt1h": 4275.715219095457,
+      "n_EDDF": 36830,
+      "rmse_EDDF": 202.5407927737508,
+      "mae_EDDF": 132.69988388398093,
+      "n_EDDM": 27091,
+      "rmse_EDDM": 196.13219905697753,
+      "mae_EDDM": 129.9219491252327,
+      "n_EGLL": 40210,
+      "rmse_EGLL": 283.16059243464485,
+      "mae_EGLL": 177.9746020513049,
+      "n_EHAM": 40949,
+      "rmse_EHAM": 200.50727332508893,
+      "mae_EHAM": 121.81953258099472,
+      "n_LEBL": 28986,
+      "rmse_LEBL": 228.99836787385937,
+      "mae_LEBL": 148.0137654657003,
+      "n_LEMD": 35328,
+      "rmse_LEMD": 185.02050971000418,
+      "mae_LEMD": 130.08383054158364,
+      "n_LFPG": 39612,
+      "rmse_LFPG": 582.6767319109091,
+      "mae_LFPG": 180.19654901684578,
+      "n_LIRF": 26528,
+      "rmse_LIRF": 863.5426270074797,
+      "mae_LIRF": 293.4379659575916,
+      "n_LSZH": 22346,
+      "rmse_LSZH": 218.67789097414618,
+      "mae_LSZH": 133.0419818600888,
+      "n_LTFM": 46539,
+      "rmse_LTFM": 266.4236482976559,
+      "mae_LTFM": 181.80395338585748,
+      "rmse_non_lirf_unmatched": 1549.7376259533175,
+      "mae_non_lirf_unmatched": 312.0224152245515,
+      "n_non_lirf_unmatched": 4976,
+      "rmse_lirf_unmatched": 6032.69683773519,
+      "n_lirf_unmatched": 397,
+      "sse_overall": 47755555644.29217,
+      "sse_unmatched": 26398985226.454025,
+      "sse_non_lirf_unmatched": 11950793065.454033,
+      "rmse_overall": 372.3646118481625
+    },
+    "e22": {
+      "overall": 371.80547492670934,
+      "matched": 250.10521242499593,
+      "unmatched": 2216.800923720428,
+      "mae_matched": 154.25390946270642,
+      "rmse_lt20": 173.26822553530755,
+      "rmse_gt30": 796.4597269944512,
+      "rmse_gt60": 2398.280887632321,
+      "sse_share_gt30": 0.45284482120468345,
+      "sse_share_gt60": 0.21018304745806266,
+      "n_gt30": 15140,
+      "n_gt60": 775,
+      "n_matched": 339046,
+      "n_unmatched": 5373,
+      "n": 344419,
+      "rmse": 371.80547492670934,
+      "mae": 161.2523826808298,
+      "rmse_matched": 250.10521242499593,
+      "rmse_unmatched": 2216.800923720428,
+      "mae_unmatched": 602.8686772484572,
+      "n_gt30m": 15629,
+      "rmse_gt30m": 1241.775324565667,
+      "n_gt1h": 981,
+      "rmse_gt1h": 4271.420864219887,
+      "n_EDDF": 36830,
+      "rmse_EDDF": 203.64558782023798,
+      "mae_EDDF": 132.5293107096469,
+      "n_EDDM": 27091,
+      "rmse_EDDM": 191.8299706308605,
+      "mae_EDDM": 127.20931883723443,
+      "n_EGLL": 40210,
+      "rmse_EGLL": 283.1688206056473,
+      "mae_EGLL": 177.7121634279101,
+      "n_EHAM": 40949,
+      "rmse_EHAM": 195.48650628176927,
+      "mae_EHAM": 120.67352627853089,
+      "n_LEBL": 28986,
+      "rmse_LEBL": 228.8666721345264,
+      "mae_LEBL": 147.52628030171977,
+      "n_LEMD": 35328,
+      "rmse_LEMD": 184.22169979308308,
+      "mae_LEMD": 129.46091036353383,
+      "n_LFPG": 39612,
+      "rmse_LFPG": 582.5753494920032,
+      "mae_LFPG": 180.1367675882647,
+      "n_LIRF": 26528,
+      "rmse_LIRF": 863.3878583131864,
+      "mae_LIRF": 292.6353315779176,
+      "n_LSZH": 22346,
+      "rmse_LSZH": 216.37996157896464,
+      "mae_LSZH": 132.14892947648997,
+      "n_LTFM": 46539,
+      "rmse_LTFM": 266.94272641503477,
+      "mae_LTFM": 180.97587845552187,
+      "rmse_non_lirf_unmatched": 1550.0647273557072,
+      "mae_non_lirf_unmatched": 313.5848880337542,
+      "n_non_lirf_unmatched": 4976,
+      "rmse_lirf_unmatched": 6032.69683773519,
+      "n_lirf_unmatched": 397,
+      "sse_overall": 47612245319.19043,
+      "sse_unmatched": 26404030640.145794,
+      "sse_non_lirf_unmatched": 11955838479.145798,
+      "rmse_overall": 371.80547492670934,
+      "wx_importance": [
+        [
+          "met_tmpf",
+          13617244580.0
+        ],
+        [
+          "met_relh",
+          4379404284.0
+        ],
+        [
+          "met_precip",
+          4321521070.0
+        ],
+        [
+          "met_vsby",
+          1269037766.0
+        ],
+        [
+          "met_sknt",
+          966044160.0
+        ],
+        [
+          "met_age_min",
+          893025250.0
+        ],
+        [
+          "met_gust",
+          44356830.0
+        ],
+        [
+          "met_low_vis",
+          16952080.0
+        ],
+        [
+          "met_strong_wind",
+          13718500.0
+        ],
+        [
+          "met_fog",
+          8021200.0
+        ],
+        [
+          "met_p01i",
+          0.0
+        ],
+        [
+          "met_missing",
+          0.0
+        ]
+      ],
+      "top12": [
+        [
+          "aobt_eobt",
+          67740794700.0
+        ],
+        [
+          "STAND_mvt",
+          59932642540.0
+        ],
+        [
+          "mvt_aobt",
+          54919574748.0
+        ],
+        [
+          "mvt_sched",
+          48106746174.0
+        ],
+        [
+          "AIRCRAFT_OPERATOR_flt",
+          45345964554.0
+        ],
+        [
+          "RUNWAY_mvt",
+          45326313976.0
+        ],
+        [
+          "ADES_mvt",
+          35094789574.0
+        ],
+        [
+          "airport",
+          17117159148.0
+        ],
+        [
+          "dis_state_30m",
+          15731712926.0
+        ],
+        [
+          "met_tmpf",
+          13617244580.0
+        ],
+        [
+          "geo_mean",
+          13558446536.0
+        ],
+        [
+          "queue_rwy",
+          8360917872.0
+        ]
+      ]
+    },
+    "diag": {
+      "mean_resid_fog": 47.090217775868155,
+      "mean_resid_nofog": -7.4030546885987745,
+      "mean_resid_precip": 1.4250162467134728,
+      "mean_resid_noprecip": -7.455605803443279,
+      "mean_resid_low_vis": 53.327657047485715,
+      "mean_resid_strong_wind": -17.226621506568506,
+      "n_fog_matched": 6312,
+      "n_precip_matched": 40738,
+      "n_low_vis_matched": 4934,
+      "n_strong_wind_matched": 7870
+    }
+  },
+  "dec": {
+    "baseline": {
+      "overall": 238.01080378154546,
+      "matched": 223.94672968213587,
+      "unmatched": 838.399660038236,
+      "mae_matched": 145.8349471497552,
+      "rmse_lt20": 154.07360038300783,
+      "rmse_gt30": 716.1747999441075,
+      "rmse_gt60": 2114.6074657998856,
+      "sse_share_gt30": 0.3956054428856888,
+      "sse_share_gt60": 0.10327749230259275,
+      "n_gt30": 6345,
+      "n_gt60": 190,
+      "n_matched": 164028,
+      "n_unmatched": 1649,
+      "n": 165677,
+      "rmse": 238.01080378154546,
+      "mae": 147.78719885358774,
+      "rmse_matched": 223.94672968213587,
+      "rmse_unmatched": 838.399660038236,
+      "mae_unmatched": 341.9800081175346,
+      "n_gt30m": 6554,
+      "rmse_gt30m": 742.8705731144557,
+      "n_gt1h": 261,
+      "rmse_gt1h": 2013.412375605438,
+      "n_EDDF": 17324,
+      "rmse_EDDF": 189.8383108851055,
+      "mae_EDDF": 128.30127699737105,
+      "n_EDDM": 12035,
+      "rmse_EDDM": 277.59934391108425,
+      "mae_EDDM": 173.2407705361058,
+      "n_EGLL": 20000,
+      "rmse_EGLL": 235.66636073619867,
+      "mae_EGLL": 165.2335656823485,
+      "n_EHAM": 19458,
+      "rmse_EHAM": 172.80777297444396,
+      "mae_EHAM": 115.70698201125376,
+      "n_LEBL": 13835,
+      "rmse_LEBL": 184.7468942341243,
+      "mae_LEBL": 124.70134593173952,
+      "n_LEMD": 17985,
+      "rmse_LEMD": 180.4810511776638,
+      "mae_LEMD": 124.87092900070219,
+      "n_LFPG": 19778,
+      "rmse_LFPG": 279.2389055853001,
+      "mae_LFPG": 169.2063205221673,
+      "n_LIRF": 12068,
+      "rmse_LIRF": 397.974777039575,
+      "mae_LIRF": 199.84992706740255,
+      "n_LSZH": 10585,
+      "rmse_LSZH": 189.24959557796015,
+      "mae_LSZH": 128.5695513411836,
+      "n_LTFM": 22609,
+      "rmse_LTFM": 235.24198736616134,
+      "mae_LTFM": 156.17192143009044,
+      "rmse_non_lirf_unmatched": 552.2052913658516,
+      "mae_non_lirf_unmatched": 291.9391629633662,
+      "n_non_lirf_unmatched": 1561,
+      "rmse_lirf_unmatched": 2786.1434163308313,
+      "n_lirf_unmatched": 88,
+      "sse_overall": 9385460017.880892,
+      "sse_unmatched": 1159105169.4312267,
+      "sse_non_lirf_unmatched": 475996797.43122673,
+      "rmse_overall": 238.01080378154546
+    },
+    "e22": {
+      "overall": 229.03522595514224,
+      "matched": 215.27356094229322,
+      "unmatched": 812.8140383649069,
+      "mae_matched": 142.4280454662912,
+      "rmse_lt20": 156.86006852198676,
+      "rmse_gt30": 651.119098980281,
+      "rmse_gt60": 2038.2583317449303,
+      "sse_share_gt30": 0.3538776351601811,
+      "sse_share_gt60": 0.10384191161533625,
+      "n_gt30": 6345,
+      "n_gt60": 190,
+      "n_matched": 164028,
+      "n_unmatched": 1649,
+      "n": 165677,
+      "rmse": 229.03522595514224,
+      "mae": 144.30014936642027,
+      "rmse_matched": 215.27356094229322,
+      "rmse_unmatched": 812.8140383649069,
+      "mae_unmatched": 330.52056084632983,
+      "n_gt30m": 6554,
+      "rmse_gt30m": 674.4665531510052,
+      "n_gt1h": 261,
+      "rmse_gt1h": 1934.626653758999,
+      "n_EDDF": 17324,
+      "rmse_EDDF": 181.10473228968354,
+      "mae_EDDF": 126.19340965144626,
+      "n_EDDM": 12035,
+      "rmse_EDDM": 245.31862512025268,
+      "mae_EDDM": 157.36816877562507,
+      "n_EGLL": 20000,
+      "rmse_EGLL": 233.35599114584411,
+      "mae_EGLL": 164.90876044153748,
+      "n_EHAM": 19458,
+      "rmse_EHAM": 160.0375333164273,
+      "mae_EHAM": 111.94579438743308,
+      "n_LEBL": 13835,
+      "rmse_LEBL": 183.92251462268186,
+      "mae_LEBL": 124.85585364706722,
+      "n_LEMD": 17985,
+      "rmse_LEMD": 173.32064282388123,
+      "mae_LEMD": 122.87277466944909,
+      "n_LFPG": 19778,
+      "rmse_LFPG": 259.5258722775279,
+      "mae_LFPG": 159.87553808737357,
+      "n_LIRF": 12068,
+      "rmse_LIRF": 397.7049433348928,
+      "mae_LIRF": 199.46456258789348,
+      "n_LSZH": 10585,
+      "rmse_LSZH": 177.71712925797615,
+      "mae_LSZH": 124.32395841381772,
+      "n_LTFM": 22609,
+      "rmse_LTFM": 233.00771968474643,
+      "mae_LTFM": 156.0584461715439,
+      "rmse_non_lirf_unmatched": 510.19770566408283,
+      "mae_non_lirf_unmatched": 279.83369944625105,
+      "n_non_lirf_unmatched": 1561,
+      "rmse_lirf_unmatched": 2786.1434163308313,
+      "n_lirf_unmatched": 88,
+      "sse_overall": 8690940710.38438,
+      "sse_unmatched": 1089439323.9280996,
+      "sse_non_lirf_unmatched": 406330951.92809963,
+      "rmse_overall": 229.03522595514224,
+      "wx_importance": [
+        [
+          "met_tmpf",
+          19226891986.0
+        ],
+        [
+          "met_relh",
+          4393911054.0
+        ],
+        [
+          "met_precip",
+          3755986414.0
+        ],
+        [
+          "met_vsby",
+          3652246320.0
+        ],
+        [
+          "met_age_min",
+          2637716212.0
+        ],
+        [
+          "met_sknt",
+          1308315160.0
+        ],
+        [
+          "met_gust",
+          93152590.0
+        ],
+        [
+          "met_low_vis",
+          32547650.0
+        ],
+        [
+          "met_strong_wind",
+          27489370.0
+        ],
+        [
+          "met_fog",
+          10220100.0
+        ],
+        [
+          "met_p01i",
+          0.0
+        ],
+        [
+          "met_missing",
+          0.0
+        ]
+      ],
+      "top12": [
+        [
+          "aobt_eobt",
+          86658588756.0
+        ],
+        [
+          "mvt_aobt",
+          74262060922.0
+        ],
+        [
+          "STAND_mvt",
+          70130767374.0
+        ],
+        [
+          "RUNWAY_mvt",
+          54181699054.0
+        ],
+        [
+          "mvt_sched",
+          52622938490.0
+        ],
+        [
+          "AIRCRAFT_OPERATOR_flt",
+          51595416418.0
+        ],
+        [
+          "ADES_mvt",
+          46720043078.0
+        ],
+        [
+          "airport",
+          24308003226.0
+        ],
+        [
+          "met_tmpf",
+          19226891986.0
+        ],
+        [
+          "dis_state_30m",
+          17360686164.0
+        ],
+        [
+          "geo_mean",
+          13697870308.0
+        ],
+        [
+          "roll10_mean_mvt_aobt",
+          9541973140.0
+        ]
+      ]
+    },
+    "diag": {
+      "mean_resid_fog": 79.97757883579486,
+      "mean_resid_nofog": 18.430863670953787,
+      "mean_resid_precip": 33.99712480025874,
+      "mean_resid_noprecip": 18.863401912659814,
+      "mean_resid_low_vis": 100.08838951545395,
+      "mean_resid_strong_wind": 27.36427112211694,
+      "n_fog_matched": 5715,
+      "n_precip_matched": 18554,
+      "n_low_vis_matched": 4229,
+      "n_strong_wind_matched": 3052
+    }
+  },
+  "decision": {
+    "verdict": "INCONCLUSIVE",
+    "reason": "E18-H\u2192E22 Jan+Jul 372.36\u2192371.81 (-0.56), matched 250.98\u2192250.11 (-0.87); >30 798.6\u2192796.5; >60 2402.4\u21922398.3; SSE>30 45.2%\u219245.3%; SSE>60 20.9%\u219221.0%. Dec 238.01\u2192229.04 (-8.98), matched 223.95\u2192215.27 (-8.67). vs E20 368.03/228.45: does not beat Jan+Jul, does not beat Dec.",
+    "d_janjul": -0.5591369214531596,
+    "d_dec": -8.975577826403224
+  }
+}

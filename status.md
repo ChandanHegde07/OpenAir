@@ -251,6 +251,18 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE: soft mix of geo and `MVT−SCHED` raises Jan+Jul overall +11 to +33 (December +15 to +31). A convex combination of a 400 s expert and a 6000 s expert is still thousands of seconds on both halves. Low-p prefix → geo: Jan+Jul −1.74, December −0.87 but extreme RMSE 194→1131.
 - NEW: **REJECT** history-prior mix/gate. Keep always-on `MVT−SCHED`. Do not reopen airline/dest/stand as LIRF unmatched splitters. The E13 oracle remains unreachable from prediction-time keys on the row.
 
+**C18. A location shift on MVT−SCHED cannot serve both LIRF unmatched regimes (E21)**
+
+- OLD: 6033 might be a clock bias (mean residual, hour, season) that a train-only additive/slope on the override could cut without gating.
+- EVIDENCE: Jan+Jul val n=397, mean r=−3315, median r=−3963, 75% negative. 79% of SSE is y≤30 min (SCHED overpredicts). Worst-1 is only 5.7% of SSE — uniform regime error, not bombs. December median r=**0**, 60/88 rows are the extreme half. Mean/winsor/OLS: Jan+Jul overall −14 to −15 s, December LIRF_u **up**. Median shift −4 s on train, −0.04 overall. Hour/weekday medians overfit and raise December overall +3 to +4 s.
+- NEW: **REJECT** all E21 calibrations. Keep raw `MVT−SCHED`. Do not add intercepts on this slice. Same December-kill as E18-A-mean.
+
+**C19. Hourly METAR is a winter residual, not a contest-RMSE replacement (E22)**
+
+- OLD: with no ADS-B ground trajectories in the bundle, public METAR at pushback (fog / precip / low vis / wind) might identify the >30 min tail that clock-based queue proxies (E16-A, E19) missed.
+- EVIDENCE: STEP 0 — `data/` is 12 `training_*.parquet` + ranking/submitting; **`air-data/` does not exist**; training schema is 30 flight-list columns (clocks, stand, runway, type, WTC, operator, ADES); no lat/lon or 1-second surface tracks. 2026 eligibility allows extra data if openly accessible/usable, documented, and open-license. Iowa Mesonet ASOS 2025 joined ranking-safe (`AOBT` else `MVT`); miss ≈ 0, median age 28–30 min. Fog matched residual +47 s vs −7 s. E18-H reproduced **372.36 / 250.98**. E22: Jan+Jul **371.81 / 250.11** (−0.56 / −0.87); >30 798.6→796.5; >60 2402→2398; SSE>30 **45.2%→45.3%** (tail not closed). Dec **238.01→229.04** (−8.98), matched 223.95→215.27, >30 716→651. Does not beat E20 **368.03 / 228.45**.
+- NEW: **INCONCLUSIVE** as a current-model replacement. METAR is legal and has a real December winter effect; it does not close the Jan+Jul tail and does not beat the ensemble. Readme unchanged. Do not rerun E18-H+METAR. Optional later: stack the same columns into E20 CatBoost / airport experts. Branch A (true queue from trajectories) is unavailable in this data.
+
 **C9. LIRF unmatched has two TARGET regimes, but they are not separable at prediction time (E13)**
 
 - OLD (E11 / queue item 1): LIRF unmatched is bimodal (~15 min vs multi-hour). Gate `MVT−SCHED` so it is not applied to the normal half.
@@ -789,6 +801,8 @@ Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565 — full-year “E
 | Treating all unmatched airports like LIRF | EHAM unmatched are *shorter* than matched (E11). |
 | Unmatched LIRF → train median/mean constant | Bimodal; overall RMSE barely moves (660→638) (E11). |
 | Clip `MVT−SCHED` to 4 h for LIRF unmatched | True tails exceed 4 h; RMSE worse than unclipped (E11b). |
+| Additive/OLS calibration of LIRF `MVT−SCHED` (E21) | Mean/winsor/OLS −14 s Jan+Jul overall, December LIRF_u up. Median shift ≈ 0. Hour/dow overfit (E21). |
+| E18-H + METAR as current-model replacement (E22) | Jan+Jul −0.56 vs E18-H, 371.81 vs E20 368.03; Jan+Jul tail SSE share unchanged. December −9 s is real but not enough to replace the ensemble. |
 | `FLIGHT_ID` as aircraft/turnaround | It is a city-pair NM flight; paired ARR is after DEP (E7). |
 | LightGBM without LIRF unmatched override | Matched improves; overall still ~448–468 vs 410 with the simple rule (E12). |
 | Gate `MVT−SCHED` on LIRF unmatched via threshold/stand/hour/dest/prefix | Two y-regimes exist, but `MVT−SCHED` is large in both; gates do not generalize (E13). |
@@ -888,7 +902,10 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 9. **E19-A located remaining SSE.** After E18-H: LIRF unmatched 30.3% of all SSE; LFPG unmatched 21.8% of all SSE but **2 rows = 97% of that LFPG slice** (wrong-day BLOCK, not a CDG unmatched DGP); all other unmatched airports ~3%; matched 44.7%.
 9d. **E19-B closed the wrap.** Oracle 24 h wrap on the two CDG bombs: Jan+Jul 372→334. No train-safe gate; December FPs. REJECT deployable wrap.
 9e. **E19-C closed neighbour gate-vs-taxi.** LIRF unmatched corr with neighbour taxi fraction ≈ 0. No train threshold beats always-SCHED. Oracle 372→325 still unreachable. Keep always-on `MVT−SCHED`.
-9f. **E20 closed LIRF history priors.** Soft mix of geo and SCHED wrecks RMSE. Low-p→geo is ~2 s and hurts December extremes. Always-on `MVT−SCHED` stays. Unmatched deployable headroom is closed. Left: matched >30 min tail with a *new* information source (not another loss, mix, or prefix table).
+9f. **E20 closed LIRF history priors.** Soft mix of geo and SCHED wrecks RMSE. Low-p→geo is ~2 s and hurts December extremes. Always-on `MVT−SCHED` stays.
+9g. **E21 closed LIRF override calibration.** 397 rows = 0.115% of holdout and 31% of E20 SSE. Mean/OLS look like −14 s Jan+Jul and fail December (different regime mix). Median does nothing. Keep raw `MVT−SCHED`.
+9h. **E22 closed METAR as a standalone replacement.** No ADS-B trajectories in the bundle (Branch B). Hourly Iowa Mesonet ASOS is ranking-safe and legal. Helps December (−9 s), not the Jan+Jul >30 min tail. Does not beat E20. Optional: stack the same columns into E20 experts, not another E18-H residual-only run.
+9i. **Temporal v2 TCN closed as an E20 replacement.** Ordered 64-step TCN on ranking-safe movement history is a real (small) matched-holdout signal (−3.1 s) but full residual overshoots, the 0.9 blend cheated via LIRF unmatched, and **leaderboard 317.47 lost to E20 316.97**. Keep E20. Do not add more rolling features. Next sequence work must fix OOF-E20 strength mismatch and not select shrink on the same Jan+Jul val.
 9b. **E18-H kept as a bundle.** Matched-only `geo_mean` and dropping LIRF-override rows from residual train were not ablated separately. Optional micro-ablation before treating them as atomic.
 9c. Do not auto-stack E17-A1 airport memory on E18-H without a new experiment.
 
@@ -917,6 +934,9 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 - **2026-09-07 E19-B:** Wrong-day BLOCK wrap. Full year: 3 real non-LIRF unmatched bombs. No train-safe gate (CDG bombs are in Jan val; Dec gate FPs). Oracle wrap Jan+Jul 372.36→334.39, Dec unchanged. REJECT rule. C15 recorded. Artifacts in `analysis/E19B/`.
 - **2026-09-07 E19-C:** LIRF neighbour gate-vs-taxi. Neighbour taxi fraction does not identify y>30 on unmatched LIRF (corr −0.12 val). No train threshold beats always-SCHED. Oracle mix 372→325. REJECT. C16 recorded. Artifacts in `analysis/E19C/`.
 - **2026-09-07 E20:** LIRF prefix/ADES/flight-number prior. Soft mix +11 to +33 overall (wrong functional form). Low-p→geo −1.74 / −0.87 with December extreme damage. REJECT. C17 recorded. Artifacts in `analysis/E20/`.
+- **2026-09-07 leaderboard v4:** E20 NNLS ensemble (`likable-eagle_v4.parquet`) scored **316.9654** RMSE on ranking (`truthing.parquet`, 344,841 pairs). Previous ≈ 323. Confirms the ensemble moved the official metric, not only the holdout. Journal PENDING cleared.
+- **2026-09-07 E21:** LIRF unmatched override calibration. Diagnosis: 6033 is the normal half (79% of SSE), not bombs; December median residual is 0. Mean/OLS −14 s Jan+Jul, December worse. Median ≈ 0. REJECT. Keep raw `MVT−SCHED`. C18 recorded. Artifacts in `analysis/E21/`. Current model unchanged.
+- **2026-09-07 E22:** STEP 0: no `air-data/`, 30 flight-list columns, no ADS-B trajectories; 2026 rules allow documented open extra data. Branch B METAR (Iowa Mesonet ASOS). E18-H reproduced 372.36/250.98. E22 Jan+Jul **371.81 / 250.11** (tail SSE share unchanged); Dec **229.04 / 215.27**. Does not beat E20 368.03/228.45. **INCONCLUSIVE.** C19 recorded. Readme unchanged. Artifacts in `analysis/E22/`.
 - **2026-09-06 E14-surface-state (spec, `experiments/`):** Leakage-safe dynamic surface-state features (strictly `< t`) added to the residual LGB of the E13 architecture (P_cal unchanged; LIRF override unchanged). Refit E13 reproduces 378.28/256.46 exactly. E14 (31 new cols: dep/arr 5-60m counts, same-runway 10/30m, time-since, rates, rolling taxi mean/med/p90/std, pressure/accel/burst): Jan+Jul overall 378.28→**371.57** (matched 256.46→248.05, MAE 165→159); December 245.38→**231.09** (matched 230.04→218.40). Gain concentrated in rolling-taxi stats + `s_rwy_dep_30m`; traffic counts ≈0. All airports improve except EHAM (Jan+Jul). **Caveat:** the winning features consume other DEPs' `TAXITIME` — NOT ranking-safe (ranking blanks DEP TAXITIME); a ranking-safe variant (rolling `MVT−AOBT`) must be tested before transfer. Artifacts: `experiments/run_e14_dynamic_surface_state.py`, `experiments/e14_features.py`, `experiments/results/E14/` (metrics.json, summary.txt, feature_importance.csv, 8 plots ×2 splits).
 
 ---
@@ -1013,8 +1033,63 @@ CatBoost and airport experts both beat E18-H alone; the direct-LGB and numeric-X
 
 **NNLS weights: A=0, B=0, C=0.456, D=0.053, E=0.491** — the optimizer drops the LightGBM E18-H entirely in favour of CatBoost (C) + airport experts (E); ridge gives the same picture. Improvement is not a Jan+Jul artifact: December improves by −9.56 s (weights were fit only on Jan+Jul). Matched RMSE drops to 244.76 (Jan+Jul) / 215.90 (Dec) — the best matched result so far.
 
-**Decision: ACCEPT.** Meaningful (4.3 s Jan+Jul, 9.6 s Dec), consistent, no December regression. Leaderboard = the final judge; submission in progress.
+**Decision: ACCEPT.** Meaningful (4.3 s Jan+Jul, 9.6 s Dec), consistent, no December regression.
+
+**Leaderboard (2026 ranking, `truthing.parquet`, 344,841 pairs):** `likable-eagle_v4.parquet` RMSE **316.9654**. Previous benchmark ≈ 323. Internal Jan+Jul 368.03 vs LB 317 is the same ~50 s “ranking is easier than Jan+Jul holdout” offset seen for E16-A/E18-H (~372 internal vs ~323 LB). December holdout 228.45 is *optimistic* relative to the leaderboard. Gap to reported best 265: **52 points**.
 
 **Residual correlation (Jan+Jul matched):** expert residuals are positively but not perfectly correlated (A–C ~0.97, A–E ~0.96, C–E ~0.98) — the gain comes from C and E each being individually stronger and slightly different, not from low-correlation averaging of equals. See `experiments/results/E20/error_correlation.csv`.
 
-**Artifacts:** `experiments/run_e20_ensemble.py`, `experiments/make_submission_e20.py`, `experiments/results/E20/` (summary.md, model_metrics.csv, blend_metrics.csv, error_correlation.csv, regime_metrics.csv, feature_importance.csv, E20.json, oof_predictions_{janjul,dec}.parquet, plots/). Submission: `likable-eagle_v4.parquet` (fit on all 2025 training months). **Leaderboard RMSE: PENDING (manual upload).**
+**Artifacts:** `experiments/run_e20_ensemble.py`, `experiments/make_submission_e20.py`, `experiments/results/E20/` (summary.md, model_metrics.csv, blend_metrics.csv, error_correlation.csv, regime_metrics.csv, feature_importance.csv, E20.json, oof_predictions_{janjul,dec}.parquet, plots/). Submission: `likable-eagle_v4.parquet` (fit on all 2025 training months). **Leaderboard RMSE: 316.9654** (`used_pairs` 344,841; scorer `truthing.parquet`).
+
+---
+
+## E22 — METAR weather, Branch B (2026-09-07)
+
+**STEP 0.** `data/` has 12 `training_*.parquet`, `ranking.parquet`, `submitting.parquet`. **`air-data/` does not exist.** Training schema is 30 columns: movement clocks (`MVT`/`BLOCK`/`SCHED`), stand, runway, aircraft type, plus NM (`AOBT`/`EOBT`/`IOBT`/`LOBT`, WTC, operator, ADES, callsign). No lat/lon, taxiway, or 1-second ADS-B surface trajectories. 2026 eligibility (prc-data-challenge-2026.netlify.app/eligibility.html): extra data allowed if openly accessible/usable and documented, and additional datasets under an open license. **Branch B.**
+
+**Join.** Iowa Mesonet ASOS 2025, nearest report with `valid ≤ AOBT` (else `MVT`), stale >3 h nulled. Features: vis/wind/gust/temp/RH/precip/age + fog/precip/low-vis/strong-wind flags. Frozen E18-H residual LightGBM. Training files only.
+
+**Coverage.** 87,589 hourly reports, 10/10 airports. Miss ≈ 0. Median age 28–30 min. Fog 0.3–4.9% of DEPs; precip 5–17%.
+
+**Holdout (E18-H reproduced exactly):**
+
+| Split | Model | Overall | Matched | >30 RMSE | >60 RMSE | SSE>30 | SSE>60 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Jan+Jul | E18-H | 372.36 | 250.98 | 798.6 | 2402.4 | 45.2% | 20.9% |
+| Jan+Jul | E22 METAR | 371.81 | 250.11 | 796.5 | 2398.3 | 45.3% | 21.0% |
+| Jan+Jul | E20 ensemble | **368.03** | **244.76** | — | — | — | — |
+| Dec | E18-H | 238.01 | 223.95 | 716.2 | 2114.6 | 39.6% | 10.3% |
+| Dec | E22 METAR | 229.04 | 215.27 | 651.1 | 2038.3 | 35.4% | 10.4% |
+| Dec | E20 ensemble | **228.45** | 215.90 | — | — | — | — |
+
+Fog matched residual +47 s (signal exists). Trees use temp/RH/precip, not the fog flag. Jan+Jul tail **not** reduced. December winter −9 s is real.
+
+**Decision: INCONCLUSIVE.** Does not beat E20 on both splits. Readme current-model unchanged. Optional later stack into E20 experts; do not reopen E15/E19. Artifacts: `experiments/run_e22_metar.py`, `experiments/download_metar.py`, `analysis/E22/`, `data/external/metar/`.
+
+---
+
+## Temporal v2 — learned airport-state TCN (2026-09-08)
+
+**Objective:** replace rolling-stat stacking with an ordered movement-sequence encoder. E20 stays the incumbent. TCN predicts a residual correction from the previous 64 same-airport DEP/ARR movements (ranking-safe clocks only: no TAXITIME, no BLOCK).
+
+**Pipeline (leakage-checked):** per-airport packed stream, strictly `event_time < t`, train-only vocabs/scalers. Causal expanding-window E20 OOF on train months excluding Jan+Jul (lite C+E, 1,257,159 rows; fold RMSE 330 / 285 / 242). Jan+Jul val uses the frozen E20 OOF parquet (368.03 reproduced). LIRF unmatched frozen to `MVT−SCHED`.
+
+**Jan+Jul 2025 holdout:**
+
+| Model | Overall | Matched | MAE | >30m matched | >60m matched | LIRF |
+|---|---:|---:|---:|---:|---:|---:|
+| E20 | **368.03** | 244.76 | 157.05 | 774.8 | 2361.4 | 857.42 |
+| temporal-alone | 539.86 | 275.69 | 155.74 | 992.7 | 3557.6 | 1661.37 |
+| 0.9 E20 + 0.1 temporal | 365.20 | 244.58 | 155.48 | 786.0 | 2448.0 | 849.06 |
+| E20 + 1.0 TCN corr | 369.71 | 247.15 | 156.31 | 797.2 | 2335.6 | 860.27 |
+| **E20 + 0.5 TCN corr** | **365.84** | **241.65** | 154.43 | 773.3 | 2326.3 | 856.47 |
+
+January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched gains: LSZH −7.4, LTFM −8.3, EDDF −6.0; EHAM +2.2. Tail SSE share not reduced.
+
+**Do not use the 0.9 blend.** Freezing LIRF unmatched back to E20 erases most of its overall gain (365.20 → 367.83). That blend was quietly editing the 397 LIRF-override rows.
+
+**Leaderboard:** `likable-eagle_v5.parquet` = E20 v4 + 0.5 TCN correction, LIRF fallback preserved, 344,841 pairs. **RMSE 317.4747** vs E20 v4 **316.9654** (Δ **+0.51**, worse). Local −2.2 s did not transfer.
+
+**Decision: REJECT as a replacement.** Sequence model has a small matched-holdout signal and a negative leaderboard delta. Production stays E20 (`likable-eagle_v4.parquet`, 316.9654). Full residual overshoots because train OOF E20 (lite, easier months) is weaker than the val/ranking E20 — TCN learns oversized corrections.
+
+**Artifacts:** `openair/models/temporal_v2/`, `openair/models/e20_baseline/fit.py`, `experiments/temporal_v2/`, `experiments/results/temporal_v2/`, `likable-eagle_v5.parquet`.
