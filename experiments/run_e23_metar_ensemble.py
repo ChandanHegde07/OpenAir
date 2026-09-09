@@ -3,9 +3,11 @@
 E20 NNLS = 0.456 CatBoost residual + 0.491 per-airport LGB + 0.053 XGB residual.
 This experiment adds the same METAR columns as E22 to C, D, and E, then:
 
-  1. scores each expert with vs without METAR (same-run ablation)
+  1. scores each METAR expert against E20's saved OOF (no-wx) predictions
   2. applies frozen E20 weights 0.456/0.053/0.491 to the METAR experts
   3. refits NNLS on the METAR-augmented C, D, E (Jan+Jul holdout only)
+
+No-wx C/D/E are not retrained (E20 OOF is the published baseline).
 
 Dec is the transfer check. The risk to catch is Jan+Jul overfitting on a
 12-column add-on. Training_*.parquet only. No ranking/submitting in fits.
@@ -186,7 +188,7 @@ def train_cde(tr, va, num_feats, label: str):
     cols_cat = list(num_feats) + list(CAT_COLS)
 
     log(f"    {label} C CatBoost residual...")
-    mC = CatBoostRegressor(
+    cat_kw = dict(
         iterations=2000,
         learning_rate=0.05,
         depth=6,
@@ -194,13 +196,18 @@ def train_cde(tr, va, num_feats, label: str):
         loss_function="RMSE",
         random_seed=SEED,
         verbose=False,
-        thread_count=-1,
     )
-    mC.fit(
-        Pool(cat_tr[cols_cat], yres_tr, cat_features=CAT_COLS),
-        eval_set=Pool(cat_es[cols_cat], yres_es, cat_features=CAT_COLS),
-        early_stopping_rounds=60,
-    )
+    train_pool = Pool(cat_tr[cols_cat], yres_tr, cat_features=CAT_COLS)
+    es_pool = Pool(cat_es[cols_cat], yres_es, cat_features=CAT_COLS)
+    try:
+        mC = CatBoostRegressor(**cat_kw, task_type="GPU", devices="0")
+        mC.fit(train_pool, eval_set=es_pool, early_stopping_rounds=60)
+        log(f"    {label} C on GPU ({mC.tree_count_} trees)")
+    except Exception as e:
+        log(f"    {label} GPU CatBoost failed ({type(e).__name__}: {e}); CPU")
+        mC = CatBoostRegressor(**cat_kw, thread_count=-1)
+        mC.fit(train_pool, eval_set=es_pool, early_stopping_rounds=60)
+        log(f"    {label} C on CPU ({mC.tree_count_} trees)")
     predC = apply_override(
         p_va + np.asarray(mC.predict(cat_va[cols_cat]), dtype=np.float64),
         um_va,
@@ -302,6 +309,13 @@ def train_cde(tr, va, num_feats, label: str):
     }
 
 
+def scores_from_preds(preds: dict, y, um, ap) -> dict:
+    out = {k: tail_block(y, preds[k], um) for k in EXPERTS}
+    for k in EXPERTS:
+        out[k]["airport"] = airport_matched_rmse(y, preds[k], um, ap)
+    return out
+
+
 def load_e20_oof(split: str, ids: np.ndarray, y: np.ndarray, um: np.ndarray, ap: np.ndarray):
     df = pl.read_parquet(OOF_DIR / f"oof_predictions_{split}.parquet")
     src = df.select(
@@ -316,9 +330,12 @@ def load_e20_oof(split: str, ids: np.ndarray, y: np.ndarray, um: np.ndarray, ap:
     if int(np.isnan(np.column_stack(list(preds.values()))).sum()) != 0:
         raise RuntimeError(f"E20 oof align failed on {split}")
     p = blend(preds, W_E20)
-    blk = tail_block(y, p, um)
-    experts = {k: tail_block(y, preds[k], um) for k in EXPERTS}
-    return {"preds": preds, "blend": blk, "experts": experts, "airport": airport_matched_rmse(y, p, um, ap)}
+    return {
+        "preds": preds,
+        "blend": tail_block(y, p, um),
+        "experts": scores_from_preds(preds, y, um, ap),
+        "airport": airport_matched_rmse(y, p, um, ap),
+    }
 
 
 def featurize() -> pl.DataFrame:
@@ -450,6 +467,7 @@ def write_report(payload: dict) -> None:
     a("- Hygiene: matched-only `geo_mean`, LIRF-override rows dropped from")
     a("  every expert, always-on LIRF `MVT−SCHED`.")
     a("- Same hparams as E20 for C/D/E. A/A2/B are not trained and not blended.")
+    a("- No-wx experts are **E20 OOF** (not retrained). METAR C/D/E are fit here.")
     a("- Frozen weights: C=0.456, D=0.053, E=0.491.")
     a("- NNLS fit on Jan+Jul holdout only; December is transfer.")
     a("")
@@ -555,6 +573,7 @@ def write_report(payload: dict) -> None:
 
 def main():
     log("E23: METAR into E20 experts C/D/E (not a fourth model).")
+    log("  no-wx C/D/E taken from E20 OOF (skip retrain). Fit METAR experts only.")
     num_wx = list(NUM_FEATS) + [c for c in METAR_NUM if c not in NUM_FEATS]
     log("load METAR + featurize DEP...")
     met = load_metar()
@@ -575,15 +594,14 @@ def main():
         pack = prepare_split(dep, months, matched_geo=True)
         tr, va = pack["tr"], pack["va"]
 
-        nowx = train_cde(tr, va, list(NUM_FEATS), f"{split_name} no-wx")
         wx = train_cde(tr, va, num_wx, f"{split_name} +METAR")
 
         y, um, ap = wx["y"], wx["um"], wx["ap"]
         e20 = load_e20_oof(split_name, wx["ids"], y, um, ap)
 
-        nowx_sc = pack_scores(nowx, y, um, ap)
+        nowx_sc = e20["experts"]
         wx_sc = pack_scores(wx, y, um, ap)
-        nowx_frozen = tail_block(y, blend(nowx["preds"], W_E20), um)
+        nowx_frozen = e20["blend"]
         wx_frozen = tail_block(y, blend(wx["preds"], W_E20), um)
 
         if split_name == "janjul":
@@ -636,9 +654,9 @@ def main():
                 "y": y,
                 "unmatched": um,
                 "airport": ap,
-                "pred_C": nowx["preds"]["C"],
-                "pred_D": nowx["preds"]["D"],
-                "pred_E": nowx["preds"]["E"],
+                "pred_C": e20["preds"]["C"],
+                "pred_D": e20["preds"]["D"],
+                "pred_E": e20["preds"]["E"],
                 "pred_C_wx": wx["preds"]["C"],
                 "pred_D_wx": wx["preds"]["D"],
                 "pred_E_wx": wx["preds"]["E"],

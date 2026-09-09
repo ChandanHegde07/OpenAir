@@ -263,6 +263,18 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE: STEP 0 — `data/` is 12 `training_*.parquet` + ranking/submitting; **`air-data/` does not exist**; training schema is 30 flight-list columns (clocks, stand, runway, type, WTC, operator, ADES); no lat/lon or 1-second surface tracks. 2026 eligibility allows extra data if openly accessible/usable, documented, and open-license. Iowa Mesonet ASOS 2025 joined ranking-safe (`AOBT` else `MVT`); miss ≈ 0, median age 28–30 min. Fog matched residual +47 s vs −7 s. E18-H reproduced **372.36 / 250.98**. E22: Jan+Jul **371.81 / 250.11** (−0.56 / −0.87); >30 798.6→796.5; >60 2402→2398; SSE>30 **45.2%→45.3%** (tail not closed). Dec **238.01→229.04** (−8.98), matched 223.95→215.27, >30 716→651. Does not beat E20 **368.03 / 228.45**.
 - NEW: **INCONCLUSIVE** as a current-model replacement. METAR is legal and has a real December winter effect; it does not close the Jan+Jul tail and does not beat the ensemble. Readme unchanged. Do not rerun E18-H+METAR. Optional later: stack the same columns into E20 CatBoost / airport experts. Branch A (true queue from trajectories) is unavailable in this data.
 
+**C20. Stacking METAR into E20 experts is a winter-only gain (E23)**
+
+- OLD: E22's December −9 s / >30 716→651 might survive if the same columns go into CatBoost (0.456) and per-airport LGB (0.491), which can learn airport-specific fog; the risk is Jan+Jul overfit on 12 extra columns.
+- EVIDENCE: METAR C/D/E vs E20 OOF. Jan+Jul ensemble **368.03→368.07** (+0.04), matched +0.20, >30 **774.8→781.0** (hurt). CatBoost itself worse (+0.82). Airport E −0.36 overall but >30 worse. December **228.69→221.71** (−7.0), >30 672.6→618.5 — the winter tail **survives in the blend**. Airport E: EDDM −22, LFPG −15, EHAM −13, LSZH −12; LEBL/LEMD/LTFM/LIRF ≈ 0. NNLS C/D/E = 0.368/0.075/0.557 (E takes more weight). Frozen E20 weights on METAR experts ≈ same as refit.
+- NEW: **INCONCLUSIVE.** Do not replace E20. Ranking is Jan+Jul-like; a December-only win is the wrong split. METAR is a real winter residual, not a contest upgrade. Do not stack it into production. Readme unchanged.
+
+**C21. Pinball residual is a different objective, not a different RMSE solution (E24)**
+
+- OLD: E15 closed mean-loss reweighting (Huber / tail-weighted L2 / P(y>30)). Quantile regression learns the conditional distribution (α=0.1/0.5/0.9) and might still help as a point estimate (median / quantile blend) or as a fourth NNLS expert next to E20 C/D/E.
+- EVIDENCE: L2 reproduced E18-H 372.36/250.98. Q10 overall 467 (underpredict, mean r=+218). Q50 `<20` 174→162 but `>30` 799→910, overall 381 (Huber shape). Q90 `>30` 799→686 / SSE>30 45%→16% but `<20` 174→340, overall 456 (E15-B shape). Quantile-NNLS: L2 0.73 + Q90 0.27, Q10=Q50=0, blend 378.92 **worse than L2**. E20+Q50 NNLS: **Q50 weight 0**.
+- NEW: **REJECT.** Pinball is not E15, but on this feature set it is the same RMSE tradeoff. Do not add a quantile LightGBM to the ensemble. Median is not a better point estimate than L2. Readme unchanged.
+
 **C9. LIRF unmatched has two TARGET regimes, but they are not separable at prediction time (E13)**
 
 - OLD (E11 / queue item 1): LIRF unmatched is bimodal (~15 min vs multi-hour). Gate `MVT−SCHED` so it is not applied to the normal half.
@@ -803,6 +815,8 @@ Jan+Jul EHAM unmatched mean y=742 vs train unmatched mean 565 — full-year “E
 | Clip `MVT−SCHED` to 4 h for LIRF unmatched | True tails exceed 4 h; RMSE worse than unclipped (E11b). |
 | Additive/OLS calibration of LIRF `MVT−SCHED` (E21) | Mean/winsor/OLS −14 s Jan+Jul overall, December LIRF_u up. Median shift ≈ 0. Hour/dow overfit (E21). |
 | E18-H + METAR as current-model replacement (E22) | Jan+Jul −0.56 vs E18-H, 371.81 vs E20 368.03; Jan+Jul tail SSE share unchanged. December −9 s is real but not enough to replace the ensemble. |
+| METAR stacked into E20 C/D/E (E23) | Jan+Jul 368.03→368.07, >30 775→781 (hurt). December −7 s and >30 673→619 survive in the blend. Winter-only; ranking analogue is Jan+Jul. |
+| Quantile residual LGB as point estimate or 4th expert (E24) | Q50 381 vs L2 372 (bulk yes, tail no). Q90 tail yes, bulk no. NNLS zeros Q50 next to E20 C/D/E. Same RMSE tradeoff as E15. |
 | `FLIGHT_ID` as aircraft/turnaround | It is a city-pair NM flight; paired ARR is after DEP (E7). |
 | LightGBM without LIRF unmatched override | Matched improves; overall still ~448–468 vs 410 with the simple rule (E12). |
 | Gate `MVT−SCHED` on LIRF unmatched via threshold/stand/hour/dest/prefix | Two y-regimes exist, but `MVT−SCHED` is large in both; gates do not generalize (E13). |
@@ -905,6 +919,8 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 9f. **E20 closed LIRF history priors.** Soft mix of geo and SCHED wrecks RMSE. Low-p→geo is ~2 s and hurts December extremes. Always-on `MVT−SCHED` stays.
 9g. **E21 closed LIRF override calibration.** 397 rows = 0.115% of holdout and 31% of E20 SSE. Mean/OLS look like −14 s Jan+Jul and fail December (different regime mix). Median does nothing. Keep raw `MVT−SCHED`.
 9h. **E22 closed METAR as a standalone replacement.** No ADS-B trajectories in the bundle (Branch B). Hourly Iowa Mesonet ASOS is ranking-safe and legal. Helps December (−9 s), not the Jan+Jul >30 min tail. Does not beat E20. Optional: stack the same columns into E20 experts, not another E18-H residual-only run.
+9i. **E23 closed METAR-into-E20 stacking.** Airport experts absorb winter weather (EDDM/LFPG/EHAM/LSZH). Jan+Jul ensemble is flat-to-worse and the >30 tail **hurts**. Do not ship. Ranking-analogue split is Jan+Jul.
+9j. **E24 closed pinball/quantile residual.** Mechanistically not E15 (conditional distribution vs reweighted mean). RMSE tradeoff is the same. Q50 gets zero NNLS weight next to E20. Do not add.
 9i. **Temporal v2 TCN closed as an E20 replacement.** Ordered 64-step TCN on ranking-safe movement history is a real (small) matched-holdout signal (−3.1 s) but full residual overshoots, the 0.9 blend cheated via LIRF unmatched, and **leaderboard 317.47 lost to E20 316.97**. Keep E20. Do not add more rolling features. Next sequence work must fix OOF-E20 strength mismatch and not select shrink on the same Jan+Jul val.
 9b. **E18-H kept as a bundle.** Matched-only `geo_mean` and dropping LIRF-override rows from residual train were not ablated separately. Optional micro-ablation before treating them as atomic.
 9c. Do not auto-stack E17-A1 airport memory on E18-H without a new experiment.
@@ -937,6 +953,8 @@ E18-H does not change the LIRF override (RMSE 6032.70 on 397 Jan+Jul rows). Non-
 - **2026-09-07 leaderboard v4:** E20 NNLS ensemble (`likable-eagle_v4.parquet`) scored **316.9654** RMSE on ranking (`truthing.parquet`, 344,841 pairs). Previous ≈ 323. Confirms the ensemble moved the official metric, not only the holdout. Journal PENDING cleared.
 - **2026-09-07 E21:** LIRF unmatched override calibration. Diagnosis: 6033 is the normal half (79% of SSE), not bombs; December median residual is 0. Mean/OLS −14 s Jan+Jul, December worse. Median ≈ 0. REJECT. Keep raw `MVT−SCHED`. C18 recorded. Artifacts in `analysis/E21/`. Current model unchanged.
 - **2026-09-07 E22:** STEP 0: no `air-data/`, 30 flight-list columns, no ADS-B trajectories; 2026 rules allow documented open extra data. Branch B METAR (Iowa Mesonet ASOS). E18-H reproduced 372.36/250.98. E22 Jan+Jul **371.81 / 250.11** (tail SSE share unchanged); Dec **229.04 / 215.27**. Does not beat E20 368.03/228.45. **INCONCLUSIVE.** C19 recorded. Readme unchanged. Artifacts in `analysis/E22/`.
+- **2026-09-08 E23:** METAR stacked into E20 C/D/E (not a fourth model). Jan+Jul **368.03→368.07**, >30 775→781 (hurt). Dec **228.69→221.71**, >30 673→619 (winter tail survives in the blend). NNLS 0.368/0.075/0.557. **INCONCLUSIVE.** C20 recorded. Production stays E20. Readme unchanged. Artifacts in `analysis/E23/`.
+- **2026-09-08 E24:** Quantile residual LGB α=0.1/0.5/0.9 on frozen E18-H features. L2 reproduced 372.36. Q50 380.90 (bulk better, tail worse). Q90 tail better, bulk wrecked. E20+Q50 NNLS **Q50 weight 0**. **REJECT.** C21 recorded. Readme unchanged. Artifacts in `analysis/E24/`.
 - **2026-09-06 E14-surface-state (spec, `experiments/`):** Leakage-safe dynamic surface-state features (strictly `< t`) added to the residual LGB of the E13 architecture (P_cal unchanged; LIRF override unchanged). Refit E13 reproduces 378.28/256.46 exactly. E14 (31 new cols: dep/arr 5-60m counts, same-runway 10/30m, time-since, rates, rolling taxi mean/med/p90/std, pressure/accel/burst): Jan+Jul overall 378.28→**371.57** (matched 256.46→248.05, MAE 165→159); December 245.38→**231.09** (matched 230.04→218.40). Gain concentrated in rolling-taxi stats + `s_rwy_dep_30m`; traffic counts ≈0. All airports improve except EHAM (Jan+Jul). **Caveat:** the winning features consume other DEPs' `TAXITIME` — NOT ranking-safe (ranking blanks DEP TAXITIME); a ranking-safe variant (rolling `MVT−AOBT`) must be tested before transfer. Artifacts: `experiments/run_e14_dynamic_surface_state.py`, `experiments/e14_features.py`, `experiments/results/E14/` (metrics.json, summary.txt, feature_importance.csv, 8 plots ×2 splits).
 
 ---
@@ -1065,6 +1083,61 @@ CatBoost and airport experts both beat E18-H alone; the direct-LGB and numeric-X
 Fog matched residual +47 s (signal exists). Trees use temp/RH/precip, not the fog flag. Jan+Jul tail **not** reduced. December winter −9 s is real.
 
 **Decision: INCONCLUSIVE.** Does not beat E20 on both splits. Readme current-model unchanged. Optional later stack into E20 experts; do not reopen E15/E19. Artifacts: `experiments/run_e22_metar.py`, `experiments/download_metar.py`, `analysis/E22/`, `data/external/metar/`.
+
+---
+
+## E23 — METAR stacked into E20 experts (2026-09-08)
+
+**Question.** E22's December winter gain might survive if the same METAR columns go into the three experts that actually carry E20 weight (CatBoost 0.456, airport LGB 0.491, XGB 0.053), not as a fourth model. Risk: Jan+Jul overfit.
+
+**Setup.** E22 join. E18-H hygiene. No-wx C/D/E = E20 OOF (not retrained). METAR C/D/E fit here. Frozen weights vs NNLS refit on Jan+Jul. CatBoost on GPU; D/E on CPU.
+
+**Experts (overall / >30 min):**
+
+| Expert | Jan+Jul no-wx | Jan+Jul +wx | Dec no-wx | Dec +wx |
+|---|---:|---:|---:|---:|
+| C CatBoost | 370.37 / 782.6 | 371.19 / 792.5 | 232.37 / 689.7 | 225.49 / 635.6 |
+| D XGB | 385.50 / 852.9 | 385.00 / 846.8 | 246.17 / 738.2 | 236.86 / 682.4 |
+| E airport | 370.52 / 781.7 | 370.16 / 786.0 | 229.94 / 665.2 | 224.03 / 615.2 |
+
+Airport E December matched: EDDM −22, LFPG −15, EHAM −13, LSZH −12; LEBL/LEMD/LTFM/LIRF ≈ 0.
+
+**Blends:**
+
+| Split | Model | Overall | Matched | >30 | SSE>30 |
+|---|---|---:|---:|---:|---:|
+| Jan+Jul | E20 frozen OOF | **368.03** | **244.76** | **774.8** | 44.7% |
+| Jan+Jul | METAR + frozen w | 368.12 | 244.99 | 781.3 | 45.4% |
+| Jan+Jul | METAR + NNLS 0.368/0.075/0.557 | 368.07 | 244.96 | 781.0 | 45.4% |
+| Dec | E20 frozen OOF | 228.69 | 214.78 | 672.6 | 37.9% |
+| Dec | METAR + frozen w | 221.78 | 208.00 | 619.4 | 34.3% |
+| Dec | METAR + NNLS | **221.71** | **207.93** | **618.5** | 34.2% |
+
+December >30 gain **survives in the ensemble**. January+July tail **hurts**. Ranking is the Jan+Jul analogue (LB 317 vs holdout 368).
+
+**Decision: INCONCLUSIVE.** Do not replace E20. Readme unchanged. C20 recorded. Artifacts: `experiments/run_e23_metar_ensemble.py`, `analysis/E23/`.
+
+---
+
+## E24 — Quantile residual LightGBM (2026-09-08)
+
+**Question.** E15 closed mean-loss reweighting. Pinball (α=0.1/0.5/0.9) learns the conditional distribution. Median or a quantile blend might be a better point estimate, or Q50 might take NNLS weight as a fourth E20 expert.
+
+**Setup.** Frozen E18-H features. No extra data. L2 must reproduce 372.36. Quantile LGB on `y − P_cal`. NNLS of {L2,Q10,Q50,Q90} and of {C,D,E,Q50}.
+
+| Model | Jan+Jul | matched | <20 | >30 | Dec |
+|---|---:|---:|---:|---:|---:|
+| L2 (E18-H) | **372.36** | **250.98** | 174.0 | 798.6 | 238.01 |
+| Q10 | 467.25 | 376.26 | 193.4 | 1313.5 | 351.25 |
+| Q50 median | 380.90 | 263.01 | **162.4** | 910.0 | 246.79 |
+| Q90 | 456.33 | 363.76 | 339.6 | **686.4** | 317.30 |
+| Qblend L2+Q90 | 378.92 | 260.79 | 207.5 | 738.0 | 238.43 |
+| E20 | **368.03** | **244.76** | 170.9 | 774.8 | 228.69 |
+| E20+Q50 | 368.03 | 244.76 | 170.9 | 774.8 | 228.69 |
+
+E20+Q50 NNLS: **Q50 weight 0**. Quantile-family NNLS: L2 0.73 + Q90 0.27, zeros Q10/Q50.
+
+**Decision: REJECT.** Same RMSE tradeoff as E15 (median=Huber shape, Q90=tail-weight shape). Not a useful fourth expert. C21 recorded. Readme unchanged. Artifacts: `experiments/run_e24_quantile.py`, `analysis/E24/`.
 
 ---
 

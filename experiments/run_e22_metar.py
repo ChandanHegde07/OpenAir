@@ -80,46 +80,54 @@ def log(msg: str) -> None:
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
+def _read_metar_csv(p: Path) -> pl.DataFrame | None:
+    if not p.exists() or p.stat().st_size < 50:
+        return None
+    raw = p.read_text(encoding="utf-8", errors="replace")
+    if raw.lstrip().lower().startswith("<") or "station,valid" not in raw[:200].lower():
+        log(f"  WARN {p.name} does not look like CSV ({p.stat().st_size} bytes)")
+        return None
+    df = pl.read_csv(p, try_parse_dates=False, infer_schema_length=5000, ignore_errors=True)
+    cols = {c.lower(): c for c in df.columns}
+    if any(n not in cols for n in ("station", "valid")):
+        log(f"  WARN {p.name} columns={df.columns}")
+        return None
+    df = df.rename({cols[k]: k for k in cols})
+    df = df.with_columns(
+        pl.col("station").cast(pl.Utf8).str.to_uppercase().alias("station"),
+        pl.col("valid").str.to_datetime("%Y-%m-%d %H:%M", time_zone="UTC", strict=False).alias("valid"),
+    )
+    for c in ["tmpf", "dwpf", "relh", "drct", "sknt", "p01i", "vsby", "gust"]:
+        if c in df.columns:
+            df = df.with_columns(pl.col(c).cast(pl.Float64, strict=False))
+        else:
+            df = df.with_columns(pl.lit(None).cast(pl.Float64).alias(c))
+    if "wxcodes" not in df.columns:
+        df = df.with_columns(pl.lit(None).cast(pl.Utf8).alias("wxcodes"))
+    else:
+        df = df.with_columns(pl.col("wxcodes").cast(pl.Utf8))
+    df = df.select(["station", "valid", "tmpf", "dwpf", "relh", "drct", "sknt", "p01i", "vsby", "gust", "wxcodes"])
+    return df.filter(pl.col("valid").is_not_null())
+
+
 def load_metar() -> pl.DataFrame:
     frames = []
     for st in AIRPORTS:
-        p = METAR_DIR / f"{st}.csv"
-        if not p.exists() or p.stat().st_size < 50:
+        paths = sorted({p for p in METAR_DIR.glob(f"{st}*.csv") if p.is_file()})
+        if not paths:
             log(f"  WARN missing METAR {st}")
             continue
-        raw = p.read_text(encoding="utf-8", errors="replace")
-        if raw.lstrip().lower().startswith("<") or "station,valid" not in raw[:200].lower():
-            log(f"  WARN {st} does not look like CSV ({p.stat().st_size} bytes)")
-            continue
-        df = pl.read_csv(p, try_parse_dates=False, infer_schema_length=5000, ignore_errors=True)
-        # expected: station,valid,...
-        cols = {c.lower(): c for c in df.columns}
-        need = ["station", "valid"]
-        if any(n not in cols for n in need):
-            log(f"  WARN {st} columns={df.columns}")
-            continue
-        rename = {cols[k]: k for k in cols}
-        df = df.rename(rename)
-        df = df.with_columns(
-            pl.col("station").cast(pl.Utf8).str.to_uppercase().alias("station"),
-            pl.col("valid").str.to_datetime("%Y-%m-%d %H:%M", time_zone="UTC", strict=False).alias("valid"),
-        )
-        for c in ["tmpf", "dwpf", "relh", "drct", "sknt", "p01i", "vsby", "gust"]:
-            if c in df.columns:
-                df = df.with_columns(pl.col(c).cast(pl.Float64, strict=False))
-            else:
-                df = df.with_columns(pl.lit(None).cast(pl.Float64).alias(c))
-        if "wxcodes" not in df.columns:
-            df = df.with_columns(pl.lit(None).cast(pl.Utf8).alias("wxcodes"))
-        else:
-            df = df.with_columns(pl.col("wxcodes").cast(pl.Utf8))
-        df = df.select(["station", "valid", "tmpf", "dwpf", "relh", "drct", "sknt", "p01i", "vsby", "gust", "wxcodes"])
-        df = df.filter(pl.col("valid").is_not_null())
-        frames.append(df)
-        log(f"  {st} METAR rows={df.height:,}")
+        n = 0
+        for p in paths:
+            df = _read_metar_csv(p)
+            if df is None or df.height == 0:
+                continue
+            frames.append(df)
+            n += df.height
+        log(f"  {st} METAR rows={n:,} files={len(paths)}")
     if not frames:
         raise SystemExit("no METAR files loaded")
-    out = pl.concat(frames).sort(["station", "valid"])
+    out = pl.concat(frames).unique(["station", "valid"], keep="last").sort(["station", "valid"])
     log(f"  METAR total {out.height:,} from {out['station'].n_unique()} stations")
     return out
 
