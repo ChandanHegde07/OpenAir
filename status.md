@@ -269,6 +269,12 @@ OLS slope on P is ~0.59 (errors-in-variables shrinkage).
 - EVIDENCE: METAR C/D/E vs E20 OOF. Jan+Jul ensemble **368.03→368.07** (+0.04), matched +0.20, >30 **774.8→781.0** (hurt). CatBoost itself worse (+0.82). Airport E −0.36 overall but >30 worse. December **228.69→221.71** (−7.0), >30 672.6→618.5 — the winter tail **survives in the blend**. Airport E: EDDM −22, LFPG −15, EHAM −13, LSZH −12; LEBL/LEMD/LTFM/LIRF ≈ 0. NNLS C/D/E = 0.368/0.075/0.557 (E takes more weight). Frozen E20 weights on METAR experts ≈ same as refit.
 - NEW: **INCONCLUSIVE.** Do not replace E20. Ranking is Jan+Jul-like; a December-only win is the wrong split. METAR is a real winter residual, not a contest upgrade. Do not stack it into production. Readme unchanged.
 
+**C22. Floor + log-excess + per-airport is a worse residualisation than P_cal (E25)**
+
+- OLD: E20 plateaued; a one-shot rebuild — hierarchical p10 floor, `log(y − floor)`, Duan smearing, OOF James-Stein encodings, 10–15 min same-runway DEP+ARR congestion, one LightGBM per airport — might beat residual-on-P_cal.
+- EVIDENCE: Schema allows full per-airport models (smallest Jan+Jul-train airport LSZH n=112,561). Leakage tests 10/10. Combined architecture Jan+Jul **473.61 / 386.42**, December **311.23 / 300.26** vs E20 **368.03 / 244.76** and **228.45 / 215.90**. Ablation (after the combined result): no_floor 398.54 / 235.02; raw_target **394.01 / 232.83**; pooled 479.79; no_enc 484.32. raw_target matches E20 expert B (direct LGB 394.63). Log-excess smear 1.64–2.44 vs `log(y)` smear ≈ 1.03. `all_sched` unmatched 920. Arrival-crossing counts sit at the bottom of gain.
+- NEW: **REJECT** as a production replacement. p10 is not the unimpeded taxi time given `MVT−AOBT`. Do not iterate on `log(y − p10)`. Keep E20. Keep LIRF `MVT−SCHED`. Per-airport experts already exist as E20-E.
+
 **C21. Pinball residual is a different objective, not a different RMSE solution (E24)**
 
 - OLD: E15 closed mean-loss reweighting (Huber / tail-weighted L2 / P(y>30)). Quantile regression learns the conditional distribution (α=0.1/0.5/0.9) and might still help as a point estimate (median / quantile blend) or as a fourth NNLS expert next to E20 C/D/E.
@@ -352,6 +358,7 @@ Jan+Jul 2025 unless noted. “Matched RMSE” drops rows with NaN prediction; �
 | E15 | Tail-aware residual objective | frozen E14 features | Huber / tail-weight / two-stage | Jan+Jul | 378 / 384 / 412 / 426 | **256** / 268 / 300 / 318 | 158 / 157 / 202 / 196 matched | Huber helps bulk, hurts tail; B/C help tail, wreck bulk | KEEP L2; REJECT A/B/C; no more loss experiments |
 | E16-A | Airport disruption state | causal other-flight AOBT−EOBT 30m | E14 L2 + dis_state | Jan+Jul | **376.04** | **253.82** | 157.46 matched | Not just own AOBT−EOBT; Q8 resid +60→−3.5; >30 −15s; >60 no | KEEP `dis_state_30m`; small gain |
 | E18 | Non-LIRF unmatched specialist | unmatched mean/median/geo splice; unmatched-only tree; matched-only geo + drop LIRF-override from residual train | E16-A + splice / hygiene | Jan+Jul | **372.36** (H) | **250.98** | 155.03 matched | Mean/median/specialist fail December; H wins both splits; LIRF_u still 6033 | KEEP H; REJECT A/B |
+| E25 | One-shot structural rebuild | p10 floor, log-excess, OOF JS encodings, 10–15 min rwy congestion, per-airport LGB, Duan smear | one architecture, then ablation | Jan+Jul | **473.61** (raw_target 394.01) | **386.42** (281.36) | 222 / 160 | Floor+log-excess poisons; best ablation = E20 expert B; Dec also loses | REJECT; keep E20 |
 
 December of current best (E18-H): overall **238.01**, matched **223.95**, MAE **145.83** matched. Direct LGB + override remains a Dec sanity check (241 / 225 on the pre-H pipeline).
 
