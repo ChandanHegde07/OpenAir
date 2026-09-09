@@ -1173,3 +1173,25 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 **Decision: REJECT as a replacement.** Sequence model has a small matched-holdout signal and a negative leaderboard delta. Production stays E20 (`likable-eagle_v4.parquet`, 316.9654). Full residual overshoots because train OOF E20 (lite, easier months) is weaker than the val/ranking E20 — TCN learns oversized corrections.
 
 **Artifacts:** `openair/models/temporal_v2/`, `openair/models/e20_baseline/fit.py`, `experiments/temporal_v2/`, `experiments/results/temporal_v2/`, `likable-eagle_v5.parquet`.
+
+---
+
+## E27 — AOBT off-block anchor audit (2026-09-09)
+
+**Question.** AOBT_3_flt (NM actual off-block) is a same-flight timestamp, present at prediction time. Does `MVT − AOBT` reconstruct the hidden BLOCK_TIME/TAXITIME well enough to replace E20? No submission; E20 frozen.
+
+**Ranking coverage (descriptive peek only):** AOBT/LOBT/IOBT/EOBT present for **98.47%** of ranking DEP (missing = exactly the 5,290 unmatched rows; LIRF DEP 98.6%). SCHED 100%.
+
+**Phase 1 — delta = BLOCK − AOBT (matched, all training):** exact 0.65%; median Δ +51 s; MAE 238 s; RMSE 385 s; p90 abs 513 s; p99 1321 s; max 20,657 s. Airport-dependent bias (LTFM +296 s, LIRF −118 s). AOBT and BLOCK are genuinely different off-block sources (NM vs airport), not interchangeable.
+
+**Phase 2 — raw anchors (Jan+Jul matched):** AOBT **428.17** (best); LOBT 816.96; IOBT 816.80; EOBT 745.66; SCHED 2472. AOBT dominates every other anchor.
+
+**Phase 3 — calibrated delta (small LGB):** matched Jan+Jul **254.03**, Dec 226.85; gt30 780.6. Close to but NOT better than E20 (244.76 / 214.78). E20's tree stack already consumes `mvt_aobt` + geometry + disruption state; the calibration adds nothing beyond what E20 extracts.
+
+**Phase 5 — hybrid (AOBT_cal matched + E20 unmatched):** Jan+Jul overall 374.17 vs E20 368.03 — E20 wins.
+
+**Phase 4 — NEW tail signal:** |AOBT−EOBT/IOBT/LOBT| (same-flight source disagreement) correlates 0.29 with E20 |residual|; >30 min tail rate rises 3.1% → 16.8% from below to above p90 disagreement. Off-block source disagreement is a **tail-indicator** (usable at prediction time; AOBT/EOBT/IOBT/LOBT all known before MVT).
+
+**Phase 6 — leakage:** AOBT < MVT for 99.95% of matched rows (1,012/2.06M violations, ~glitches); strictly causal otherwise.
+
+**Decision: hypothesis RESOLVED — AOBT is a near-universal strong anchor, not a replacement.** Raw AOBT matched 428, calibrated 254; E20 244.76 stays. Do NOT rebuild around AOBT alone. Actionable leftover: Phase-4 source-disagreement as a tail/regime feature is new information for a future tail model. C23 recorded. Artifacts: `experiments/run_e27_aobt_audit.py`, `experiments/results/E27/` (summary.md, E27.json).
