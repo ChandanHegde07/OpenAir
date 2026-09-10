@@ -1,0 +1,378 @@
+{
+  "janjul": {
+    "n_val": 344419,
+    "n_matched": 339046,
+    "n_unmatched": 5373,
+    "unmatched_pct": 1.5600184658802216,
+    "rmse_overall": 368.03181009190104,
+    "rmse_matched": 244.75993791610776,
+    "rmse_unmatched": 2214.0815038864293,
+    "sse_total": 46650662620.54262,
+    "sse_matched": 20311373565.399857,
+    "sse_unmatched": 26339289055.142757,
+    "sse_unmatched_pct": 56.460696537982834,
+    "classes": {
+      "no_NM_candidate_all_nm_cols_null": 5373,
+      "partial_NM_match": 0,
+      "unmatched_lirf": 397,
+      "unmatched_non_lirf": 4976
+    },
+    "metadata": {
+      "AOBT_3_flt": {
+        "unmatched_null": 5373,
+        "unmatched_n": 5373,
+        "null_frac": 1.0
+      },
+      "AIRCRAFT_OPERATOR_flt": {
+        "unmatched_null": 5373,
+        "unmatched_n": 5373,
+        "null_frac": 1.0
+      },
+      "ADES_FILED_flt": {
+        "unmatched_null": 5373,
+        "unmatched_n": 5373,
+        "null_frac": 1.0
+      },
+      "FLIGHT_TYPE_flt": {
+        "unmatched_null": 5373,
+        "unmatched_n": 5373,
+        "null_frac": 1.0
+      },
+      "WK_TBL_CAT_flt": {
+        "unmatched_null": 5373,
+        "unmatched_n": 5373,
+        "null_frac": 1.0
+      },
+      "FLIGHT_mvt": {
+        "unmatched_null": 5,
+        "unmatched_n": 5373,
+        "null_frac": 0.0009305788200260562
+      },
+      "ADES_mvt": {
+        "unmatched_null": 9,
+        "unmatched_n": 5373,
+        "null_frac": 0.0016750418760469012
+      },
+      "SCHED_TIME_UTC_mvt": {
+        "unmatched_null": 0,
+        "unmatched_n": 5373,
+        "null_frac": 0.0
+      },
+      "RUNWAY_mvt": {
+        "unmatched_null": 0,
+        "unmatched_n": 5373,
+        "null_frac": 0.0
+      },
+      "STAND_mvt": {
+        "unmatched_null": 3,
+        "unmatched_n": 5373,
+        "null_frac": 0.0005583472920156337
+      },
+      "AIRCRAFT_TYPE_mvt": {
+        "unmatched_null": 402,
+        "unmatched_n": 5373,
+        "null_frac": 0.07481853713009493
+      }
+    },
+    "top_sse": {
+      "top10": {
+        "unmatched_in_topk": 9,
+        "lirf_unmatched_in_topk": 7,
+        "matched_in_topk": 1,
+        "sse_share_of_total": 0.3197141033712708
+      },
+      "top50": {
+        "unmatched_in_topk": 48,
+        "lirf_unmatched_in_topk": 44,
+        "matched_in_topk": 2,
+        "sse_share_of_total": 0.4213815384015405
+      },
+      "top100": {
+        "unmatched_in_topk": 92,
+        "lirf_unmatched_in_topk": 85,
+        "matched_in_topk": 8,
+        "sse_share_of_total": 0.4853224864000812
+      },
+      "top500": {
+        "unmatched_in_topk": 294,
+        "lirf_unmatched_in_topk": 254,
+        "matched_in_topk": 206,
+        "sse_share_of_total": 0.6295469649577743
+      }
+    },
+    "non_lirf_unmatched": {
+      "n": 4976,
+      "median_y": 962.0,
+      "mean_y": 1072.6199758842445,
+      "frac_y_gt_30m": 0.06430868167202572,
+      "frac_y_gt_60m": 0.011655948553054662,
+      "max_y": 84240.0
+    },
+    "lirf_unmatched": {
+      "n": 397,
+      "median_y": 1447.0,
+      "frac_y_gt_30m": 0.4256926952141058,
+      "frac_y_gt_60m": 0.37279596977329976
+    },
+    "per_airport": {
+      "EDDF": {
+        "n_unmatched": 599,
+        "sse_unmatched": 67384001.24012391,
+        "rmse_unmatched": 335.4014892610607,
+        "sse_share_total": 0.0014444382449232643
+      },
+      "EDDM": {
+        "n_unmatched": 237,
+        "sse_unmatched": 87796688.68018131,
+        "rmse_unmatched": 608.6461724249287,
+        "sse_share_total": 0.0018820030359337284
+      },
+      "EGLL": {
+        "n_unmatched": 466,
+        "sse_unmatched": 567322676.5373077,
+        "rmse_unmatched": 1103.372392416157,
+        "sse_share_total": 0.01216108506650637
+      },
+      "EHAM": {
+        "n_unmatched": 808,
+        "sse_unmatched": 263997825.20962816,
+        "rmse_unmatched": 571.6029930774368,
+        "sse_share_total": 0.0056590369863980606
+      },
+      "LEBL": {
+        "n_unmatched": 496,
+        "sse_unmatched": 42518618.89971903,
+        "rmse_unmatched": 292.7849415103857,
+        "sse_share_total": 0.000911425830015884
+      },
+      "LEMD": {
+        "n_unmatched": 309,
+        "sse_unmatched": 16442291.045472028,
+        "rmse_unmatched": 230.67574185810372,
+        "sse_share_total": 0.0003524556806237446
+      },
+      "LFPG": {
+        "n_unmatched": 880,
+        "sse_unmatched": 10418408139.185623,
+        "rmse_unmatched": 3440.7993487219624,
+        "sse_share_total": 0.22332819201152948
+      },
+      "LIRF": {
+        "n_unmatched": 397,
+        "sse_unmatched": 14448192161.0,
+        "rmse_unmatched": 6032.69683773519,
+        "sse_share_total": 0.309710330987619
+      },
+      "LSZH": {
+        "n_unmatched": 524,
+        "sse_unmatched": 196142683.16606894,
+        "rmse_unmatched": 611.8154114152157,
+        "sse_share_total": 0.004204499403609704
+      },
+      "LTFM": {
+        "n_unmatched": 657,
+        "sse_unmatched": 231083970.17863148,
+        "rmse_unmatched": 593.0649053915173,
+        "sse_share_total": 0.004953498132669046
+      }
+    },
+    "recovery_preview": {
+      "l1_coverage": 0.785036292573981,
+      "any_coverage": 1.0,
+      "rmse_service_all_unmatched": 3945.8348681513244,
+      "rmse_service_lirf": 13390.690208337564,
+      "n_lirf": 397,
+      "rmse_service_non_lirf": 1582.9951756354815,
+      "n_non_lirf": 4976,
+      "e20_unmatched_rmse": 2214.0815038864293
+    }
+  },
+  "dec": {
+    "n_val": 165677,
+    "n_matched": 164028,
+    "n_unmatched": 1649,
+    "unmatched_pct": 0.9953101516806799,
+    "rmse_overall": 228.69306572222,
+    "rmse_matched": 214.77773031245044,
+    "rmse_unmatched": 816.1750571876744,
+    "sse_total": 8664992971.951046,
+    "sse_matched": 7566525269.11577,
+    "sse_unmatched": 1098467702.8352754,
+    "sse_unmatched_pct": 12.677075519750131,
+    "classes": {
+      "no_NM_candidate_all_nm_cols_null": 1649,
+      "partial_NM_match": 0,
+      "unmatched_lirf": 88,
+      "unmatched_non_lirf": 1561
+    },
+    "metadata": {
+      "AOBT_3_flt": {
+        "unmatched_null": 1649,
+        "unmatched_n": 1649,
+        "null_frac": 1.0
+      },
+      "AIRCRAFT_OPERATOR_flt": {
+        "unmatched_null": 1649,
+        "unmatched_n": 1649,
+        "null_frac": 1.0
+      },
+      "ADES_FILED_flt": {
+        "unmatched_null": 1649,
+        "unmatched_n": 1649,
+        "null_frac": 1.0
+      },
+      "FLIGHT_TYPE_flt": {
+        "unmatched_null": 1649,
+        "unmatched_n": 1649,
+        "null_frac": 1.0
+      },
+      "WK_TBL_CAT_flt": {
+        "unmatched_null": 1649,
+        "unmatched_n": 1649,
+        "null_frac": 1.0
+      },
+      "FLIGHT_mvt": {
+        "unmatched_null": 11,
+        "unmatched_n": 1649,
+        "null_frac": 0.0066707095209217705
+      },
+      "ADES_mvt": {
+        "unmatched_null": 5,
+        "unmatched_n": 1649,
+        "null_frac": 0.0030321406913280777
+      },
+      "SCHED_TIME_UTC_mvt": {
+        "unmatched_null": 0,
+        "unmatched_n": 1649,
+        "null_frac": 0.0
+      },
+      "RUNWAY_mvt": {
+        "unmatched_null": 0,
+        "unmatched_n": 1649,
+        "null_frac": 0.0
+      },
+      "STAND_mvt": {
+        "unmatched_null": 0,
+        "unmatched_n": 1649,
+        "null_frac": 0.0
+      },
+      "AIRCRAFT_TYPE_mvt": {
+        "unmatched_null": 89,
+        "unmatched_n": 1649,
+        "null_frac": 0.053972104305639784
+      }
+    },
+    "top_sse": {
+      "top10": {
+        "unmatched_in_topk": 9,
+        "lirf_unmatched_in_topk": 7,
+        "matched_in_topk": 1,
+        "sse_share_of_total": 0.06583043884145622
+      },
+      "top50": {
+        "unmatched_in_topk": 25,
+        "lirf_unmatched_in_topk": 18,
+        "matched_in_topk": 25,
+        "sse_share_of_total": 0.13774666860233256
+      },
+      "top100": {
+        "unmatched_in_topk": 31,
+        "lirf_unmatched_in_topk": 18,
+        "matched_in_topk": 69,
+        "sse_share_of_total": 0.17522046685171075
+      },
+      "top500": {
+        "unmatched_in_topk": 68,
+        "lirf_unmatched_in_topk": 20,
+        "matched_in_topk": 432,
+        "sse_share_of_total": 0.28664536402358254
+      }
+    },
+    "non_lirf_unmatched": {
+      "n": 1561,
+      "median_y": 958.0,
+      "mean_y": 1056.2043561819346,
+      "frac_y_gt_30m": 0.0954516335682255,
+      "frac_y_gt_60m": 0.008968609865470852,
+      "max_y": 9182.0
+    },
+    "lirf_unmatched": {
+      "n": 88,
+      "median_y": 6034.5,
+      "frac_y_gt_30m": 0.6818181818181818,
+      "frac_y_gt_60m": 0.6477272727272727
+    },
+    "per_airport": {
+      "EDDF": {
+        "n_unmatched": 96,
+        "sse_unmatched": 4522783.49468991,
+        "rmse_unmatched": 217.05374465713916,
+        "sse_share_total": 0.0005219604342819843
+      },
+      "EDDM": {
+        "n_unmatched": 130,
+        "sse_unmatched": 109392725.6162489,
+        "rmse_unmatched": 917.3235550994949,
+        "sse_share_total": 0.012624675631054504
+      },
+      "EGLL": {
+        "n_unmatched": 127,
+        "sse_unmatched": 23658093.30525384,
+        "rmse_unmatched": 431.6065329139114,
+        "sse_share_total": 0.0027303072699350252
+      },
+      "EHAM": {
+        "n_unmatched": 315,
+        "sse_unmatched": 21450402.00145525,
+        "rmse_unmatched": 260.9530882943027,
+        "sse_share_total": 0.0024755244546523147
+      },
+      "LEBL": {
+        "n_unmatched": 89,
+        "sse_unmatched": 3261165.172540736,
+        "rmse_unmatched": 191.42179946246057,
+        "sse_share_total": 0.00037636097145113303
+      },
+      "LEMD": {
+        "n_unmatched": 60,
+        "sse_unmatched": 8041573.947041329,
+        "rmse_unmatched": 366.0959333981857,
+        "sse_share_total": 0.0009280531413092023
+      },
+      "LFPG": {
+        "n_unmatched": 313,
+        "sse_unmatched": 172997403.66185725,
+        "rmse_unmatched": 743.4429096723137,
+        "sse_share_total": 0.019965094515582097
+      },
+      "LIRF": {
+        "n_unmatched": 88,
+        "sse_unmatched": 683108372.0,
+        "rmse_unmatched": 2786.1434163308313,
+        "sse_share_total": 0.07883542135709182
+      },
+      "LSZH": {
+        "n_unmatched": 101,
+        "sse_unmatched": 11853579.545334613,
+        "rmse_unmatched": 342.58163073373373,
+        "sse_share_total": 0.0013679849001268852
+      },
+      "LTFM": {
+        "n_unmatched": 330,
+        "sse_unmatched": 60181604.09085353,
+        "rmse_unmatched": 427.04624719696426,
+        "sse_share_total": 0.006945372522016343
+      }
+    },
+    "recovery_preview": {
+      "l1_coverage": 0.6816252274105519,
+      "any_coverage": 1.0,
+      "rmse_service_all_unmatched": 3094.6716718693615,
+      "rmse_service_lirf": 13098.762306750588,
+      "n_lirf": 88,
+      "rmse_service_non_lirf": 666.5978460367294,
+      "n_non_lirf": 1561,
+      "e20_unmatched_rmse": 816.1750571876744
+    }
+  }
+}

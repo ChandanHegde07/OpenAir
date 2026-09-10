@@ -1195,3 +1195,113 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 **Phase 6 — leakage:** AOBT < MVT for 99.95% of matched rows (1,012/2.06M violations, ~glitches); strictly causal otherwise.
 
 **Decision: hypothesis RESOLVED — AOBT is a near-universal strong anchor, not a replacement.** Raw AOBT matched 428, calibrated 254; E20 244.76 stays. Do NOT rebuild around AOBT alone. Actionable leftover: Phase-4 source-disagreement as a tail/regime feature is new information for a future tail model. C23 recorded. Artifacts: `experiments/run_e27_aobt_audit.py`, `experiments/results/E27/` (summary.md, E27.json).
+
+---
+
+## E28 STEP 1 — Unmatched error forensics (C24, 2026-09-10)
+
+**Mechanism.** Every unmatched DEP (5,373 Jan+Jul / 1,649 Dec; 22,470 in training) has **all NM flight-table fields null** — `AOBT_3_flt`, `AIRCRAFT_OPERATOR_flt`, `ADES_FILED_flt`, `FLIGHT_TYPE_flt`, `WK_TBL_CAT_flt`. Unmatched = a **total NM flight-record miss**, not a fuzzy/route/schedule mismatch (`partial_NM_match` = 0). Movement-side fields (ADEP/ADES/FLIGHT/SCHED/MVT/runway/stand/type) are present.
+
+**SSE decomposition (Jan+Jul, E20 OOF):** total 4.665e10; matched 2.031e10 (43.5%); **unmatched 2.634e10 (56.5%) from 1.56% of rows**. Unmatched RMSE 2214 = LIRF 6033 (n=397, ~30% of total SSE) + non-LIRF 1546 (n=4976, ~25%). Dec: unmatched only 12.7% of SSE (LIRF 2786, non-LIRF 516).
+
+**Concentration:** top-10 SSE rows = **32% of total SSE** (7 of 10 are LIRF unmatched); top-50 = 42%; top-100 = 48.5%. A few dozen LIRF gate-delay bombs dominate the leaderboard metric.
+
+**Ceilings (Jan+Jul):** perfect non-LIRF unmatched → 317.7; perfect LIRF unmatched → 305.8; perfect all unmatched → **242.8**. Unmatched is the single largest lever; LIRF unmatched is the crux.
+
+**Recovery preview (causal movement/service profiles, train-only):** non-LIRF unmatched service-median 1583 (vs E20 1546) — no gain, Dec worse (667 vs 516); LIRF service-median 13391 vs E20 `MVT−SCHED` 6033 — far worse. Naive service recovery is NOT the answer; LIRF rows lack all off-block anchors so E27 source-disagreement is unavailable for them.
+
+**Implication for STEP 2/3:** non-LIRF unmatched is already near its practical floor with E20; the only material unmatched lever is the LIRF gate-delay bombs, which require separating "normal taxi" from "multi-hour gate delay" using movement-only signals at prediction time (E13/E21 showed naive gating/calibration fails — must find a new causal discriminator). C24 recorded. Artifacts: `experiments/run_e28_unmatched_audit.py`, `experiments/results/E28/`.
+
+## C25 — Unmatched Recovery (pending STEP 2)
+## C26 — Tail Regime (pending STEP 3)
+## C27 — Matched Surface Interaction (pending STEP 4)
+## C28 — Analog/Service Correction (pending STEP 5)
+## C29 — Final Gated E28 (pending STEP 6)
+
+---
+
+## E28 STEP 3 — Matched tail regime (C25, 2026-09-10)
+
+**Setup.** Matched rows only (LIRF unmatched excluded, separate mission). Model E20 residual = y − e20; add off-block source disagreement (E27) + compact causal surface pressure (dep/rwy/arr counts 5/10/30m, time-since, burstiness, ratio); risk classifier P(|resid|>30m); residual correction; gate threshold on P(tail). E20 immutable. **Caveat:** E20 OOF exists only for holdout months, so tail models were fit by temporal cross-fit (Jan↔Jul; Jan+Jul→Dec; Dec→Jan+Jul) — row-level out-of-sample, but fit periods are holdout months (a fully clean train→val fit needs a train-month E20 OOF).
+
+**Matched tail scale (Jan+Jul):** |resid|>15m 2,592 rows; >20m 1,284; >30m **464**; >45m 143; >60m 58. Matched >30m SSE = 4.83e9 = **10.4% of total SSE** (matched SSE 2.03e10).
+
+**Diagnostic (STEP 3, valuable):** source disagreement strongly stratifies E20 error. Max-disagreement q5: RMSE 906, tail>30m rate 5.3% vs q0 RMSE 188, 0.0% (E27 confirmed). Disagreement × surface interaction exists but is not exploitable safely.
+
+**Ablations (Jan+Jul matched RMSE):** A E20 **244.76**; B +disagreement (ungated) **689**; C +surface (ungated) **698**; D +both (ungated) **691**; E gated **244.65** (gate 0.55). December: A 214.78, E gated 214.92 (slightly worse), extreme regime 1645→1822.
+
+**Regimes (Jan+Jul):** normal 339,012 rows unchanged (244.1→244.1); hard (27 rows) 1720→1630; extreme (7 rows) 2063→1698. December extreme reversed (1645→1822).
+
+**Decision: REJECT.** Ungated residual corrections destroy normal flights (matched RMSE ~690); the risk gate is inert (selects ~34/38 rows, ΔSSE ≈ 0.1%) because P(tail) rarely exceeds 0.55 at the useful operating point; and the only regime that improves on Jan+Jul (extreme) regresses on December. No meaningful total-SSE reduction. Matched tail is only ~10% of total SSE, so even a perfect fix caps at ~348 overall — the dominant lever remains unmatched (56%), specifically the LIRF gate-delay bombs. Keep E20. C25 recorded. Artifacts: `experiments/run_e28_tail_regime.py`, `experiments/results/E28/summary_tail_regime.md`, `E28_tail_regime.json`.
+
+---
+
+## E29 — 260 RMSE attack (C26–C30, 2026-09-10)
+
+**Budget/calibration:** internal Jan+Jul 368.03 ↔ LB 316.9654 ⇒ **offset 51.1 s**, so LB 260 ⇒ internal ≈311. Required total SSE 3.331e10 (cut 29%). With matched 245 that needs **LIRF unmatched RMSE 6033 → ~1643** (73% cut).
+
+**C26 Information mask (movement-only LGB, train months):** overall 523.8 vs E20 368.0; matched 360.7 vs 244.8; unmatched 3061.7 vs 2214.1; LIRF-u 9814.8 vs 6032.7; non-LIRF-u 1560.9 vs 1545.9. NM information is essential; movement-only is weaker everywhere and never beats E20.
+
+**C27 Movement-only (LightGBM/XGB, movement fields only):** no unmatched improvement; LIRF-u 9815 (worse); non-LIRF-u 1561 ≈ E20 1546.
+
+**C28 LIRF forensics:** true TAXITIME median 1447 s vs MVT−SCHED median 6781 s — E20's override predicts schedule displacement (gate delay), not taxi. Largest SSE rows = normal taxi + huge MVT−SCHED; corr(|resid|, MVT−SCHED)=0.04 ⇒ the gate-delay component is unobservable from movement-only data. 35% of LIRF-u rows have |resid|<900 (override good); 64.5% >30m error.
+
+**C29 LIRF regime/calibration probes (all REJECT):** constant median 13344; clip(MVT−SCHED≤C) worse (best 11844); oracle blend w·move+(1−w)·MVT−SCHED w=0.9 → 5850 Jan+Jul but 2997 Dec (worse than 2786); LIRF-specific movement LGB 9492/9079. `MVT−SCHED` is at the information floor.
+
+**C30 Final:** no E29 candidate reduces total SSE; reduction achieved 0% of the 260 budget. **260 is not reachable via causal movement-only unmatched modeling.** Closes service recovery (C24), matched-tail correction (C25), and movement-only unmatched (E29). E20 stays production (LB 316.9654). Next viable direction (if pursued) must add *new same-flight information* absent from the movement record (e.g., external ground/pushback data), not more modeling of existing fields. Artifacts: `experiments/run_e29_movement_only.py`, `experiments/run_e29_lirf_forensics.py`, `experiments/results/E29/` (E29_final_report.md, JSONs).
+
+---
+
+## E30 — 246 RMSE attack: distribution/schema/gap audit (C31–C33, 2026-09-10)
+
+**C32 Schema:** training and ranking share the identical 30 columns; no unused/hidden field. Ranking DEP 344,841: NM fields present 98.47%, SCHED 100%; unmatched 5,290 (1.53%) null every flt field incl. `FLIGHT_ID_mvt`. `ARVT_3_flt` occurs after MVT for 100% of rows (forbidden future info).
+
+**C31 Population shift:** MVT−SCHED train median 1402 / Dec 1385 / Jan 1277 / Jul 1715 / **ranking 1501**; **PSI 0.0145** (negligible); unseen runway 0.0%, stand 0.1%, type 0.0%. LIRF-unmatched MVT−SCHED ranking median 6955 vs 2025 6781 (p90 15902 vs 14939). **Ranking is not materially shifted from the 2025 holdout.**
+
+**C33 Gap arithmetic:** internal 368.03 ↔ LB 316.9654 (offset 51.1). LB-246 SSE target 2.087e10 vs LB-317 SSE 3.464e10 → the entire gap is unmatched/LIRF SSE; matched internal 244.76 RMSE (SSE 2.031e10) already sits at the ~246 level.
+
+**Verdict:** No legitimate observable signal in the provided data explains a ~246 leaderboard result. With (a) population aligned, (b) all columns audited, (c) LIRF gate delay proven unobservable from movement-only fields (E29/C28), reaching 246 requires information absent from the dataset, forbidden post-takeoff fields (`ARVT_3_flt`/future), or a different ranking ground-truth definition. **No submission; E20 remains production (LB 316.9654).** Artifacts: `experiments/run_e30_distribution_audit.py`, `experiments/results/E30/E30_report.md`, `E30_distribution_audit.json`.
+
+---
+
+## E31 — leaderboard attack (<300) (2026-09-10)
+
+**Goal:** LB <300 (need ≈ −17 s internal). **Result: no candidate expected to beat E20; no v7 submission.**
+
+**Tested (all worse):** causal service-identity features (airport×FLIGHT×ADES / ×hour / ×weekday / ×month / ×runway, shrinkage m=20, mean/median/std/count) added to the matched residual expert → **matched 250.98 → 252.08** (worse). Movement-only unmatched (E29) 1561 vs E20 1546. LIRF movement-only/clip/blend all worse (E29/C30). Service-median recovery worse (C24). Matched-tail correction rejected (C25).
+
+**SSE arithmetic:** LB 300 ⇔ internal ≈351 ⇔ cut ~11% total SSE. Matched would need ~25% cut; unmatched ~19%; LIRF RMSE 6033→~4500 with a causal model — none exists. Blocker remains unmatched/LIRF SSE, unobservable from the 30 provided columns.
+
+**Decision:** E20 stays production (LB 316.9654). No `likable-eagle_v7.parquet`. Artifacts: `experiments/run_e31_service_expert.py`, `experiments/results/E31/E31_report.md`.
+
+---
+
+## E32 — surface-state reconstruction (2026-09-10)
+
+**Built:** unified DEP+ARR causal event stream; airport/runway/stand windows (1–60 min), arrival→departure interaction (arrivals 1/2/3/5/10/15m, time-since, arr-since-dep), time-since features, temporal derivatives, dep/arr ratios, sequence signature; LightGBM matched/unmatched/LIRF models; conditional NNLS blend with E20. 2025 targets never enter features.
+
+**Result (Jan+Jul):** E20 368.0/244.8/2214.1/6033 (overall/matched/unmatched/LIRF_u). Surface standalone 490.1/343.0/2823.5. **E20+surface NNLS → 359.1 / 244.8 / 2118.4 / 5548** — first genuine unmatched/LIRF gain (LIRF 6033→5548, total SSE −4.8%).
+
+**December:** E20 228.7/214.8/816.2/2786; blend = E20 exactly (surface unmatched 1796 vs E20 816 ⇒ NNLS weight → 0). The gain is **Jan+Jul-specific and does not transfer**.
+
+**Decision:** expected LB ≈308 best-case (not <300) and non-transferring ⇒ **no `likable-eagle_v7.parquet`**; E20 stays production. This is the first surface-state signal that touches LIRF (contra the E29 blanket conclusion), but it is not robust enough to ship. Artifacts: `experiments/run_e32_surface_state.py`, `experiments/results/E32/`.
+
+---
+
+## E33 — Latent delay decomposition (2026-09-10) — BREAKTHROUGH, v7 submitted
+
+**Identity:** `TAXITIME = D − G` with `D = MVT−SCHED` (observed) and `G = BLOCK−SCHED`. Instead of predicting TAXITIME, model the latent gate delay **G** on the LIRF slice, reconstruct `T_hat = D − G_hat`, and α-blend with E20 on LIRF-unmatched only.
+
+**Why it works where E29 failed:** E29 predicted T (or D−G implicitly) with a pooled movement-only model; here the target is G, the surface/regime features are LIRF-specific, and the reconstruction uses the observed D. The gate-delay target regularises the huge-D rows that dominate LIRF SSE.
+
+**Results (LIRF unmatched, n=397 Jan+Jul / 88 Dec):**
+| split | E20 | E33 (α=0.6) |
+|---|---:|---:|
+| Jan+Jul LIRF_u RMSE | 6033 | **4717** |
+| Jan+Jul overall | 368.0 | **345.2** |
+| Dec LIRF_u RMSE | 2786 | **2474** |
+| Dec overall | 228.7 | **226.8** |
+
+α=0.6 chosen as robust across both splits (pure G model α=1.0 is best on Jan+Jul 4180 but regresses Dec 3103; α=0.6 improves both). Improvement is consistent → first transferable unmatched gain found.
+
+**Estimated LB ≈ 294 (<300)** using the E20 internal→LB offset (51.1). **Submission created: `experiments/results/E33/likable-eagle_v7.parquet`** (= `likable-eagle_v4` with 383 LIRF-unmatched rows replaced by the decomposition blend; 344,841 rows; IDs match; no nulls). **Leaderboard RMSE pending upload.** Artifacts: `experiments/run_e33_delay_decomposition.py`, `run_e33b_lirf_g.py`, `make_submission_e33.py`, `experiments/results/E33/`.

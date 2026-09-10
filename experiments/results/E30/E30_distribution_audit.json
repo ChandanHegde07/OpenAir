@@ -1,0 +1,233 @@
+{
+  "schema": {
+    "same_columns": true,
+    "in_training_not_ranking": [],
+    "in_ranking_not_training": []
+  },
+  "ranking_availability": {
+    "MVT_ID_mvt": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "FLIGHT_mvt": {
+      "null": 58,
+      "coverage": 0.9998318065427255
+    },
+    "ADEP_mvt": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "ADES_mvt": {
+      "null": 13,
+      "coverage": 0.9999623014664729
+    },
+    "MVT_TIME_UTC_mvt": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "SCHED_TIME_UTC_mvt": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "RUNWAY_mvt": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "STAND_mvt": {
+      "null": 4,
+      "coverage": 0.9999884004512224
+    },
+    "AIRCRAFT_TYPE_mvt": {
+      "null": 388,
+      "coverage": 0.9988748437685774
+    },
+    "AOBT_3_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "LOBT_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "IOBT_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "EOBT_1_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "ARVT_3_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "CALLSIGN_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "AIRCRAFT_OPERATOR_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "MARKET_SEGMENT_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "ADES_FILED_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "FLIGHT_TYPE_flt": {
+      "null": 5290,
+      "coverage": 0.9846595967416868
+    },
+    "ms": {
+      "null": 0,
+      "coverage": 1.0
+    },
+    "_unmatched_n": 5290,
+    "_ARVT_after_MVT_frac": 0.9999764394744824
+  },
+  "distributions": {
+    "train2025": {
+      "n": 2085047,
+      "ms_median": 1402.0,
+      "ms_p90": 3484.0,
+      "unmatched_frac": 0.010776735488456615
+    },
+    "dec2025": {
+      "n": 165677,
+      "ms_median": 1385.0,
+      "ms_p90": 3486.0,
+      "unmatched_frac": 0.0099531015168068
+    },
+    "jan2025": {
+      "n": 153706,
+      "ms_median": 1277.0,
+      "ms_p90": 3425.0,
+      "unmatched_frac": 0.009336005100646689
+    },
+    "jul2025": {
+      "n": 190713,
+      "ms_median": 1715.0,
+      "ms_p90": 4378.0,
+      "unmatched_frac": 0.02064882834416112
+    },
+    "ranking2026": {
+      "n": 344841,
+      "ms_median": 1501.0,
+      "ms_p90": 4035.0,
+      "unmatched_frac": 0.015340403258313252
+    }
+  },
+  "lirf_unmatched_ms": {
+    "ranking2026": {
+      "n": 383,
+      "ms_median": 6955.0,
+      "ms_p90": 15902.0,
+      "ms_max": 111654.0
+    },
+    "janjul2025": {
+      "n": 397,
+      "ms_median": 6781.0,
+      "ms_p90": 14939.0,
+      "ms_max": 93535.0,
+      "y_median": 1447.0,
+      "y_p90": 14762.0
+    },
+    "dec2025": {
+      "n": 88,
+      "ms_median": 6898.0,
+      "ms_p90": 11642.0,
+      "ms_max": 86102.0,
+      "y_median": 6034.5,
+      "y_p90": 11411.0
+    }
+  },
+  "psi_ms": {
+    "ms": 0.014455667455674065
+  },
+  "categorical_overlap": {
+    "airport": {
+      "ranking_categories": 10,
+      "train_categories": 10,
+      "ranking_unseen_in_train": [],
+      "unseen_rate": 0.0
+    },
+    "runway": {
+      "ranking_categories": 50,
+      "train_categories": 53,
+      "ranking_unseen_in_train": [],
+      "unseen_rate": 0.0
+    },
+    "stand": {
+      "ranking_categories": 1697,
+      "train_categories": 1899,
+      "ranking_unseen_in_train": [
+        "121B",
+        "47",
+        "530",
+        "700",
+        "812",
+        "A46",
+        "AT7",
+        "DS",
+        "H24R",
+        "I72",
+        "I74",
+        "J5",
+        "M18",
+        "M19",
+        "P3A",
+        "P3C",
+        "P3D",
+        "P70",
+        "T45",
+        "T50"
+      ],
+      "unseen_rate": 0.0008235775163338041
+    },
+    "ac_type": {
+      "ranking_categories": 199,
+      "train_categories": 269,
+      "ranking_unseen_in_train": [
+        "AS65",
+        "B462",
+        "C10T",
+        "EVOT",
+        "F35",
+        "IL62",
+        "PA44",
+        "PL2"
+      ],
+      "unseen_rate": 5.2256766525476626e-05
+    },
+    "flt_prefix": {
+      "ranking_categories": 1551,
+      "train_categories": 2376,
+      "ranking_unseen_in_train": [
+        "023",
+        "27A",
+        "2GG",
+        "3CN",
+        "3F7",
+        "5NC",
+        "A26",
+        "AF3",
+        "AI3",
+        "APH",
+        "APO",
+        "ASA",
+        "ASP",
+        "ATJ",
+        "AZW",
+        "B31",
+        "B83",
+        "BEC",
+        "BKI",
+        "BSQ"
+      ],
+      "unseen_rate": 0.0026156982493381006
+    }
+  }
+}
