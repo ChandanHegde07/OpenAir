@@ -1319,3 +1319,87 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 **SSE:** Jan+Jul total 4.665e10 → 3.908e10 (−1.6e9, −3.4%). **Estimated LB ≈ 281.5** (offset 52.2) — large gain vs 292.99, ~1.5 s short of the 280 target.
 
 **Submission:** `experiments/results/E34/likable-eagle_v8.parquet` (= v7 with 383 LIRF-unmatched rows replaced; 344,841 rows; IDs match; no nulls). **Leaderboard RMSE pending upload.** Artifacts: `run_e34_lirf_improve.py`, `run_e34b_nonlirf.py`, `run_e34c_gens.py`, `run_e34d_enriched.py`, `make_submission_e34.py`, `experiments/results/E34/`.
+
+---
+
+## E35 — Selection-aware latent gate-delay model (2026-09-10)
+
+**Baseline:** v8 `likable-eagle_v8.parquet`, **LB 288.9003** (LIRF_u 3937, Jan+Jul overall 333.7).
+
+**Idea:** G trained on matched flights but deployed on unmatched → selection bias. Tested (a) propensity weighting `P(M=0|x)/P(M=1|x)` (95/99 pct clipped), (b) G trained on unmatched LIRF rows only, (c) enriched features.
+
+**Results (LIRF-unmatched RMSE):** v8 3937 / 2766 (Jan+Jul/Dec); weighted 3894 / 2641; **unmatched-only 3752 / 2557** — best on both splits. Jan+Jul overall 333.7 → 331.3; Dec 228.6 → 227.3; total Jan+Jul SSE 3.835e10 → 3.779e10.
+
+**Decision:** `unm_only` α=1.0 produces `likable-eagle_v9.parquet` (= v8 with 383 LIRF-unmatched rows replaced by `D − G_unm`; 344,841 rows; IDs match; no nulls). **Estimated LB ≈ 286.5** (offset 44.8) — consistent gain vs 288.90 but not yet <280. Artifacts: `run_e35_selection_g.py`, `make_submission_e35.py`, `experiments/results/E35/`.
+
+---
+
+## E36 — matched-population attack (2026-09-10)
+
+**Anchor:** v9 `likable-eagle_v9.parquet`, **LB 288.9003** (= v8; E35 LIRF change did not transfer ⇒ LIRF lever saturated).
+
+**STEP 1 (matched SSE map, Jan+Jul):** matched n=339,046, RMSE 244.8, SSE 2.031e10; top 1% = 41.8% SSE. Dominated by **high-taxi rows** (T top-5%: RMSE 1379, 32% SSE) and LIRF/LFPG/LTFM/EGLL; largest-D bin only ~10% ⇒ schedule delay is not the matched cost driver. Source-disagreement top 1% = 11% SSE.
+
+**STEP 5 (direct v9 residual, cross-month OOF):** matched RMSE 244.76 → 242.91 (λ=0.5) Jan+Jul, 214.78 → 213.32 Dec; SSE −0.31e9 / −0.10e9; overall ~331.3 → 329.9 (**−1.4 internal**), **est. LB ≈ 287.5**. Gating by correction magnitude did not help.
+
+**Decision: no v10.** Best candidate ≈ 287.5 LB, below E36's minimum bar (<285). The matched tail (42% of matched SSE in top 1%) is not further reducible from available causal fields beyond ~1.5 s shrinkage. Artifacts: `experiments/run_e36_matched_sse.py`, `run_e36_matched_residual.py`, `experiments/results/E36/`.
+
+---
+
+## E37 — Ground-state representation (2026-09-10)
+
+**Anchor:** v9 LB 288.9003. **Mission:** build an airport ground-movement/route representation to attack the matched high-taxi tail (top 5% T = 32% of matched SSE).
+
+**Geometry blocker:** provided stand IDs (`811`,`R07`,`K7L`,`B10R`,`A52`) have no openly licensed, reproducible stand→coordinate mapping; the requested taxiway graph would require fabricated coordinates (forbidden: "do not fake precision").
+
+**Coordinate-free subset tested:** two-stage `T_phys` (shrunk median by airport×runway×stand-zone, hierarchical to airport×runway then airport) + `T_excess` (LightGBM on runway-configuration state, route(runway×zone) pressure, surface counts); soft blend with E20.
+
+**Result (matched RMSE / top-5% SSE):** E20 244.8 / 1.264e10; ground-state 353.5 / 3.018e10 (Jan+Jul); Dec E20 214.8 / 4.240e9 vs 282.6 / 7.682e9. Optimal blend weight **g=0.0** (E20) on both splits. **Top-5% SSE unchanged.**
+
+**Decision:** no v10. The coordinate-free representation adds nothing over E20's existing stand×runway `geo_mean`; the true geometry engine is not reproducible from the available stand IDs. Per E37 §15/§18, stopped. Artifacts: `experiments/run_e37_ground_state.py`, `experiments/results/E37/`.
+
+---
+
+## E38 — Latent off-block clock fusion (2026-09-10)
+
+**Anchor:** v9 LB 288.9003. **Idea:** fuse the multiple pre-MVT off-block clocks (AOBT/LOBT/IOBT/EOBT) as noisy measurements of a latent off-block B*.
+
+**STEP 1:** the four clocks are mutually identical (`clk_range` median 0 in normal and extreme groups) ⇒ no disagreement signal. The information is the **absolute time-to-MVT of each clock** (extra taxi proxies).
+
+**STEP 15 ablation (matched expert A):** base 250.98 → +all clocks **243.51** (Jan+Jul; beats E20 ensemble matched 244.76); top-5% SSE 1.316e10 → 1.204e10 (−8.5%); Dec 223.95 → 221.81.
+
+**Ensemble:** clock expert + cached E20 experts NNLS → Jan+Jul matched **240.69**, overall 368.03→365.38; Dec 214.78→214.38 with very different weights (A 0.574 vs 0.166) ⇒ split-unstable. 2-component grid: robust w=0.2 → Jan+Jul −1.5, Dec neutral; w≥0.4 regresses Dec.
+
+**Decision: no v10.** Robust gain ~−1.5 s internal (est. LB ~287), below bar; the stronger Jan+Jul setting is overfit and degrades December. Clocks are a real but small, split-sensitive signal. Artifacts: `experiments/run_e38_clock_fusion.py`, `run_e38b_ensemble.py`, `experiments/results/E38/`.
+
+---
+
+## E39 — Off-block delta (Δ = AOBT − BLOCK) (2026-09-10)
+
+**Anchor:** v9 LB 288.9003. Identity `T = P + Δ`, `P = MVT−AOBT`.
+
+**Baselines (matched, cross-month):** E20 244.76 / 214.78; P 428.17 / 374.60; P+global-meanΔ 428.18 / 374.14; P+airport-meanΔ 409.14 / 356.29; **P+LightGBM Δ 248.66 / 219.94**. Δ: mean −19 s, sd 375 s (airport reporting bias + noise).
+
+**Decision:** no v10. `P + Δ_hat` does not beat E20 (248.66 vs 244.76 Jan+Jul; 219.94 vs 214.78 Dec) ⇒ Δ is not predictable enough to convert E38's clock signal into a leaderboard gain. Δ exhausted. Artifacts: `experiments/run_e39_delta.py`, `experiments/results/E39/`.
+
+---
+
+## E40 — Regime break / tail calibration (2026-09-10)
+
+**Anchor:** v9 LB 288.9003. **Hypothesis:** v9 ranks extreme rows correctly but compresses their magnitude → calibrate the tail.
+
+**Diagnostics:** Spearman(v9,true)=0.86; actual/predicted quantile ratios p50 0.96 → p99 **1.15** (Jan+Jul), Dec p99 1.17 ⇒ mild tail compression only.
+
+**Calibration (cross-month OOF):** base matched 244.76; isotonic 271.85 (overfits); LGB residual (e20,P) 243.88; P-scaled residual 243.69. **Top-5% SSE 1.264e10 → 1.257e10 (−0.6%, unchanged)**; December regresses (214.78 → 215.4).
+
+**Decision:** no v10. The tail-compression hypothesis is falsified — ranking is already good, compression is modest, and calibration gives <1.1 s with no top-5% SSE reduction plus a December regression. Artifacts: `experiments/run_e40_tail_calibration.py`, `experiments/results/E40/`.
+
+---
+
+## E41 — Actual surface queue at AOBT (2026-09-10)
+
+**Anchor:** v9 LB 288.9003. **Representation:** exact surface occupancy at `t=AOBT_i` via interval overlap — active deps `AOBT_j≤t<MVT_j` (all/same-rwy/by WTC), active arrivals `MVT_j≤t<BLOCK_j`, runway takeoff service rates and previous-WTC; LGB on TAXITIME with P and queue state; OOF blend with E20.
+
+**Results (matched):** Jan+Jul E20 244.76 / top5 1.264e10; queue model 309.41 / 2.316e10; optimal blend **a=0.0 → E20**. Dec E20 214.78 / 4.240e9; blend a=0.2 → 213.09 / 4.154e9 (−1.7 s, top5 −2%).
+
+**Decision:** no v10. The exact AOBT queue does not reduce top-5% matched SSE on the primary split; E20 already captures the surface signal. Artifacts: `experiments/run_e41_actual_queue.py`, `experiments/results/E41/`.

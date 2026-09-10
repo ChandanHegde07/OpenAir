@@ -6,7 +6,7 @@ Target: `TAXITIME_SEC_mvt` for departures (`MVT_TIME − BLOCK_TIME`). Airports:
 
 ## Current model
 
-Two stages. Stage 1 is the E20 matched/ensemble model; stage 2 is the LIRF gate-delay decomposition (E33/E34).
+Two stages. Stage 1 is the E20 matched/ensemble model; stage 2 is the LIRF gate-delay decomposition (E33–E35).
 
 ```
 # Stage 1 — E20 (all rows)
@@ -15,11 +15,11 @@ P_cal = per-airport OLS(MVT−AOBT, AOBT−EOBT, geo_mean)
 residual LightGBM trained with LIRF-override rows dropped
 y_hat = P_cal + LightGBM_L2_residual(clocks, geometry, stand, dest, airline, dis_state_30m, ...)
 
-# Stage 2 — LIRF unmatched gate-delay decomposition (E33/E34)
+# Stage 2 — LIRF unmatched gate-delay decomposition (E33–E35)
 D = MVT − SCHED
-G_hat = CatBoost | LightGBM trained on 2025 LIRF departures  (G = BLOCK − SCHED)
+G_hat = CatBoost trained on UNMATCHED 2025 LIRF departures   (G = BLOCK − SCHED)
 if unmatched and airport == LIRF:
-    y_hat = D − G_hat          # v8: enriched CatBoost, α = 1.0
+    y_hat = D − G_hat          # v9: selection-aware (unmatched-only), α = 1.0
 else:
     y_hat = Stage 1
 ```
@@ -31,9 +31,9 @@ What is in the model, and why:
 - **Residual LightGBM (L2)** on `y − P_cal`; Huber / tail-weighted / two-stage lost to L2 (E15); LIRF-override rows are dropped from residual training (E18-H).
 - **Airport disruption state (E16-A):** mean of *other* flights' `AOBT−EOBT` in the previous 30 min (self excluded).
 - **E20 ensemble (E20):** NNLS blend of CatBoost residual (0.456) + airport-specific LGB experts (0.491) + XGB residual (0.053).
-- **LIRF gate-delay decomposition (E33/E34):** `TAXITIME = D − G` with `D = MVT−SCHED` observed and `G = BLOCK−SCHED` the latent gate delay. `G` is predicted from prediction-time movement/surface features on the LIRF slice; only the 383 LIRF-unmatched ranking rows are changed. This is where the recent leaderboard gains come from.
+- **LIRF gate-delay decomposition (E33–E35):** `TAXITIME = D − G` with `D = MVT−SCHED` observed and `G = BLOCK−SCHED` the latent gate delay. `G` is predicted on the LIRF slice; E35 showed the deployment population is **unmatched** LIRF, so `G` is trained on unmatched LIRF rows only. Only the 383 LIRF-unmatched ranking rows are changed. This is the leaderboard gain.
 
-Linear traffic/queue, airport additive bias, and `FLIGHT_ID` as a tail number were tested and rejected.
+Linear traffic/queue, airport additive bias, and `FLIGHT_ID` as a tail number were tested and rejected. E36–E41 (matched residual, coordinate-free ground state, clock fusion, Δ reconstruction, tail calibration, exact AOBT surface queue) did **not** beat v9 and are recorded as rejected.
 
 ## Status
 
@@ -49,16 +49,17 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E18-H hygiene | 372.36 (Dec 238.01) | 250.98 (Dec 223.95) | matched-only `geo_mean` + drop LIRF-override rows from residual train |
 | E20-nnls ensemble | 368.03 (Dec 228.45) | 244.76 (Dec 215.90) | NNLS 0.456 CatBoost + 0.491 airport-LGB + 0.053 XGB; submission `likable-eagle_v4.parquet`, **LB 316.97** |
 | E33 v7 gate-delay (α=0.6) | 345.2 (Dec 226.8) | — | LIRF-unmatched `T = D − 0.6·G`; submission `likable-eagle_v7.parquet`, **LB 292.99** |
-| **E34 v8 enriched gate-delay (current)** | **333.7** (Dec 228.6) | — | CatBoost `G` + enriched D/surface features, `T = D − G` (α=1.0); only 383 LIRF rows changed; submission `likable-eagle_v8.parquet`, **est. LB ≈ 281.5** |
+| E34 v8 enriched gate-delay | 333.7 (Dec 228.6) | — | CatBoost `G` + enriched features, `T = D − G`; submission `likable-eagle_v8.parquet`, **LB 288.90** |
+| **E35 v9 selection-aware gate-delay (current)** | **331.3** (Dec 227.3) | — | `G` trained on unmatched LIRF only; submission `likable-eagle_v9.parquet`, **LB 288.90** (did not move vs v8) |
 | E14-surface-state (research) | 371.57 (Dec 231.09) | 248.05 (Dec 218.40) | 31 strictly-causal features in residual LGB; **not ranking-safe** |
 | E17-A2 ranking-safe memory (INCONCLUSIVE) | 374.88 (Dec 238.44) | 251.98 (Dec 224.62) | airport + runway operational memory; small gain, unstable |
 | E19-F local queue state (WEAK) | 371.02 (Dec 233.67) | 249.22 (Dec 220.00) | causal queue state; tail not reduced; not submitted |
+| E38 off-block clock proxies (small) | — | 243.5 (Jan+Jul, expert) | `MVT−LOBT/IOBT/EOBT` add signal but split-unstable; not shipped |
+| E41 exact AOBT surface queue (REJECT) | — | queue model 309 | interval-overlap occupancy at AOBT; optimal blend weight 0; no top-5% SSE cut |
 
-**Current best = E34 (v8).** The matched model is E20; the leaderboard breakthrough comes from modelling the latent gate delay `G = BLOCK−SCHED` on the LIRF-unmatched slice and reconstructing `TAXITIME = D − G`. v7 reached **LB 292.99**; v8 (enriched CatBoost `G`) lowers Jan+Jul internal to 333.7 (LIRF-unmatched 6033 → 3937), **estimated LB ≈ 281.5**. Current submission: `likable-eagle_v8.parquet`. Remaining error is concentrated in the LIRF gate-delay tail and the matched >30 min tail.
+**Current best = v9.** Matched model is E20; the leaderboard gain is the LIRF-unmatched gate-delay decomposition (`T = D − G`, `G` trained on unmatched LIRF rows). v7 → **LB 292.99**, v8 → **288.90**, v9 → **288.90** (no further transfer). Remaining error is the matched >30 min tail (top 1% = ~42% of matched SSE); E36–E41 could not reduce it from the 30 available columns.
 
-**Ranking-safe variant of the E14 signal (E17-A):** E14's gain came from rolling taxi behaviour, which is not computable at submission time (ranking blanks other DEPs' TAXITIME). E17-A reproduced E16-A exactly and re-added the memory using only ranking-safe clocks (`MVT−AOBT`, `AOBT−EOBT`, `MVT−SCHED`) plus runway-local history: airport memory alone −0.97 s Jan+Jul / −4.38 s Dec, but the runway-local family is unstable and E14's 371.57 is not recovered (gap +3.31). Held as INCONCLUSIVE; the airport-memory family is the keep candidate.
-
-**E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows. Next candidate must be a genuine temporal/sequence queue representation, not more rolling statistics.
+**E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows.
 
 ## Data policy
 
