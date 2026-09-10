@@ -1,0 +1,14 @@
+{
+  "verdict": "REJECT",
+  "v10_created": false,
+  "step0_scoring": "pooled RMSE; no stratification documented; otherwise undeterminable",
+  "step1": {"E20_had_hp_search": false, "E20_seed_averaging": false,
+            "best_nnls_matched_janjul": 244.33, "e20_matched_janjul": 244.76, "gain_janjul": 0.43,
+            "dec_matched": 214.78, "dec_gain": 0.0, "top5_material": false, "headroom": "none"},
+  "step2_coverage": {
+    "2.1_per_airport_isotonic": "NEW (E40 was global only) - not run, low yield",
+    "2.2_operator_x_type_x_hour_identity": "NEW (E42 was CALLSIGN/route scope) - not run, low prior",
+    "2.3_segment_stratification": "NEW - diagnostic run; segments differ but already in E20 features",
+    "2.4_log_space_refit": "NEW (E15/E24 were raw-seconds) - not run, low yield"
+  }
+}

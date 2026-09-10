@@ -1,0 +1,9 @@
+{
+  "verdict": "REJECT",
+  "v10_created": false,
+  "step1_qualifying_airport": "LFPG",
+  "step1_LFPG_janjul": {"unmatched_n": 880, "unmatched_rmse": 3440.8, "ratio_vs_matched": 12.5, "pct_dataset_sse": 22.33},
+  "step2_LFPG_DminusG": {"janjul_rmse": 3487.3, "dec_rmse": 1873.6, "vs_e20": "worse both splits"},
+  "mechanism": "LFPG unmatched truth is normal taxi (median 1026s, p90 1685, corr(T,D)~0); E20 22% SSE is a few extreme true-taxi rows, unpredictable from causal fields",
+  "closed_branch": "non-LIRF unmatched D-G decomposition"
+}

@@ -56,8 +56,11 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E19-F local queue state (WEAK) | 371.02 (Dec 233.67) | 249.22 (Dec 220.00) | causal queue state; tail not reduced; not submitted |
 | E38 off-block clock proxies (small) | — | 243.5 (Jan+Jul, expert) | `MVT−LOBT/IOBT/EOBT` add signal but split-unstable; not shipped |
 | E41 exact AOBT surface queue (REJECT) | — | queue model 309 | interval-overlap occupancy at AOBT; optimal blend weight 0; no top-5% SSE cut |
+| E42 flight-identity residual prior (REJECT) | — | 249.64 | empirical-Bayes identity priors degrade matched and tail on both splits |
+| E43 non-LIRF unmatched D−G (REJECT) | — | LFPG 3487 vs 3441 | LFPG unmatched is extreme true-taxi rows, `corr(T,D)≈0`; D−G does not transfer |
+| E44 matched tuning/ensembling depth (REJECT) | — | 244.33 | no HP search/seed-avg in E20; deeper LGB + NNLS = −0.43 s, no tail gain |
 
-**Current best = v9.** Matched model is E20; the leaderboard gain is the LIRF-unmatched gate-delay decomposition (`T = D − G`, `G` trained on unmatched LIRF rows). v7 → **LB 292.99**, v8 → **288.90**, v9 → **288.90** (no further transfer). Remaining error is the matched >30 min tail (top 1% = ~42% of matched SSE); E36–E41 could not reduce it from the 30 available columns.
+**Current best = v9.** Matched model is E20; the leaderboard gain is the LIRF-unmatched gate-delay decomposition (`T = D − G`, `G` trained on unmatched LIRF rows). v7 → **LB 292.99**, v8 → **288.90**, v9 → **288.90** (no further transfer). Remaining error is the matched >30 min tail (top 1% = ~42% of matched SSE); E36–E44 could not reduce it from the 30 available columns. Notable negative results: LFPG is the second-largest unmatched SSE source (22.3% of dataset SSE) but its extreme rows have no causal signal (`corr(T, MVT−SCHED) ≈ 0`); and E40/E42's calibrations were global/CALLSIGN-scoped, so per-airport isotonic, operator×type×hour identity, and log-space refits remain untested (documented in `analysis/E44/`).
 
 **E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows.
 

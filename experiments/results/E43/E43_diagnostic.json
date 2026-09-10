@@ -1,0 +1,264 @@
+{
+  "janjul": {
+    "sse_all": 46650662620.54261,
+    "airports": {
+      "EDDF": {
+        "matched_n": 36231,
+        "unmatched_n": 599,
+        "matched_rmse": 193.80138451140573,
+        "unmatched_rmse": 335.4014892610607,
+        "unmatched_sse": 67384001.24012391,
+        "unmatched_pct_of_airport_sse": 4.718162017648875,
+        "unmatched_pct_of_dataset_sse": 0.14444382449232646,
+        "rmse_ratio_unmatched_over_matched": 1.7306454755555238
+      },
+      "EDDM": {
+        "matched_n": 26854,
+        "unmatched_n": 237,
+        "matched_rmse": 173.38444363195677,
+        "unmatched_rmse": 608.6461724249287,
+        "unmatched_sse": 87796688.68018131,
+        "unmatched_pct_of_airport_sse": 9.808742542859273,
+        "unmatched_pct_of_dataset_sse": 0.1882003035933729,
+        "rmse_ratio_unmatched_over_matched": 3.5103851284196073
+      },
+      "EGLL": {
+        "matched_n": 39744,
+        "unmatched_n": 466,
+        "matched_rmse": 253.82244053157797,
+        "unmatched_rmse": 1103.372392416157,
+        "unmatched_sse": 567322676.5373077,
+        "unmatched_pct_of_airport_sse": 18.13770909075859,
+        "unmatched_pct_of_dataset_sse": 1.2161085066506372,
+        "rmse_ratio_unmatched_over_matched": 4.347024597609946
+      },
+      "EHAM": {
+        "matched_n": 40141,
+        "unmatched_n": 808,
+        "matched_rmse": 179.1210052963264,
+        "unmatched_rmse": 571.6029930774368,
+        "unmatched_sse": 263997825.20962816,
+        "unmatched_pct_of_airport_sse": 17.011318971523917,
+        "unmatched_pct_of_dataset_sse": 0.5659036986398063,
+        "rmse_ratio_unmatched_over_matched": 3.1911555662152145
+      },
+      "LEBL": {
+        "matched_n": 28490,
+        "unmatched_n": 496,
+        "matched_rmse": 222.34254222675025,
+        "unmatched_rmse": 292.7849415103857,
+        "unmatched_sse": 42518618.89971903,
+        "unmatched_pct_of_airport_sse": 2.930386247654261,
+        "unmatched_pct_of_dataset_sse": 0.09114258300158841,
+        "rmse_ratio_unmatched_over_matched": 1.3168192581507707
+      },
+      "LEMD": {
+        "matched_n": 35019,
+        "unmatched_n": 309,
+        "matched_rmse": 177.1207860555481,
+        "unmatched_rmse": 230.67574185810372,
+        "unmatched_sse": 16442291.045472028,
+        "unmatched_pct_of_airport_sse": 1.4745782771703222,
+        "unmatched_pct_of_dataset_sse": 0.035245568062374465,
+        "rmse_ratio_unmatched_over_matched": 1.3023640364025928
+      },
+      "LFPG": {
+        "matched_n": 38732,
+        "unmatched_n": 880,
+        "matched_rmse": 276.263817151659,
+        "unmatched_rmse": 3440.7993487219624,
+        "unmatched_sse": 10418408139.185623,
+        "unmatched_pct_of_airport_sse": 77.89755180060995,
+        "unmatched_pct_of_dataset_sse": 22.33281920115295,
+        "rmse_ratio_unmatched_over_matched": 12.454759310131033
+      },
+      "LIRF": {
+        "matched_n": 26131,
+        "unmatched_n": 397,
+        "matched_rmse": 439.79463353622106,
+        "unmatched_rmse": 6032.69683773519,
+        "unmatched_sse": 14448192161.0,
+        "unmatched_pct_of_airport_sse": 74.08405198842532,
+        "unmatched_pct_of_dataset_sse": 30.971033098761907,
+        "rmse_ratio_unmatched_over_matched": 13.717076966648213
+      },
+      "LSZH": {
+        "matched_n": 21822,
+        "unmatched_n": 524,
+        "matched_rmse": 194.90964596332503,
+        "unmatched_rmse": 611.8154114152157,
+        "unmatched_sse": 196142683.16606894,
+        "unmatched_pct_of_airport_sse": 19.132969923719326,
+        "unmatched_pct_of_dataset_sse": 0.4204499403609705,
+        "rmse_ratio_unmatched_over_matched": 3.1389693844620568
+      },
+      "LTFM": {
+        "matched_n": 45882,
+        "unmatched_n": 657,
+        "matched_rmse": 253.49897873097257,
+        "unmatched_rmse": 593.0649053915173,
+        "unmatched_sse": 231083970.17863148,
+        "unmatched_pct_of_airport_sse": 7.267841083206098,
+        "unmatched_pct_of_dataset_sse": 0.4953498132669046,
+        "rmse_ratio_unmatched_over_matched": 2.3395159552927085
+      }
+    }
+  },
+  "dec": {
+    "sse_all": 8664992971.951044,
+    "airports": {
+      "EDDF": {
+        "matched_n": 17228,
+        "unmatched_n": 96,
+        "matched_rmse": 180.09099543196282,
+        "unmatched_rmse": 217.05374465713916,
+        "unmatched_sse": 4522783.49468991,
+        "unmatched_pct_of_airport_sse": 0.8029448516339979,
+        "unmatched_pct_of_dataset_sse": 0.05219604342819844,
+        "rmse_ratio_unmatched_over_matched": 1.205244849341402
+      },
+      "EDDM": {
+        "matched_n": 11905,
+        "unmatched_n": 130,
+        "matched_rmse": 226.45321831262058,
+        "unmatched_rmse": 917.3235550994949,
+        "unmatched_sse": 109392725.6162489,
+        "unmatched_pct_of_airport_sse": 15.195676617075792,
+        "unmatched_pct_of_dataset_sse": 1.2624675631054507,
+        "rmse_ratio_unmatched_over_matched": 4.050830285984817
+      },
+      "EGLL": {
+        "matched_n": 19873,
+        "unmatched_n": 127,
+        "matched_rmse": 229.47745814567426,
+        "unmatched_rmse": 431.6065329139114,
+        "unmatched_sse": 23658093.30525384,
+        "unmatched_pct_of_airport_sse": 2.210688911874654,
+        "unmatched_pct_of_dataset_sse": 0.27303072699350256,
+        "rmse_ratio_unmatched_over_matched": 1.880823225085245
+      },
+      "EHAM": {
+        "matched_n": 19143,
+        "unmatched_n": 315,
+        "matched_rmse": 168.01071811386728,
+        "unmatched_rmse": 260.9530882943027,
+        "unmatched_sse": 21450402.00145525,
+        "unmatched_pct_of_airport_sse": 3.818078973152205,
+        "unmatched_pct_of_dataset_sse": 0.24755244546523153,
+        "rmse_ratio_unmatched_over_matched": 1.5531931011534919
+      },
+      "LEBL": {
+        "matched_n": 13746,
+        "unmatched_n": 89,
+        "matched_rmse": 180.37154008039678,
+        "unmatched_rmse": 191.42179946246057,
+        "unmatched_sse": 3261165.172540736,
+        "unmatched_pct_of_airport_sse": 0.7239439527341653,
+        "unmatched_pct_of_dataset_sse": 0.03763609714511331,
+        "rmse_ratio_unmatched_over_matched": 1.061263874429072
+      },
+      "LEMD": {
+        "matched_n": 17925,
+        "unmatched_n": 60,
+        "matched_rmse": 169.49941916682997,
+        "unmatched_rmse": 366.0959333981857,
+        "unmatched_sse": 8041573.947041329,
+        "unmatched_pct_of_airport_sse": 1.5375041862484713,
+        "unmatched_pct_of_dataset_sse": 0.09280531413092025,
+        "rmse_ratio_unmatched_over_matched": 2.159865415455232
+      },
+      "LFPG": {
+        "matched_n": 19465,
+        "unmatched_n": 313,
+        "matched_rmse": 255.68959112865608,
+        "unmatched_rmse": 743.4429096723137,
+        "unmatched_sse": 172997403.66185725,
+        "unmatched_pct_of_airport_sse": 11.967467957400634,
+        "unmatched_pct_of_dataset_sse": 1.9965094515582102,
+        "rmse_ratio_unmatched_over_matched": 2.9075994309765756
+      },
+      "LIRF": {
+        "matched_n": 11980,
+        "unmatched_n": 88,
+        "matched_rmse": 312.1147693688709,
+        "unmatched_rmse": 2786.1434163308313,
+        "unmatched_sse": 683108372.0,
+        "unmatched_pct_of_airport_sse": 36.921830891675555,
+        "unmatched_pct_of_dataset_sse": 7.883542135709184,
+        "rmse_ratio_unmatched_over_matched": 8.92666316933578
+      },
+      "LSZH": {
+        "matched_n": 10484,
+        "unmatched_n": 101,
+        "matched_rmse": 175.8182667623416,
+        "unmatched_rmse": 342.58163073373373,
+        "unmatched_sse": 11853579.545334613,
+        "unmatched_pct_of_airport_sse": 3.5285268596758352,
+        "unmatched_pct_of_dataset_sse": 0.13679849001268854,
+        "rmse_ratio_unmatched_over_matched": 1.9484985095252403
+      },
+      "LTFM": {
+        "matched_n": 22279,
+        "unmatched_n": 330,
+        "matched_rmse": 220.63286568927163,
+        "unmatched_rmse": 427.04624719696426,
+        "unmatched_sse": 60181604.09085353,
+        "unmatched_pct_of_airport_sse": 5.257422159716271,
+        "unmatched_pct_of_dataset_sse": 0.6945372522016345,
+        "rmse_ratio_unmatched_over_matched": 1.9355513779093774
+      }
+    }
+  },
+  "ranking_unmatched_rate": {
+    "EDDF": {
+      "n": 36317,
+      "unmatched": 421,
+      "rate": 1.159236721094804
+    },
+    "EDDM": {
+      "n": 25966,
+      "unmatched": 238,
+      "rate": 0.9165832242162828
+    },
+    "EGLL": {
+      "n": 39840,
+      "unmatched": 248,
+      "rate": 0.6224899598393574
+    },
+    "EHAM": {
+      "n": 38182,
+      "unmatched": 1206,
+      "rate": 3.1585563878267244
+    },
+    "LEBL": {
+      "n": 30080,
+      "unmatched": 442,
+      "rate": 1.4694148936170213
+    },
+    "LEMD": {
+      "n": 36954,
+      "unmatched": 238,
+      "rate": 0.644043946528116
+    },
+    "LFPG": {
+      "n": 39872,
+      "unmatched": 734,
+      "rate": 1.8408908507223114
+    },
+    "LIRF": {
+      "n": 26899,
+      "unmatched": 383,
+      "rate": 1.4238447525930331
+    },
+    "LSZH": {
+      "n": 23150,
+      "unmatched": 659,
+      "rate": 2.8466522678185746
+    },
+    "LTFM": {
+      "n": 47581,
+      "unmatched": 721,
+      "rate": 1.5153107332758875
+    }
+  }
+}

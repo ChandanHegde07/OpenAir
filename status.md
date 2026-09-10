@@ -1403,3 +1403,39 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 **Results (matched):** Jan+Jul E20 244.76 / top5 1.264e10; queue model 309.41 / 2.316e10; optimal blend **a=0.0 → E20**. Dec E20 214.78 / 4.240e9; blend a=0.2 → 213.09 / 4.154e9 (−1.7 s, top5 −2%).
 
 **Decision:** no v10. The exact AOBT queue does not reduce top-5% matched SSE on the primary split; E20 already captures the surface signal. Artifacts: `experiments/run_e41_actual_queue.py`, `experiments/results/E41/`.
+
+---
+
+## E42 — Flight identity residual prior (2026-09-10)
+
+**Hypothesis:** some recurring flights have a stable `residual = TAXITIME − base` that a shrunk historical identity prior can capture.
+
+**Method (chronological):** identity keys CALLSIGN / CALLSIGN×airport / ×ADES / FLIGHT_mvt variants / ×weekday / ×hour-bucket / operator×route; empirical-Bayes shrinkage `n/(n+λ)·mean_resid` (λ grid); applied as `pred = E20 + α·prior`. Key/λ/α auto-selected on a train-internal temporal holdout (tr_es residuals from expert A), then frozen and evaluated on Jan+Jul and Dec (E20 OOF).
+
+**Result:** selected CALLSIGN×weekday×hour-bucket, λ=1, α=1, coverage 35.8% (Jan+Jul) / 88.5% (Dec). E20 matched 244.76 → **249.64** (worse); top-5% SSE 1.264e10 → 1.289e10 (worse); Dec 214.78 → **223.58** (worse).
+
+**Decision: NO-GO — no v10.** The identity residual is not persistent/transferable: even shrunk, the prior adds noise and degrades both splits and the tail. Confirms E26/E35 findings on identity/service medians. Artifacts: `experiments/run_e42_flight_identity.py`, `experiments/results/E42/E42_report.md`, `E42_results.json`.
+
+---
+
+## E43 — Non-LIRF unmatched D−G opportunity (2026-09-10) — REJECT
+
+**Diagnostic (Jan+Jul, E20/v9 baseline):** per-airport unmatched RMSE / %dataset SSE — **LFPG 880 rows, RMSE 3440.8, 12.5× matched, 22.33% SSE**; LIRF (already handled) 397, 6032.7, 30.97%; EHAM 571.6/0.57%; LSZH 611.8/0.42%; LTFM 593.1/0.50%; all others ≤0.09%. Ranking unmatched: EHAM 3.16%, LSZH 2.85%, LFPG 1.84%.
+
+**Step 2 (LFPG D−G, E34 CatBoost G, per-airport blend):** Jan+Jul E20 3440.8 → best blend **3487.3 (worse)**; Dec 743.4 → **1873.6 (worse)**.
+
+**Mechanism:** LFPG unmatched truth is normal taxi (median 1026 s, p90 1685, 1% >1 h) while D=MVT−SCHED is huge (median 5884) with corr(T,D)≈0. E20 already predicts normal values (mean 1139, max 2582); its SSE is a few extreme true-taxi rows with no causal signal. Priors ≈ E20; D−G worse.
+
+**Decision: REJECT, no v10.** LIRF's D−G success required a real corr(T,D); LFPG's extreme rows have none. Branch closed. Artifacts: `experiments/run_e43_unmatched_diagnostic.py`, `run_e43_lfpg_g.py`, `experiments/results/E43/`, `analysis/E43/`.
+
+---
+
+## E44 — Matched-tail re-audit (2026-09-10) — REJECT
+
+**Step 0:** ranking metric is pooled RMSE; no stratification documented (undeterminable beyond that).
+
+**Step 1 (E20 tuning/ensembling depth):** audit found E20 used fixed HPs, one seed, **no HP search / seed averaging / bagging**. Ran LGB variants (deep 127/0.04, shallow 31/0.03, reg λ=10) + 3-seed average + NNLS with E20 experts: Jan+Jul matched 244.76 → **244.33 (−0.43)**, Dec 214.78 → 214.78 (**0.00**, weight E20=1.0); top-5% SSE not materially reduced ⇒ **no headroom**. (CatBoost/XGB sweeps infeasible at 1.4M rows.)
+
+**Step 2 coverage:** E40's calibration rejection was **global-only** (per-airport isotonic genuinely new); E42's identity rejection was **CALLSIGN/route scope** (operator×type×hour genuinely new); segment stratification and log-space refit genuinely new. Segment diagnostic: Jan+Jul matched RMSE Non-Scheduled 333 / Cargo 279 / Lowcost 286 / Mainline 238 / Regional 182; WK_TBL H 273 vs M 236 — segments differ, but E20 already uses both as categorical features and mean residuals are small. None advanced.
+
+**Decision: REJECT, no v10.** No exploitable matched-tail headroom from deeper tuning; untested Step 2 angles are low-yield given existing features and E40/E42's measured mild structure. Artifacts: `experiments/run_e44_matched_tuning.py`, `run_e44b_matched_lgb.py`, `experiments/results/E44/`, `analysis/E44/`.
