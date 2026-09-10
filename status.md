@@ -1305,3 +1305,17 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 α=0.6 chosen as robust across both splits (pure G model α=1.0 is best on Jan+Jul 4180 but regresses Dec 3103; α=0.6 improves both). Improvement is consistent → first transferable unmatched gain found.
 
 **Estimated LB ≈ 294 (<300)** using the E20 internal→LB offset (51.1). **Submission created: `experiments/results/E33/likable-eagle_v7.parquet`** (= `likable-eagle_v4` with 383 LIRF-unmatched rows replaced by the decomposition blend; 344,841 rows; IDs match; no nulls). **Leaderboard RMSE pending upload.** Artifacts: `experiments/run_e33_delay_decomposition.py`, `run_e33b_lirf_g.py`, `make_submission_e33.py`, `experiments/results/E33/`.
+
+---
+
+## E34 — v7+ latent gate-delay model (2026-09-10)
+
+**Baseline:** v7 `likable-eagle_v7.parquet`, **LB 292.9926**. Key simplification: v7 ≡ `T = D − 0.60·G` (E20's LIRF-unmatched output is `D`).
+
+**Model:** CatBoost predicting `G = BLOCK−SCHED` on LIRF departures with enriched features (`d_log`, LIRF-relative `d_rank`, `d×arrival/departure`, hour sin/cos, 5–30 min surface windows); reconstruct `T = D − G_hat`. Global-vs-conditional α tested; α=1.0 best for the Jan–Jul (ranking) analogue. Q=T/D, gate-ratio, XGB and LGB+Cat+XGB blends were all worse; non-LIRF unmatched decomposition is far worse (1824 vs 1546) so E20 is retained there.
+
+**Results (LIRF unmatched n=397 / 88):** E20 6033 → v7 4717 → **E34 3937** (Jan+Jul); Dec E20 2786 → v7 2474 → E34 2766. Overall Jan+Jul 368.0 → v7 345.2 → **E34 333.7**; Dec 228.7 → v7 226.8 → E34 228.6.
+
+**SSE:** Jan+Jul total 4.665e10 → 3.908e10 (−1.6e9, −3.4%). **Estimated LB ≈ 281.5** (offset 52.2) — large gain vs 292.99, ~1.5 s short of the 280 target.
+
+**Submission:** `experiments/results/E34/likable-eagle_v8.parquet` (= v7 with 383 LIRF-unmatched rows replaced; 344,841 rows; IDs match; no nulls). **Leaderboard RMSE pending upload.** Artifacts: `run_e34_lirf_improve.py`, `run_e34b_nonlirf.py`, `run_e34c_gens.py`, `run_e34d_enriched.py`, `make_submission_e34.py`, `experiments/results/E34/`.
