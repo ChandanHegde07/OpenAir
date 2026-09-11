@@ -15,13 +15,18 @@ P_cal = per-airport OLS(MVT−AOBT, AOBT−EOBT, geo_mean)
 residual LightGBM trained with LIRF-override rows dropped
 y_hat = P_cal + LightGBM_L2_residual(clocks, geometry, stand, dest, airline, dis_state_30m, ...)
 
-# Stage 2 — LIRF unmatched gate-delay decomposition (E33–E35)
+# Stage 2 — LIRF unmatched gate-delay (E33–E34 / v8). Do not use v9 unmatched-only G (LB 300.95).
 D = MVT − SCHED
-G_hat = CatBoost trained on UNMATCHED 2025 LIRF departures   (G = BLOCK − SCHED)
+G_hat = CatBoost G on the LIRF slice (v8: all LIRF, enriched)
 if unmatched and airport == LIRF:
-    y_hat = D − G_hat          # v9: selection-aware (unmatched-only), α = 1.0
+    y_hat = D − G_hat
 else:
     y_hat = Stage 1
+
+# Stage 3 — matched tail gate (E48 / v11)
+# ranking-safe Δ = y − (MVT−AOBT) LightGBM; apply only if v8>1460 or (P+Δ−v8)>200
+if matched and gate:
+    y_hat = 0.5 * Stage12 + 0.5 * clip(MVT−AOBT + Δ_hat, 0)
 ```
 
 What is in the model, and why:
@@ -31,7 +36,8 @@ What is in the model, and why:
 - **Residual LightGBM (L2)** on `y − P_cal`; Huber / tail-weighted / two-stage lost to L2 (E15); LIRF-override rows are dropped from residual training (E18-H).
 - **Airport disruption state (E16-A):** mean of *other* flights' `AOBT−EOBT` in the previous 30 min (self excluded).
 - **E20 ensemble (E20):** NNLS blend of CatBoost residual (0.456) + airport-specific LGB experts (0.491) + XGB residual (0.053).
-- **LIRF gate-delay decomposition (E33–E35):** `TAXITIME = D − G` with `D = MVT−SCHED` observed and `G = BLOCK−SCHED` the latent gate delay. `G` is predicted on the LIRF slice; E35 showed the deployment population is **unmatched** LIRF, so `G` is trained on unmatched LIRF rows only. Only the 383 LIRF-unmatched ranking rows are changed. This is the leaderboard gain.
+- **LIRF gate-delay (E33–E34 / v8):** `TAXITIME = D − G`. v8 trains G on all LIRF. v9 unmatched-only G **hurt LB (300.95)**.
+- **Matched tail gate (E48 / v11):** blend v8 toward `P+Δ` (`P = MVT−AOBT`) on ~12% of matched rows. **LB 287.71.**
 
 Linear traffic/queue, airport additive bias, and `FLIGHT_ID` as a tail number were tested and rejected. E36–E41 (matched residual, coordinate-free ground state, clock fusion, Δ reconstruction, tail calibration, exact AOBT surface queue) did **not** beat v9 and are recorded as rejected.
 
@@ -50,7 +56,7 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E20-nnls ensemble | 368.03 (Dec 228.45) | 244.76 (Dec 215.90) | NNLS 0.456 CatBoost + 0.491 airport-LGB + 0.053 XGB; submission `likable-eagle_v4.parquet`, **LB 316.97** |
 | E33 v7 gate-delay (α=0.6) | 345.2 (Dec 226.8) | — | LIRF-unmatched `T = D − 0.6·G`; submission `likable-eagle_v7.parquet`, **LB 292.99** |
 | E34 v8 enriched gate-delay | 333.7 (Dec 228.6) | — | CatBoost `G` + enriched features, `T = D − G`; submission `likable-eagle_v8.parquet`, **LB 288.90** |
-| **E35 v9 selection-aware gate-delay (current)** | **331.3** (Dec 227.3) | — | `G` trained on unmatched LIRF only; submission `likable-eagle_v9.parquet`, **LB 288.90** (did not move vs v8) |
+| E35 v9 selection-aware gate-delay (REJECT) | 331.3 (Dec 227.3) | — | unmatched-only G; **LB 300.95** (worse than v8) |
 | E14-surface-state (research) | 371.57 (Dec 231.09) | 248.05 (Dec 218.40) | 31 strictly-causal features in residual LGB; **not ranking-safe** |
 | E17-A2 ranking-safe memory (INCONCLUSIVE) | 374.88 (Dec 238.44) | 251.98 (Dec 224.62) | airport + runway operational memory; small gain, unstable |
 | E19-F local queue state (WEAK) | 371.02 (Dec 233.67) | 249.22 (Dec 220.00) | causal queue state; tail not reduced; not submitted |
@@ -59,8 +65,15 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E42 flight-identity residual prior (REJECT) | — | 249.64 | empirical-Bayes identity priors degrade matched and tail on both splits |
 | E43 non-LIRF unmatched D−G (REJECT) | — | LFPG 3487 vs 3441 | LFPG unmatched is extreme true-taxi rows, `corr(T,D)≈0`; D−G does not transfer |
 | E44 matched tuning/ensembling depth (REJECT) | — | 244.33 | no HP search/seed-avg in E20; deeper LGB + NNLS = −0.43 s, no tail gain |
+| E45 LIRF stand-release G-regime (REJECT) | — | LIRF_u 3753→3683 | delay-window stand reuse is a real G split (2 s vs 3844 s) but redundant with v9 G; overall −0.91 s, Dec ~0 |
+| E46 OpenSky/OPDI unmatched AOBT (REJECT) | — | — | unmatched flights are in ADS-B (LIRF 79%) but `first_seen` is lift-off (MVT−fs ≈ −26 s); FCO origin parking events = 0 |
+| E47 OPDI-in + stand-release G (v10, REJECT) | 329.78 (Dec 226.73) | — | **LB 296.32**; v9 scored **300.95**. Production is **v8 288.90** |
+| E48 v11 matched tail-gated Δ | overall 366.55 (Dec 227.20) | 242.49 (Dec 213.17) | v8 + gated `P+Δ`; **LB 287.71** |
+| E49 v12 grec P+Δ with e20 feature | 364.50 (Dec 226.58) | 239.32 (Dec 212.50) | **LB 284.97** |
+| E50 v13 grec + leftover hat | 363.98 (Dec 226.19) | 238.52 (Dec 212.08) | **LB 284.10** |
+| E51 v14 L2+quantile Δ mix (REJECT) | 364.01 (Dec 225.83) | 238.58 (Dec 211.70) | **LB 284.13** (worse than v13 284.10) |
 
-**Current best = v9.** Matched model is E20; the leaderboard gain is the LIRF-unmatched gate-delay decomposition (`T = D − G`, `G` trained on unmatched LIRF rows). v7 → **LB 292.99**, v8 → **288.90**, v9 → **288.90** (no further transfer). Remaining error is the matched >30 min tail (top 1% = ~42% of matched SSE); E36–E44 could not reduce it from the 30 available columns. Notable negative results: LFPG is the second-largest unmatched SSE source (22.3% of dataset SSE) but its extreme rows have no causal signal (`corr(T, MVT−SCHED) ≈ 0`); and E40/E42's calibrations were global/CALLSIGN-scoped, so per-airport isotonic, operator×type×hour identity, and log-space refits remain untested (documented in `analysis/E44/`).
+**Current best LB = v13 (284.10).** v14 scored **284.13** (no gain). Ladder: v8 288.90 → v11 287.71 → v12 284.97 → v13 **284.10**. Do not restack LIRF unmatched G.
 
 **E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows.
 

@@ -1439,3 +1439,127 @@ January −1.77 / July −2.52 for 0.5-corr (not a one-month artifact). Matched 
 **Step 2 coverage:** E40's calibration rejection was **global-only** (per-airport isotonic genuinely new); E42's identity rejection was **CALLSIGN/route scope** (operator×type×hour genuinely new); segment stratification and log-space refit genuinely new. Segment diagnostic: Jan+Jul matched RMSE Non-Scheduled 333 / Cargo 279 / Lowcost 286 / Mainline 238 / Regional 182; WK_TBL H 273 vs M 236 — segments differ, but E20 already uses both as categorical features and mean residuals are small. None advanced.
 
 **Decision: REJECT, no v10.** No exploitable matched-tail headroom from deeper tuning; untested Step 2 angles are low-yield given existing features and E40/E42's measured mild structure. Artifacts: `experiments/run_e44_matched_tuning.py`, `run_e44b_matched_lgb.py`, `experiments/results/E44/`, `analysis/E44/`.
+
+---
+
+## E45 — delay-window stand-release G-regime (2026-09-10) — REJECT
+
+**Hypothesis.** LIRF unmatched is complementary delay absorption: push-to-hold (`G≈0`, `T≈D`, stand vacated) vs hold-at-gate (`G` large, `T` normal, stand not reused). `has_tv` = another DEP takeoff or ARR in-block at the same stand in `(SCHED, MVT)` identifies the mode. Inject that into unmatched-only CatBoost G (v9 recipe).
+
+**Diagnostic (full-year unmatched LIRF, n=1488, not a fit):** `corr(T,D)=0.90`, `corr(G,D)=−0.12`. Reused n=638 med G=**2 s** / T=6965; not reused n=850 med G=**3844 s** / T=1262. D-controlled 4–9 h slice: mix `D` if reused else 1100 RMSE **2909** vs always-D **3830**. Occupancy *rate* (events per hour of D) is uncorrelated with T; the **binary reuse** is the signal. Hard mix on all 1488 still loses to always-D (5879 vs 5496) — recall of bombs is incomplete.
+
+**Holdout (v9 recipe reproduced: Jan+Jul LIRF_u 3753 / overall 331.26; Dec 2557 / 227.27):**
+
+| cand | Jan+Jul LIRF_u | overall | Dec LIRF_u | overall |
+|---|---:|---:|---:|---:|
+| v9 | 3753.1 | 331.26 | 2556.7 | 227.27 |
+| A (G + stand-release) | **3683.1** | **330.35** | **2551.9** | **227.24** |
+| B P(G<300) mix | 13161 | 541 | 12719 | 366 |
+| C hard has_tv→D else T_phys | 5646 | 361 | 6430 | 265 |
+
+A: Jan+Jul overall **−0.91 s**, LIRF_u −70 / Dec −5, 4–9 h slice cut 6.9%. CatBoost uses `G_ub`/`T_lb` (importance 8.6/4.3); `has_tv` almost unused (0.57). B/C wreck RMSE (same E13 gate failure).
+
+**Decision: REJECT, no v10.** GO bar was ≥8 s overall + both-split LIRF_u drop + ≥10% slice cut. The identity is real but redundant with v9 G (D, stand, hour, prefix). Do not retune. Remaining LIRF unmatched error is the missing off-block clock. E46 (OPDI/OSN) then showed that clock is not in ADS-B either. Artifacts: `experiments/run_e45_stand_release.py`, `experiments/results/E45/`.
+
+---
+
+## E46 — OpenSky / OPDI unmatched AOBT (2026-09-10) — REJECT
+
+**Hypothesis.** Unmatched rows lack NM AOBT because of a join miss, not because the aircraft did not move. OpenSky ADS-B `first_seen` / `exit-parking` recovers off-block; then `T ≈ MVT − AOBT*`.
+
+**Access.** pyopensky Trino credentials are empty. Used PRC+OSN **OPDI v0.0.2** open parquet (same ADS-B source): 12 monthly 2025 flight lists + one 10-day events file (2025-01-05..15). Legal, documented, no ranking in fits.
+
+**Flight-list join (callsign + ADEP + time window):**
+
+| Airport | unmatched | joined | coverage | med(MVT−first_seen) | RMSE(T, MVT−first_seen) |
+|---|---:|---:|---:|---:|---:|
+| LIRF | 1488 | 1181 | **79.4%** | **−26 s** | 8443 |
+| LFPG | 3773 | 3515 | **93.2%** | **−42 s** | 2204 |
+
+Jan+Jul LIRF coverage 85.9%, Dec 67.0%. The flights **are** in ADS-B. `first_seen` is lift-off, not off-block (`|BLOCK−first_seen| ≈ T`).
+
+**Events (FCO/CDG origin, 10-day sample):** LIRF `exit-parking_position` near FCO = **0** (the tagged parking events are at DESTINATION). `take-off` near FCO = 1. `entry-runway` near FCO coincides with `first_seen` (median 0 s). LFPG origin parking = 14 / 5761 (0.2%).
+
+**Decision: REJECT, no v10.** Coverage of *flights* is high; coverage of *off-block* is ~0. AOBT* ≈ MVT fails the GO bar (RMSE < 2000 and not airborne). Surface ADS-B at LIRF does not observe gate push. Trino state vectors would see the same receivers. Artifacts: `experiments/run_e46_opdi_aobt.py`, `download_opdi.py`, `experiments/results/E46/`, `data/external/opdi/`.
+
+---
+
+## E47 — OPDI-in regime + leftover unmatched heads (2026-09-10)
+
+**in_opdi** (callsign in OPDI flight list with first_seen near MVT) splits LIRF unmatched: OUT n=307 med G=0, med T=6181; IN n=1181 med G=3721, med T=1729. Hard IN→1100 / OUT→D fails (polarity flips on December). EGLL unmatched is gate-delay (`corr(G,D)=0.95`); E20 already beats unmatched median. LTFM D−G and all non-LIRF unmatched medians lose to E20.
+
+**Holdout (v9 G reproduced 3753 / 331.26):**
+
+| cand | Jan+Jul LIRF_u | overall | Dec LIRF_u | overall |
+|---|---:|---:|---:|---:|
+| v9 | 3753.1 | 331.26 | 2556.7 | 227.27 |
+| **A stand-release+in_opdi** | **3637.9** | **329.78** | **2464.9** | **226.73** |
+| two-head / OUT→D | 4300 / 4327 | 339 | 2549 / 2293 | 227 / 226 |
+
+A: −1.48 s Jan+Jul, −0.54 s Dec, LIRF_u −115 / −92. Both splits improve. ISR/ETH prefixes have RMSE(D)≈4 s on both holdouts.
+
+**Submission `likable-eagle_v10.parquet`:** v9 with 382 LIRF-unmatched rows replaced (G + stand-release + in_opdi; ISR/ETH→D). Ranking in_opdi 0.679 from OPDI 2026-01/07.
+
+**Leaderboard 296.321 — REJECT vs v8 288.90.** User scored **v9 at 300.9543** (unmatched-only G hurt). v10 296.32 is better than v9 but worse than v8. **Production is v8.** Do not stack LIRF unmatched G. Artifacts: `run_e47_opdi_regime.py`, `make_submission_e47.py`, `experiments/results/E47/`.
+
+---
+
+## E48 — matched tail (2026-09-10)
+
+**Not LIRF G.** Baseline E20 matched 244.76 / 214.78. Top 1% matched = 42% of matched SSE; 74% of those rows have `y > (MVT−AOBT)+600` (AOBT–BLOCK gap). LIRF matched is 25% of matched SSE (RMSE 440).
+
+Per-airport isotonic (E40 was global) and per-airport residual did **not** beat E36. Best E48: per-airport `T = P+Δ` blend λ=0.3 → matched −1.27 / −1.70 s.
+
+**E48b tail-gated residual (E36 features):** apply λ·hat only if `e20>p90` or `hat>200`.
+
+| cand | Jan+Jul matched | Dec matched | top1 Jan+Jul |
+|---|---:|---:|---:|
+| E20 | 244.76 | 214.78 | — |
+| all_l0.5 (E36) | 242.62 | 213.37 | −4.2% |
+| **allgate_l0.5** | **242.49** | **213.17** | **−4.7%** |
+| tail-trained only | 400–1100 | explode | — |
+
+**v11** = v8 + gated P+Δ on matched only (unmatched untouched). 40308 rows changed.
+
+**Leaderboard 287.7101 — KEEP (v8 288.9003, −1.19 s).** Matched-tail gate transferred; LIRF unmatched G stacking (v9 300.95, v10 296.32) did not. Production is `likable-eagle_v11.parquet`. Artifacts: `run_e48_matched_tail.py`, `run_e48b_tail_gate.py`, `make_submission_e48.py`, `experiments/results/E48/`.
+
+---
+
+## E49 — deeper matched tail (2026-09-10)
+
+v11-like residual-vs-e20 gate saturates (~−2 s matched). Predicting **Δ = y − (MVT−AOBT)** with E36 clocks **plus e20 as a feature**, then gated blend `e20 + λ(P+Δ − e20)`, is a larger step.
+
+| cand | Jan+Jul matched | Dec | Jan+Jul overall | top1 |
+|---|---:|---:|---:|---:|
+| E20 | 244.76 | 214.78 | 368.03 | — |
+| v11-like | 242.5 | 213.2 | 366.5 | −4.7% |
+| **grec λ=0.5** | **239.32** | **212.50** | **364.50** | **−13.1%** |
+| nnls (e20, rec, CB) | 238.65 | 211.89 | 364.06 | −12.7% |
+
+NNLS weights ~0.17 / 0.33 / 0.50 on both splits; CB on 2M rows too slow for v12. **v12** = v8 unmatched + grec λ=0.5 with e20-in-Δ. **LB 284.9731** (v11 287.71, −2.74 s). Production was v12. Artifacts: `run_e49_matched_deeper.py`, `make_submission_e49.py`, `experiments/results/E49/`.
+
+---
+
+## E50 — richer matched P+Δ + leftover residual (2026-09-10)
+
+v12 grec saturates. Extra clocks (`LOBT/IOBT`, clock_std/range) + `MARKET_SEGMENT`/`ac_family` + a second LGB residual on `y−e20` after grec.
+
+| cand | Jan+Jul matched | Dec | overall Jan+Jul |
+|---|---:|---:|---:|
+| E20 | 244.76 | 214.78 | 368.03 |
+| rich grec (v12-like) | 239.02 | 212.38 | 364.30 |
+| **grec+hat λ=0.25** | **238.52** | **212.08** | **363.98** |
+
+NNLS weights unstable across splits — not shipped.
+
+**v13** = v8 unmatched + rich grec λ=0.5 + leftover hat λ=0.25. **LB 284.0967** (v12 284.97, −0.88 s). Production was v13. Artifacts: `run_e50_matched_rich.py`, `make_submission_e50.py`, `experiments/results/E50/`.
+
+---
+
+## E51 — quantile-mixed Δ (2026-09-11)
+
+Seed-avg / LIRF-LFPG specialists / subsample CatBoost: CB Δ −2 s Jan+Jul but **hurts December**. Not shipped.
+
+Tail-weighted L2 Δ also failed. **Quantile α=0.65 Δ mixed 30% into L2** keeps Jan+Jul (238.58 vs 238.52) and improves Dec (212.08→211.70).
+
+**v14** = v13 recipe with 0.7 L2 + 0.3 q65 Δ. **LB 284.1341 — REJECT** (v13 284.0967). Ranking is Jan+Jul; the quantile mix only helped December internally. Production stays `likable-eagle_v13.parquet`. Artifacts: `run_e51_matched_more.py`, `run_e51c_tailweight.py`, `make_submission_e51.py`, `experiments/results/E51/`.

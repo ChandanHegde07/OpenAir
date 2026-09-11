@@ -1,0 +1,179 @@
+{
+  "source": "OPDI v0.0.2 flight_list + events sample (OSN ADS-B, PRC open data)",
+  "trino": "no credentials; not used",
+  "airports": {
+    "LIRF": {
+      "n_unmatched": 1488,
+      "first_seen": {
+        "n_joined": 1181,
+        "coverage": 0.7936827956989247,
+        "rmse": 8442.675799244165,
+        "med_pred": -26.0,
+        "med_y": 1729.0,
+        "med_y_minus_pred": 1757.0
+      },
+      "rmse_t_vs_1100_joined": 7823.01529542459,
+      "med_abs_block_minus_first_seen": 1760.0,
+      "med_mvt_minus_first_seen": -26.0,
+      "splits": {
+        "janjul": {
+          "n_unmatched": 397,
+          "first_seen": {
+            "n_joined": 341,
+            "coverage": 0.8589420654911839,
+            "rmse": 8964.818311475768,
+            "med_pred": -25.0,
+            "med_y": 1370.0,
+            "med_y_minus_pred": 1395.0
+          }
+        },
+        "dec": {
+          "n_unmatched": 88,
+          "first_seen": {
+            "n_joined": 59,
+            "coverage": 0.6704545454545454,
+            "rmse": 9868.206732666482,
+            "med_pred": -22.0,
+            "med_y": 6478.0,
+            "med_y_minus_pred": 6485.0
+          }
+        },
+        "all": {
+          "n_unmatched": 1488,
+          "first_seen": {
+            "n_joined": 1181,
+            "coverage": 0.7936827956989247,
+            "rmse": 8442.675799244165,
+            "med_pred": -26.0,
+            "med_y": 1729.0,
+            "med_y_minus_pred": 1757.0
+          }
+        }
+      }
+    },
+    "LFPG": {
+      "n_unmatched": 3773,
+      "first_seen": {
+        "n_joined": 3515,
+        "coverage": 0.9316194010071561,
+        "rmse": 2203.5944328452483,
+        "med_pred": -42.0,
+        "med_y": 1020.0,
+        "med_y_minus_pred": 1060.0
+      },
+      "rmse_t_vs_1100_joined": 1816.0561787514237,
+      "med_abs_block_minus_first_seen": 1065.0,
+      "med_mvt_minus_first_seen": -42.0,
+      "splits": {
+        "janjul": {
+          "n_unmatched": 880,
+          "first_seen": {
+            "n_joined": 814,
+            "coverage": 0.925,
+            "rmse": 3825.474956460458,
+            "med_pred": -44.0,
+            "med_y": 1024.0,
+            "med_y_minus_pred": 1068.5
+          }
+        },
+        "dec": {
+          "n_unmatched": 313,
+          "first_seen": {
+            "n_joined": 298,
+            "coverage": 0.952076677316294,
+            "rmse": 1561.1671474944978,
+            "med_pred": -45.0,
+            "med_y": 1069.0,
+            "med_y_minus_pred": 1091.0
+          }
+        },
+        "all": {
+          "n_unmatched": 3773,
+          "first_seen": {
+            "n_joined": 3515,
+            "coverage": 0.9316194010071561,
+            "rmse": 2203.5944328452483,
+            "med_pred": -42.0,
+            "med_y": 1020.0,
+            "med_y_minus_pred": 1060.0
+          }
+        }
+      }
+    }
+  },
+  "events_sample": {
+    "file": "flight_events_20250105_20250115.parquet",
+    "window": "2025-01-05 .. 2025-01-15",
+    "airports": {
+      "LIRF": {
+        "n_flights_first_seen": 3723,
+        "types": {
+          "exit-parking_position": {
+            "n_flights": 136,
+            "near_origin": 0,
+            "frac": 0.0365296803652968
+          },
+          "exit-apron": {
+            "n_flights": 117,
+            "near_origin": 0,
+            "frac": 0.031426269137792104
+          },
+          "take-off": {
+            "n_flights": 2,
+            "near_origin": 1,
+            "frac": 0.0005372011818426001
+          },
+          "entry-runway": {
+            "n_flights": 1741,
+            "near_origin": 797,
+            "frac": 0.46763362879398335
+          },
+          "entry-taxiway": {
+            "n_flights": 454,
+            "near_origin": 0,
+            "frac": 0.12194466827827022
+          }
+        }
+      },
+      "LFPG": {
+        "n_flights_first_seen": 5761,
+        "types": {
+          "exit-parking_position": {
+            "n_flights": 283,
+            "near_origin": 14,
+            "frac": 0.04912341607359833
+          },
+          "exit-apron": {
+            "n_flights": 309,
+            "near_origin": 24,
+            "frac": 0.05363652143725048
+          },
+          "take-off": {
+            "n_flights": 76,
+            "near_origin": 54,
+            "frac": 0.013192154139906266
+          },
+          "entry-runway": {
+            "n_flights": 3367,
+            "near_origin": 2586,
+            "frac": 0.5844471445929527
+          },
+          "entry-taxiway": {
+            "n_flights": 869,
+            "near_origin": 105,
+            "frac": 0.15084186773129665
+          }
+        }
+      }
+    },
+    "note": "exit-parking_position on LIRF departures geolocates at DESTINATION (arrival stand), not FCO. entry-runway at FCO is simultaneous with first_seen (lift-off)."
+  },
+  "decision": {
+    "GO": false,
+    "NOGO_airborne_not_offblock": true,
+    "NOGO_no_origin_parking_events": true,
+    "NOGO_low_coverage": false,
+    "reason": "OPDI/OSN first_seen is lift-off (~MVT), not off-block. FCO origin exit-parking events are absent in the events sample. Unmatched flights *are* in ADS-B, but the missing clock is not."
+  },
+  "generated_utc": "2026-09-10T14:13:45.896858+00:00"
+}
