@@ -1,0 +1,10 @@
+{
+  "n_train": 54036,
+  "n_val": 65964,
+  "subsample": true,
+  "base_e20_matched": 253.23398126044188,
+  "neural_matched": 253.07678334653676,
+  "alpha": 0.5,
+  "base_top1": 1737580703.740447,
+  "neural_top1": 1748593894.1819758
+}

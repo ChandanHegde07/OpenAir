@@ -1587,3 +1587,69 @@ Beast-mode stacking: meta-features = individual E20 experts (pred_C/D/E), E20 bl
 ## E55 — non-linear stacking + magnitude blend (2026-09-11) — REJECT
 
 Math-beast lever (B): diverse predictors (e20, Δ rec1/rec2, q85-quantile Δ, hat) → hard-amplified LightGBM stacker on y → magnitude-conditioned/gated blend into v13. v13 238.71/212.03; all variants worse (best 250.94, top1 +15.9%). Conditional mean over this info set = v13 already. With E51 quantile-mix (LB reject) and E40 calibration, math levers on the 30 columns are exhausted. No v15. Artifacts: `experiments/run_e55_math.py`, `experiments/results/E55/`.
+
+---
+
+## E56 — multi-clock off-block decomposition (2026-09-11) — REJECT
+
+Tournament: for C ∈ {SCHED, EOBT, LOBT, IOBT, AOBT}, learned `G_C = BLOCK−C`, reconstructed `T = (MVT−C)−G_C_hat`. Ranking coverage: SCHED 100%, NM clocks 98.47%. Matched Jan+Jul: SCHED 797.1 (unlearnable standalone); EOBT 286.3, LOBT 286.9, IOBT 287.1, AOBT 286.7 (all within ~0.5 s — NM clocks identical, confirming E38); v13 = 238.5. None beats v13; AOBT decomposition is already v13's grec component. SCHED only worked for LIRF-unmatched in E33. **Closed the clock-decomposition hypothesis family.** No v15. Artifacts: `experiments/run_e56_clock_tournament.py`, `experiments/results/E56/`.
+
+---
+
+## E57 — Latent airport operational regime (2026-09-11) — REJECT
+
+Causal per-airport 5-min-bin state vectors (pre-bin events only: push/takeoff/arr counts, P-med, EOBT-SCHED, hour); KMeans K=5, silhouette 0.35. **States persist strongly** (mean run 71–133 bins ≈ 6–11 h) but **taxi separation is weak**: states 0–3 medians 829–952 s, >30 m rate 2.1–3.8% (near-identical); rare state 4 (0.1% flights) >30 m 10.9%. State-median baseline matched **482.8 / 413.7 vs v13 238.5**. Latent regimes exist but provide no incremental predictive information beyond v13 → **REJECT**, no v15. Artifacts: `experiments/run_e57_latent_regime.py`, `experiments/results/E57/`.
+
+---
+
+## E58 — Structural asymmetry / hidden-process forensics (2026-09-11) — NO second E33
+
+Phase-1 forensic search (no model): audited identities (all clocks closed E56), source availability (matched 50.4% / unmatched 49.6% of SSE; LIRF exploited E33, LFPG unexploitable E43), and the **new turnaround chain** — stand-linked prior arrival (411k matched rows, 80.6%): corr(arrival-taxi, departure-taxi)=0.123, corr(arrival-taxi, E20-resid)=−0.008. No source-defined population shows E33-scale SSE concentration beyond the already-exploited LIRF slice. **Verdict: no second E33-style structural asymmetry exists in the supplied dataset** → no Phase-2 model. Artifacts: `experiments/run_e58_forensics.py`, `experiments/results/E58/`.
+
+---
+
+## E59 — External trajectory (OpenSky) reconstruction — BLOCKED at audit (2026-09-11)
+
+External-data audit (mandated before any model): OpenSky is reachable (HTTP 200) and licensing is compliant (ODbL/CC-BY-SA + attribution, GPLv3-compatible), **but the challenge's 30 columns contain no ICAO24/registration/hex identifier** — the only link key is the callsign, which is a daily-repeating city-pair flight (E7), giving unreliable trajectory-to-flight association. Historical 18-month × 10-airport track volume for a transferable free-flow reference is not feasible under OpenSky rate limits in-session; and ADS-B ground tracks make BLOCK/TAXITIME directly observable, which the project policy forbids using. **E59 stopped at the audit per §23** (no matching, graph, or free-flow reference; no model; no submission). Artifacts: `experiments/results/E59/external_data_audit.md`.
+
+---
+
+## E60 — Physical taxi-route decomposition (2026-09-11) — REJECT (stand-mapping blocker)
+
+Acquired OurAirports runway geometry (public domain, all 10 airports). Runway mapping succeeded; **stand→coordinate mapping impossible** (no reproducible open crosswalk for challenge STAND IDs — same blocker as E37/E59), so taxiway graph, route distance and free-flow time are not constructible. Runway-length/heading features in the Δ harness: matched 248.81 / 215.39 (vs v13 238.5) — marginal standalone only; no robust v13 gain. Physical decomposition `T = F + delay` untestable without stand coordinates. No v15. Artifacts: `experiments/run_e60_route_decomposition.py`, `experiments/results/E60/`.
+
+---
+
+## E61 — Causal historical analogue engine (2026-09-11) — REJECT
+
+Cross-month v13 reproduced (~239.5/212.4); strict-causal analogue DB (earlier months only) with hierarchical exact-key retrieval (service×stand×runway EB-shrunk) + confidence gating, `v13 + α·analogue_residual`. Coverage ~99–100%, but analogue residual prior ≈ 0 → all corrections neutral (Δ 0.00–0.05, top1 ≤0.1%). v13's residual is not locally predictable from historical analogues — consistent with E42/E26. No v15. Artifacts: `experiments/run_e61_analogue_engine.py`, `experiments/results/E61/`.
+
+---
+
+## E62 — Dynamic runway queue / service-rate model (2026-09-11)
+
+Expected-runway-wait decomposition (queue_position × rolling service headway,
+backlog, demand/supply, service slowdown) — strictly causal same-runway MVT
+stream. **Improves E20**: matched 244.76 → 242.59 (top1 −5.3%) Jan+Jul; Dec
+214.78 → 212.91 (top1 −4.8%); transfers. **But v13 (238.5) already beats
+E20+E62 (242.6)**, and E52's precedent (congestion into v13's Δ) gave ~0.
+**No v15.** Follow-up: inject QF into v13 grec to confirm redundancy. Artifacts:
+`experiments/run_e62_runway_queue.py`, `experiments/results/E62/`.
+
+---
+
+## E63 — Continuous runway workload decomposition (2026-09-11) — REJECT
+
+Base v13 (grec); causal continuous per-runway workload (session backlog entering−served with idle-gap reset) + E62 service features; residual LGB cross-month. v13 + workload: matched 239.17 (−0.21) Jan+Jul, 212.34 (−0.15) Dec, top1 −0.4% — below noise. v13 already absorbs workload signal (E52/E63 consistent; E62's −2.17 was vs E20). No v15. Artifacts: `experiments/run_e63_continuous_workload.py`, `experiments/results/E63/`.
+
+---
+
+## E64 — Runway departure service-process model (2026-09-11) — REJECT
+
+Causal predicted-headway + excess-service-pressure features (obs/pred headway ratio, excess sums/max, positional) + E62 QF on v13 residual, cross-month OOF: matched 239.15 (−0.38) Jan+Jul, 212.13 (−0.25) Dec, top1 −0.8%. Below the 0.5 s bar, tail unchanged — v13 absorbs the service-process signal (E62 gain was vs E20; E63/E64 confirm redundancy on v13). No v15. Artifacts: `experiments/run_e64_runway_service_process.py`, `experiments/results/E64/`.
+
+---
+
+## E65 — Causal airport event-graph transformer (2026-09-11) — REJECT
+
+Minimal end-to-end PyTorch causal event-graph transformer (1 layer/2 heads, context 32 same-airport events, train Jan / eval Jul subsample, predict y−e20, alpha blend): val matched 253.23 → 253.08 (−0.15 s), top1 +0.6% — no signal, below the ≥1 s bar; consistent with temporal_v2 TCN (LB rejected). No v15. Artifacts: `experiments/run_e65_causal_event_graph.py`, `experiments/results/E65/`.

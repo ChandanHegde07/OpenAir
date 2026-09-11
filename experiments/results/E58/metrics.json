@@ -1,0 +1,60 @@
+{
+  "sse_decomposition": [
+    {
+      "pop": "matched",
+      "n": 503074,
+      "frac": 0.986233963802892,
+      "rmse": 235.40413250366623,
+      "sse": 27877898834.515625,
+      "sse_share": 0.503978458465539
+    },
+    {
+      "pop": "unmatched",
+      "n": 7022,
+      "frac": 0.013766036197107995,
+      "rmse": 1976.7142280962746,
+      "sse": 27437756757.978035,
+      "sse_share": 0.4960215415344611
+    },
+    {
+      "pop": "matched_allclocks",
+      "n": 503074,
+      "frac": 0.986233963802892,
+      "rmse": 235.40413250366623,
+      "sse": 27877898834.515625,
+      "sse_share": 0.503978458465539
+    },
+    {
+      "pop": "matched_arrival_linked",
+      "n": 411043,
+      "frac": 0.805814983846178,
+      "rmse": 236.34223246235683,
+      "sse": 22959896376.400833,
+      "sse_share": 0.4150704918973517
+    },
+    {
+      "pop": "matched_arrival_unlinked",
+      "n": 92031,
+      "frac": 0.18041897995671402,
+      "rmse": 231.16777888047648,
+      "sse": 4918002458.114792,
+      "sse_share": 0.08890796656818736
+    }
+  ],
+  "identities": {
+    "T_MVT_BLOCK": "MVT-BLOCK (target)",
+    "T_D_G": "(MVT-SCHED)-(BLOCK-SCHED) closed E33/E56",
+    "T_P_delta": "(MVT-AOBT)-(BLOCK-AOBT) closed E48-E51",
+    "turnaround": "arr_BLOCK -> dep_AOBT gap (stand-linked): corr(arr_taxi, dep_taxi)=0.123"
+  },
+  "source_availability": {
+    "ranking": {
+      "SCHED": 1.0,
+      "MVT": 1.0,
+      "AOBT/LOBT/IOBT/EOBT": 0.9847,
+      "BLOCK_dep": 0.0
+    },
+    "matched_all_clocks_present": "~always (AOBT present)",
+    "unmatched": "all NM clocks null (total miss, E28)"
+  }
+}
