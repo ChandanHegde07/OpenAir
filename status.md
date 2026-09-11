@@ -1563,3 +1563,27 @@ Seed-avg / LIRF-LFPG specialists / subsample CatBoost: CB Δ −2 s Jan+Jul but 
 Tail-weighted L2 Δ also failed. **Quantile α=0.65 Δ mixed 30% into L2** keeps Jan+Jul (238.58 vs 238.52) and improves Dec (212.08→211.70).
 
 **v14** = v13 recipe with 0.7 L2 + 0.3 q65 Δ. **LB 284.1341 — REJECT** (v13 284.0967). Ranking is Jan+Jul; the quantile mix only helped December internally. Production stays `likable-eagle_v13.parquet`. Artifacts: `run_e51_matched_more.py`, `run_e51c_tailweight.py`, `make_submission_e51.py`, `experiments/results/E51/`.
+
+---
+
+## E52 — Surface congestion into v13 (2026-09-11) — no gain
+
+Added ranking-safe congestion to v13's Δ-hat/leftover: active-surface counts at AOBT (interval overlap), rolling mean-P (MVT−AOBT) 10/30m per airport/runway, dep/arr pressure, heavy active (no rolling TAXITIME). Cross-month OOF: Jan+Jul matched 244.76 → **238.50** (top1 −15.1%, top5 −8.9%), Dec → 212.11. Identical to v13 (238.52 / 212.08) → congestion is redundant with v13's E36-clocks+e20 set. No v15. Artifacts: `experiments/run_e52_congestion.py`, `experiments/results/E52/`.
+
+---
+
+## E53 — stage-3 hard-tail residual cascade (2026-09-11) — REJECT
+
+Crazy-mode experiment: stage-3 LGB on `r3 = y − v13` with synthetic hard-tail amplification (weights ∝|r3|, top-10% ×3), added as `v13 + λ·r3hat·gate`. v13 reproduced (238.53/212.08); all λ/gate combos worse or neutral (Jan+Jul best 239.06; Dec best 212.19; top1 −0.3%..−0.6%). Stage-3 residual-of-residual not predictable → abandoned, no v15. Artifacts: `experiments/run_e53_hardtail_cascade.py`, `experiments/results/E53/`.
+
+---
+
+## E54 — meta-layer corrector on v13 (2026-09-11) — REJECT
+
+Beast-mode stacking: meta-features = individual E20 experts (pred_C/D/E), E20 blend, P, clocks, Δ-rec, hat, seed-variance, P/e20; stage-3 LGB on `r3=y−v13` with hard-tail amplification, `v13+λ·r3hat·gate`. v13 ~237.8/212.7; all variants worse/neutral (top1 −0.2%..−0.5%). Meta-layers/stacking/cascades of existing information cannot reduce the v13 matched tail. No v15. Artifacts: `experiments/run_e54_metalayer.py`, `experiments/results/E54/`.
+
+---
+
+## E55 — non-linear stacking + magnitude blend (2026-09-11) — REJECT
+
+Math-beast lever (B): diverse predictors (e20, Δ rec1/rec2, q85-quantile Δ, hat) → hard-amplified LightGBM stacker on y → magnitude-conditioned/gated blend into v13. v13 238.71/212.03; all variants worse (best 250.94, top1 +15.9%). Conditional mean over this info set = v13 already. With E51 quantile-mix (LB reject) and E40 calibration, math levers on the 30 columns are exhausted. No v15. Artifacts: `experiments/run_e55_math.py`, `experiments/results/E55/`.
