@@ -1687,3 +1687,27 @@ Causal predicted-headway + excess-service-pressure features (obs/pred headway ra
 ## E65 — Causal airport event-graph transformer (2026-09-11) — REJECT
 
 Minimal end-to-end PyTorch causal event-graph transformer (1 layer/2 heads, context 32 same-airport events, train Jan / eval Jul subsample, predict y−e20, alpha blend): val matched 253.23 → 253.08 (−0.15 s), top1 +0.6% — no signal, below the ≥1 s bar; consistent with temporal_v2 TCN (LB rejected). No v15. Artifacts: `experiments/run_e65_causal_event_graph.py`, `experiments/results/E65/`.
+
+---
+
+## E66 — v18 matched-error diagnosis (2026-09-12) — DIAGNOSTIC
+
+Reproduced the v18 cross-month OOF exactly (**236.59 / 210.22**). Matched SSE decomposition (Jan+Jul, n=339,046): by actual y, `y>1800` is 4.5% of rows but **42% of SSE** (`y>3600` alone 15.9%); by `Δ = y − (MVT−AOBT)`, `Δ>600` is 4.3% of rows and **41% of SSE**. Airports: LIRF 22% (RMSE 400), LTFM 15.8%, LFPG 14.3%, EGLL 13.1%.
+
+High-Δ rows carry a strong **clock-disagreement signature** (median `clock_range` 3,240 s vs 480 s for the rest): AOBT is the late outlier while EOBT/IOBT/LOBT align with the airport BLOCK. v18 nevertheless beats every single-clock proxy on *every* airport (LIRF v18 400 vs mvt_aobt 644 / best clock 621; LTFM 255 vs min4 411; LFPG 264 vs min4 375), and the residual is unbiased within prediction deciles (max |mean| 17 s) — the remaining error is not a recalibration problem (isotonic/quadratic/linear recalibration all neutral-or-worse). Conclusion: the matched leftover is irreducible gate-hold variance given the 30 fields.
+
+## E67 — matched Δ feature additions (2026-09-12) — REJECT; capacity KEEP
+
+Added explicit clock-rank/disagreement features, unused categoricals (`WK_TBL_CAT_flt`, `FLIGHT_TYPE_flt`, `ADES_FILED_flt`) and per-airport Δ experts to the v18 Δ/hat. Clock/cat features neutral; per-airport Δ worse on Jan+Jul (240.50) and unstable. **Capacity is the one real lever:** 900×63 already gives **235.80 / 210.06**. Artifacts: `run_e67_matched_features.py`, `results/E67/`.
+
+## E68 — Δ capacity / stand-history sweep (2026-09-12) — KEEP capacity
+
+Deep (2000×127) 235.79 / 209.75; wide (1500×255) 235.83 / **209.29**; all beat v18. Extra stand-history features (prev-DEP clocks, arrivals-in-3h) neutral. Artifacts: `run_e68_capacity.py`, `results/E68/`.
+
+## E69 / E70 — seed-averaged cap900 + λ = v19 (2026-09-12) — SUBMITTED (LB pending)
+
+3-seed Δ + 2-seed hat on 900×63, `λ=0.35` positive leftover. Cross-month OOF: **Jan+Jul 235.86 / overall 362.27**, **Dec 209.96 / 224.22** vs v18 236.59 / 362.74 and 210.22 / 224.46 — a small, both-split gain with lower top-1% SSE. Submission `likable-eagle_v19.parquet` via `python experiments/submit.py --version v19 --hat-mode pos --no-operator --arr-taxiin --arr-rich --lam-hat 0.35 --cap900 --seeds 3`. Also tested the inbound-ARR family on **non-LIRF unmatched**: worse than E20 on both splits (1855 vs 1546 Jan+Jul; 780 vs 516 Dec), so the v8/E20 unmatched branch stays. Artifacts: `run_e69_seedavg.py`, `run_e70_seedavg_cap900.py`, `results/E69/`, `results/E70/`.
+
+## v19 / 260 assessment (2026-09-12)
+
+Matched improved E20 244.76 → v13 238.52 → v18 236.59 → **v19 235.86**; the remaining error is unbiased gate-hold/clock-disagreement variance that no available field identifies (E66). v13→v16 showed the leaderboard tracks matched roughly 1:1, so LB 260 implies matched ≈218–220 — **~16 s below the practical floor**, and LB 246 implies ~210. This matches E29/E30: the missing information is the LIRF/unmatched gate-hold (`BLOCK ≈ AOBT` vs `BLOCK ≈ EOBT`), absent from the 30 supplied columns. Do not reopen coarse tuning; the next real move needs the same-flight off-block clock (external ground data), not more modelling of the existing fields.

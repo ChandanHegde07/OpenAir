@@ -49,6 +49,8 @@ def parse_args():
     p.add_argument("--mix-q", type=float, default=0.0, help="mix quantile(0.65) Δ; 0 = L2 only (v14 used 0.3)")
     p.add_argument("--p90", type=float, default=P90)
     p.add_argument("--hthr", type=float, default=HTHR)
+    p.add_argument("--cap900", action="store_true", help="use 900x63 Δ/hat capacity (E68/E70 best)")
+    p.add_argument("--seeds", type=int, default=1, help="seed-average count for Δ/hat (E69/E70)")
     p.add_argument("--arr-taxiin", action="store_true", help="previous ARR taxi-in at same stand (ranking-safe)")
     p.add_argument("--arr-rich", action="store_true", help="ARR delay, AOBT-asof taxi-in, time since last DEP at stand")
     p.add_argument("--note", default="")
@@ -95,16 +97,31 @@ def main():
     import lightgbm as lgb
     from matched_submit import LGB_KW, SEED
 
-    def fit(target, seed, alpha=None):
-        kw = dict(LGB_KW, random_state=seed)
-        m = lgb.LGBMRegressor(objective="quantile", alpha=alpha, **kw) if alpha is not None else lgb.LGBMRegressor(**kw)
-        m.fit(Xt, target, categorical_feature=[c for c in cats if c in Xt.columns])
-        return m
+    if args.cap900:
+        LGB_KW = dict(LGB_KW, n_estimators=900, learning_rate=0.03, num_leaves=63, min_child_samples=40)
+
+    def fit_models(target, seeds, alpha=None):
+        models = []
+        for s in seeds:
+            kw = dict(LGB_KW, random_state=s)
+            m = lgb.LGBMRegressor(objective="quantile", alpha=alpha, **kw) if alpha is not None else lgb.LGBMRegressor(**kw)
+            m.fit(Xt, target, categorical_feature=[c for c in cats if c in Xt.columns])
+            models.append(m)
+        return models
+
+    def predict(models, X):
+        p = np.zeros(X.shape[0])
+        for m in models:
+            p += np.asarray(m.predict(X), float)
+        return p / len(models)
+
+    dseeds = ([SEED] if args.seeds <= 1 else list(range(1, args.seeds + 1)))
+    hseeds = ([7] if args.seeds <= 1 else list(range(101, 101 + args.seeds)))
 
     log("  Δ + leftover hat")
-    d_l2 = fit(y - P, 1)
-    hmod = fit(y - e_tr, 7)
-    d_q = fit(y - P, 2, alpha=0.65) if args.mix_q > 0 else None
+    d_models = fit_models(y - P, dseeds)
+    h_models = fit_models(y - e_tr, hseeds)
+    dq_models = fit_models(y - P, dseeds, alpha=0.65) if args.mix_q > 0 else None
 
     log("ranking...")
     rank = pl.scan_parquet(ROOT / "data" / "ranking.parquet").filter(pl.col("PHASE_mvt") == "DEP").collect()
@@ -146,11 +163,11 @@ def main():
     matched = matched.join(v8.rename({"TAXITIME_SEC_mvt": "e20_pred"}), on="MVT_ID_mvt", how="left")
     Xm = X(matched)
     Pm = np.clip(matched["mvt_aobt"].to_numpy().astype(float), 0, None)
-    dhat = np.asarray(d_l2.predict(Xm), float)
-    if d_q is not None:
-        dhat = (1 - args.mix_q) * dhat + args.mix_q * np.asarray(d_q.predict(Xm), float)
+    dhat = predict(d_models, Xm)
+    if dq_models is not None:
+        dhat = (1 - args.mix_q) * dhat + args.mix_q * predict(dq_models, Xm)
     rec = np.clip(Pm + dhat, 0, None)
-    hat = np.asarray(hmod.predict(Xm), float)
+    hat = predict(h_models, Xm)
     e8 = matched["e20_pred"].to_numpy().astype(float)
     g = grec(e8, rec, args.lam_rec, args.p90, args.hthr)
     if args.hat_mode == "pos":
@@ -164,6 +181,7 @@ def main():
     new = np.maximum(g + args.lam_hat * h, 0.0)
     note = (
         f"grec λ={args.lam_rec} hat λ={args.lam_hat} mode={args.hat_mode} "
+        f"cap900={args.cap900} seeds={args.seeds} "
         f"op={args.operator} mix_q={args.mix_q} {args.note}"
     )
     pack_and_write(args.version, matched["MVT_ID_mvt"].to_numpy(), new, note=note)

@@ -76,8 +76,11 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E53 v16 prev ARR taxi-in in Δ | 362.91 (Dec 224.76) | 236.86 (Dec 210.54) | **LB 282.09** |
 | E54 v17 richer inbound | 362.87 (Dec 224.53) | 236.80 (Dec 210.29) | **LB 281.88** |
 | E55 v18 2nd taxi-in + type + rwy + hat 0.28 | **362.74** (Dec 224.46) | **236.59** (Dec **210.22**) | `submit.py --lam-hat 0.28 --arr-rich` |
+| E66–E70 v19 matched cap+seed-avg | 362.27 (Dec 224.22) | **235.86** (Dec 209.96) | cap900 3-seed Δ + 2-seed hat, λ=0.35 pos; `submit.py --cap900 --seeds 3 --lam-hat 0.35 --arr-rich --hat-mode pos`; submission `likable-eagle_v19.parquet`, **LB pending** |
 
-**Current best LB = v17 (281.88).** Next: **v18** (2nd stand taxi-in, inbound type, same-runway ARR, leftover 0.28). Keep v17 if v18 does not improve. Ladder: v16 282.09 → v17 **281.88**.
+**Current best LB = v17 (281.88).** v18 and v19 are pending leaderboard tests. v19 is the best internal matched model (235.86 / 209.96); keep v17 if neither beats 281.88. Ladder: v16 282.09 → v17 **281.88**.
+
+**260 assessment (E66–E70):** matched is at its practical floor (~236) given the 30 fields — the residual is unbiased gate-hold/clock-disagreement variance, and v19 beats every single-clock proxy on every airport. v13→v16 showed LB tracks matched ~1:1, so LB 260 implies matched ≈218–220, ~16 s below the floor. Reaching it requires the missing LIRF/unmatched gate-hold (`BLOCK`) signal, consistent with E29/E30.
 
 **E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows.
 
