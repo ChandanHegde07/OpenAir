@@ -77,8 +77,11 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E54 v17 richer inbound | 362.87 (Dec 224.53) | 236.80 (Dec 210.29) | **LB 281.88** |
 | E55 v18 2nd taxi-in + type + rwy + hat 0.28 | **362.74** (Dec 224.46) | **236.59** (Dec **210.22**) | `submit.py --lam-hat 0.28 --arr-rich` |
 | E66–E70 v19 matched cap+seed-avg | 362.27 (Dec 224.22) | **235.86** (Dec 209.96) | cap900 3-seed Δ + 2-seed hat, λ=0.35 pos; `submit.py --cap900 --seeds 3 --lam-hat 0.35 --arr-rich --hat-mode pos`; submission `likable-eagle_v19.parquet`, **LB pending** |
+| E71–E74 v20 LIRF structural inbound-G | matched preserved (235.86 / 209.96) | LIRF-u RMSE 3834→**3732** (Dec 2919→2625); overall ≈326→325 | E33 `T=D−G` with G trained on all LIRF + causal ARR turnaround features; replaces only the 383 LIRF-unmatched rows; submission `likable-eagle_v20.parquet`, **LB pending** |
 
-**Current best LB = v17 (281.88).** v18 and v19 are pending leaderboard tests. v19 is the best internal matched model (235.86 / 209.96); keep v17 if neither beats 281.88. Ladder: v16 282.09 → v17 **281.88**.
+**Current best LB = v17 (281.88).** v18, v19 and v20 are pending leaderboard tests. v19 is the best internal matched model (235.86 / 209.96). Ladder: v16 282.09 → v17 **281.88**.
+
+**v20 (E71–E74):** the previous-departure-BLOCK/rotation oracle was falsified (corr(T, prev gap_block) ≈ 0.008) and the stand-release cap `T ≤ since_arr` fails (stand reuse). The surviving structural move enriches the E33 LIRF `D−G` gate component with same-stand ARR turnaround features (`arr_taxiin`, `arr_taxiin_2`, `since_arr`, `arr_delay`) under the robust all-LIRF training population: LIRF-unmatched SSE −5.3% (Jan+Jul) / −19.1% (Dec). Matched v19 and non-LIRF unmatched are untouched.
 
 **260 assessment (E66–E70):** matched is at its practical floor (~236) given the 30 fields — the residual is unbiased gate-hold/clock-disagreement variance, and v19 beats every single-clock proxy on every airport. v13→v16 showed LB tracks matched ~1:1, so LB 260 implies matched ≈218–220, ~16 s below the floor. Reaching it requires the missing LIRF/unmatched gate-hold (`BLOCK`) signal, consistent with E29/E30.
 

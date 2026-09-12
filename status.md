@@ -1711,3 +1711,30 @@ Deep (2000×127) 235.79 / 209.75; wide (1500×255) 235.83 / **209.29**; all beat
 ## v19 / 260 assessment (2026-09-12)
 
 Matched improved E20 244.76 → v13 238.52 → v18 236.59 → **v19 235.86**; the remaining error is unbiased gate-hold/clock-disagreement variance that no available field identifies (E66). v13→v16 showed the leaderboard tracks matched roughly 1:1, so LB 260 implies matched ≈218–220 — **~16 s below the practical floor**, and LB 246 implies ~210. This matches E29/E30: the missing information is the LIRF/unmatched gate-hold (`BLOCK ≈ AOBT` vs `BLOCK ≈ EOBT`), absent from the 30 supplied columns. Do not reopen coarse tuning; the next real move needs the same-flight off-block clock (external ground data), not more modelling of the existing fields.
+
+---
+
+## E71–E72 — high-SSE unmatched structural search (2026-09-12) — ROTATION/STAND-RELEASE ATTACKS REJECTED
+
+Quantified the submission-faithful high-SSE population (Jan+Jul 2025, submission branches): matched 1.886e10 SSE (n=339,046, 51%), non-LIRF-unmatched 1.189e10 (n=4,976, 32%), LIRF-unmatched 6.15e9 (n=397, v8 branch, 17%). The matched branch is the largest, but the mission target was the unmatched tail.
+
+- **E71 (identity probe):** the stand-ARRIVAL turnaround identity `T = since_arr − turnaround` is causally available (99.6% coverage) but `corr(since_arr,T)=0.008`; the latest ARR at a stand is frequently a different aircraft (stand reuse), so `since_arr` is not the current aircraft's own turnaround.
+- **E71b (decomposition search):** `corr(T,D)` with `D=MVT−SCHED` is 0.90 at LIRF but ≤0.44 everywhere else (EDDF 0.17, LFPG 0.02), confirming E43: the E33 `D−G` decomposition is LIRF-only. Non-LIRF-unmatched SSE is 94.7% concentrated in ~50 data-error rows (e.g. LFPG `y=84240` with `D=1740`), which are unpredictable by construction.
+- **E71c (previous-BLOCK oracle):** correct self-excluded previous DEP at the same stand; `corr(T, gap_block)=0.008` (unmatched), 0.043 (LIRF-u); `corr(T, prev_Taxi)` 0.13/0.28. The oracle has **no signal**, so Attacks 2–6 (rotation boundary, causal BLOCK_hat, oracle→student) are falsified at the oracle stage.
+- **E72 (stand-release hard bound):** capping `T ≤ since_arr` makes LIRF-unmatched far worse (3896→11579) because the reused stand's latest ARR is usually a different aircraft; non-LIRF-u also worse (1546→1568). Rejected.
+- Artifacts: `run_e71_rotation.py`, `run_e71b_structural_search.py`, `run_e71c_prevdep.py`, `run_e72_stand_release.py`.
+
+## E73–E74 — v20 LIRF E33 gate-component enrichment — SUBMITTED (LB pending)
+
+Kept the robust all-LIRF training population of v8 and added same-stand ARR turnaround features to the E33 G model (`arr_taxiin`, `arr_taxiin_2`, `since_arr`, `arr_delay`), all strictly causal (in-block/taxi-in before current MVT; ranking-visible). Ablation on the LIRF-unmatched holdout:
+
+| recipe | Jan+Jul RMSE | LIRF-u SSE | Dec RMSE | LIRF-u SSE |
+|---|---:|---:|---:|---:|
+| base all-LIRF G (v8-style) | 3834 | 5.837e9 | 2919 | 7.496e8 |
+| **+ inbound features (shipped)** | **3732** | **5.530e9 (−5.3%)** | **2625** | **6.062e8 (−19.1%)** |
+| 3-seed inbound | 3798 | 5.726e9 | 2553 | 5.734e8 |
+| base+inbound G-ensemble | 3762 | 5.618e9 | 2712 | 6.470e8 |
+
+Seed averaging helped Dec but hurt Jan+Jul; single-seed inbound was best on the primary split and improved both, so it was shipped. First structural LIRF gain to improve **both** splits since v8.
+
+**v20 production:** `run_e74_make_v20.py` trains the inbound G on all 160,704 training LIRF departures and replaces exactly the 383 LIRF-unmatched ranking rows of v19 (`T = max(D − G_hat, 0)`); matched v19 and non-LIRF unmatched are byte-identical to v19. Output `submissions/likable-eagle_v20.parquet` (3,44841 rows, unique IDs, ranking order, 0 null/NaN/inf/negative, 0 ≤ p ≤ 111,374). Internal high-SSE: LIRF-u SSE −5.3% (JJ) / −19.1% (Dec); overall ≈ −1.3 s (JJ). Caveat per E47/v9: internal LIRF gains have not always transferred to the leaderboard, so LB must decide v20 vs v19/v17.
