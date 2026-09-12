@@ -1,20 +1,17 @@
-# E52 — ranking-safe surface congestion into v13: report
+# E52 — beat v13 on both splits
 
-## Goal
-Feed strongest surface-congestion / recent-history features into v13's Δ-hat
-and leftover residual: exact active-surface counts at AOBT (interval overlap,
-ranking-safe), rolling mean-P (= MVT−AOBT of recent flights, a ranking-safe
-taxi-speed proxy) over 10/30 min per airport/runway, dep/arr pressure, heavy
-active. NO rolling TAXITIME (not ranking-safe).
+v13 published OOF 238.52 / 212.08. Ranking is Jan+Jul.
 
-## Results (cross-month OOF, same harness as v13)
-| split | E20 matched | v13 (E50) | E52 (v13 + congestion) |
-|---|---:|---:|---:|
-| Jan+Jul | 244.76 | 238.52 | **238.50** (Δ −6.26 vs E20; top1 −15.1%, top5 −8.9%) |
-| Dec | 214.78 | 212.08 | **212.11** (Δ −2.66) |
+| spec | cand | Jan+Jul | Dec |
+|---|---|---:|---:|
+| base | v13 recon | 238.68 | 212.04 |
+| base | **hpos** (hat≥0 only) | 238.55 | 211.95 |
+| geo | v13 | 239.69 | 212.12 |
+| op | v13 | 238.58 | 212.00 |
+| **op** | **hpos** | **238.48** | **211.92** |
 
-## Decision: no gain, no v15
-Congestion features are redundant with v13's E36-clocks + e20 feature set:
-matched Jan+Jul 238.50 vs 238.52, Dec 212.11 vs 212.08 — essentially identical.
-Consistent with E19/E32/E41: surface/queue/congestion information adds nothing
-beyond what v13 already captures. **No `likable-eagle_v15.parquet`.**
+Geo_mean and LIRF extra residual do not help. Operator + **positive-only leftover** is the only both-split improvement (small).
+
+**v15** via `python experiments/submit.py --version v15 --hat-mode pos --operator`
+
+If LB does not beat **284.10**, keep v13.

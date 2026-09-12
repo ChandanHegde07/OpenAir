@@ -1,15 +1,15 @@
-# E55 — extreme-tail non-linear stacking + magnitude-conditioned blend — REJECT
+# E55 — more inbound + leftover 0.28
 
-**Math:** gather diverse predictors (e20, Δ-rec1/rec2, q85-quantile Δ, residual
-hat), train a hard-amplified non-linear LightGBM stacker on y, blend into v13
-with magnitude-conditioned λ (piecewise in e20 bins) or a tail gate.
+v17 recon h0.25 = 236.80 / 210.32.
 
-**Result (cross-month OOF):** v13 baseline 238.71 matched Jan+Jul / 212.03 Dec.
-Every stacker/gated/magnitude blend is **worse** (best-gated variant matched
-250.94, top1 +15.9% worse; Dec 215.54). No improvement on matched or the tail.
+| cand | Jan+Jul | Dec |
+|---|---:|---:|
+| v17 λ_hat=0.25 | 236.80 | 210.32 |
+| v17 λ_hat=0.28 | 236.73 | 210.25 |
+| **+ 2nd taxi-in, inbound type, runway ARR, λ=0.28** | **236.59** | **210.22** |
 
-**Decision: abandon.** Non-linear stacking of all available previous predictors
-cannot beat v13; the conditional mean over this information set is already v13's.
-Combined with E51 (quantile mixing, rejected on LB) and E40 (calibration), the
-mathematical levers available on the 30 columns are exhausted. **No v15.**
-Artifacts: `experiments/run_e55_math.py`, `experiments/results/E55/`.
+Both splits better than v17 236.80 / 210.29.
+
+**v18:** `submit.py --version v18 --hat-mode full --no-operator --arr-taxiin --arr-rich --lam-hat 0.28`
+
+Keep v17 if LB ≥ 281.88.

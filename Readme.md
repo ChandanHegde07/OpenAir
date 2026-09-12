@@ -72,8 +72,12 @@ Research is logged in [`status.md`](status.md). Numbers below are **January + Ju
 | E49 v12 grec P+Δ with e20 feature | 364.50 (Dec 226.58) | 239.32 (Dec 212.50) | **LB 284.97** |
 | E50 v13 grec + leftover hat | 363.98 (Dec 226.19) | 238.52 (Dec 212.08) | **LB 284.10** |
 | E51 v14 L2+quantile Δ mix (REJECT) | 364.01 (Dec 225.83) | 238.58 (Dec 211.70) | **LB 284.13** (worse than v13 284.10) |
+| E52 v15 op + pos leftover (REJECT) | 363.95 (Dec 226.04) | 238.48 (Dec 211.92) | **LB 284.37** (worse than v13 284.10) |
+| E53 v16 prev ARR taxi-in in Δ | 362.91 (Dec 224.76) | 236.86 (Dec 210.54) | **LB 282.09** |
+| E54 v17 richer inbound | 362.87 (Dec 224.53) | 236.80 (Dec 210.29) | **LB 281.88** |
+| E55 v18 2nd taxi-in + type + rwy + hat 0.28 | **362.74** (Dec 224.46) | **236.59** (Dec **210.22**) | `submit.py --lam-hat 0.28 --arr-rich` |
 
-**Current best LB = v13 (284.10).** v14 scored **284.13** (no gain). Ladder: v8 288.90 → v11 287.71 → v12 284.97 → v13 **284.10**. Do not restack LIRF unmatched G.
+**Current best LB = v17 (281.88).** Next: **v18** (2nd stand taxi-in, inbound type, same-runway ARR, leftover 0.28). Keep v17 if v18 does not improve. Ladder: v16 282.09 → v17 **281.88**.
 
 **E19 local queue state:** causal (strictly `< t`, zero TAXITIME) neighbour/same-runway/delay-shock/pressure features on the E18-H residual improved Jan+Jul by only −1.34 s (Dec −4.34 s) and **did not reduce the large-positive tail** (top-1% SSE share unchanged). Core hypothesis falsified: rolling queue-state representations do not identify the >30 min tail rows.
 

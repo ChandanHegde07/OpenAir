@@ -1566,6 +1566,40 @@ Tail-weighted L2 Δ also failed. **Quantile α=0.65 Δ mixed 30% into L2** keeps
 
 ---
 
+## E52 — operator + positive leftover (2026-09-11)
+
+v13 leftover hat is applied with both signs. Restricting to **hat>0** (only lift under-predictions) plus `AIRCRAFT_OPERATOR_flt` is the only both-split tick: OOF 238.48 / 211.92 vs v13 238.52 / 212.08. Geo and LIRF extra residual do not help.
+
+**v15 LB 284.3732 — REJECT** (v13 284.10). Positive-only leftover + operator did not transfer. Production stays `likable-eagle_v13.parquet`. Submitter: `python experiments/submit.py`.
+
+---
+
+## E53 — previous ARR taxi-in (2026-09-11)
+
+Δ model gets last same-stand ARR taxi-in and time since in-block (ARR TAXITIME is on ranking). OOF **236.86 / 210.54** vs v13 238.52 / 212.08, both splits. LIRF grec λ=0.7 helps JJ only.
+
+LFPG 24h wrap cannot reach ~245 on this ranking set: analog rows are July 04:00/10:00 EJU, not Jan afternoon bombs. Gate fires 0.
+
+**v16 LB 282.0851 — KEEP** (v13 284.10, −2.01 s). Inbound taxi-in transferred. Production is `likable-eagle_v16.parquet`.
+
+---
+
+## E54 — richer inbound (2026-09-11)
+
+v16 + ARR delay + AOBT-asof taxi-in + time since last DEP at stand. OOF **236.80 / 210.29** vs v16 236.86 / 210.54 (both splits, JJ tiny). LIRF λ=0.6 hurts Dec.
+
+**v17 LB 281.8799 — KEEP** (v16 282.09, −0.21 s). Production is `likable-eagle_v17.parquet`.
+
+---
+
+## E55 — 2nd taxi-in / inbound type / runway ARR (2026-09-12)
+
+OOF **236.59 / 210.22** vs v17 236.80 / 210.29 (both splits). Leftover λ=0.28 also helps v17 features alone.
+
+**v18:** `submit.py --version v18 --hat-mode full --no-operator --arr-taxiin --arr-rich --lam-hat 0.28`. Keep v17 if LB ≥ 281.88.
+
+---
+
 ## E52 — Surface congestion into v13 (2026-09-11) — no gain
 
 Added ranking-safe congestion to v13's Δ-hat/leftover: active-surface counts at AOBT (interval overlap), rolling mean-P (MVT−AOBT) 10/30m per airport/runway, dep/arr pressure, heavy active (no rolling TAXITIME). Cross-month OOF: Jan+Jul matched 244.76 → **238.50** (top1 −15.1%, top5 −8.9%), Dec → 212.11. Identical to v13 (238.52 / 212.08) → congestion is redundant with v13's E36-clocks+e20 set. No v15. Artifacts: `experiments/run_e52_congestion.py`, `experiments/results/E52/`.

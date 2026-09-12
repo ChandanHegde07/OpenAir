@@ -1,7 +1,17 @@
-# E53 — stage-3 hard-tail residual cascade — REJECT (killed quickly)
+# E53 — previous ARR taxi-in in Δ
 
-**Idea (crazy mode):** v13 = e20 + 0.5(P+Δ−e20)·gate + 0.25·hat. Train stage-3 LGB on `r3 = y − v13` with synthetic hard-tail amplification (weights ∝|r3|, top-10% ×3), apply as `v13 + λ·r3hat·gate` (gate = |r3hat|>200 or e20>p90).
+Ranking-safe: last ARR at the same stand, taxi-in and time since in-block (ARR TAXITIME is on ranking).
 
-**Result (cross-month OOF):** v13 baseline reproduced exactly (Jan+Jul 238.53 / Dec 212.08). Best stage-3 variant: `v13_g0.1` Jan+Jul **239.06 (worse)**, top1 −0.3%; Dec `v13_lam0.1` **212.19 (worse)**, top1 −0.6%. No λ/gate combo improves matched or tail.
+| spec | Jan+Jul matched | Dec matched | overall JJ |
+|---|---:|---:|---:|
+| v13 recon | 238.68 | 212.08 | 364.08 |
+| **arr taxi-in + v13 recipe** | **236.86** | **210.54** | **362.91** |
+| + LIRF grec λ=0.7 | 236.28 | 210.66 | 362.54 |
 
-**Decision: abandon.** The stage-3 residual-of-residual is not predictable; the top-1% tail (40%+ of matched SSE) does not respond to a third correction stage, matching every prior hard-tail attempt. **No v15.** Artifacts: `experiments/run_e53_hardtail_cascade.py`, `experiments/results/E53/`.
+LIRF λ=0.7 helps JJ, hurts Dec. Ship **arr taxi-in without LIRF boost**.
+
+LFPG wrong-day wrap cannot hit ~245 here: ranking LFPG EJU unmatched D<2400 are **hour 4 and 10** (morning FPs), not the Jan-2025 afternoon bombs. Tight wrap gate fires **0** ranking rows.
+
+**v16:** `python experiments/submit.py --version v16 --hat-mode full --no-operator --arr-taxiin`
+
+Expected if transfer is like v12/v13: LB ~282–283, not 245.
